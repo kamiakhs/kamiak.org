@@ -2,6 +2,10 @@
   font-family: Roboto;
   line-height: 2em;
 }
+::selection {
+  color: white;
+  background: #6257c2;
+}
 body { padding: 8px }
 a { color: inherit }
 
