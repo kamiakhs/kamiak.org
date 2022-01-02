@@ -68,8 +68,8 @@ button:active, button.forced {
   background-color: #323232;
 }
 button.blocked {
-  color: #bbb;
-  background-color: #ddd;
+  color: #abb0b8;
+  background-color: #d5d7db;
   cursor: auto;
   box-shadow: none;
 }
@@ -84,7 +84,7 @@ button.forced, button.blocked {
 }
 
 .ui-draggable-dragging {
-  box-shadow: 0 0 20px rgb(0 0 0 / 10%)
+  box-shadow: 0 0 20px rgb(0 2 5 / 10%)
 }
 
 .ui-draggable-disabled {
@@ -95,7 +95,7 @@ button.forced, button.blocked {
   position: absolute;
   margin: -1.5px;
   border: 2px solid #000000;
-  background: rgba(0 0 0 / 5%);
+  background: rgba(0 2 5 / 5%);
 }
 .ship-shadow, #aimer {
   position: absolute;
