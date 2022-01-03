@@ -23,7 +23,7 @@ a { color: inherit }
 .footer {
   position: fixed;
   bottom: 0;
-  width: calc(100% - 32px);
+  width: calc(100% - 48px);
   margin: 0 -16px;
   padding: 24px;
   background: #423b84;
