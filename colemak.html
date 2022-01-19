@@ -44,10 +44,10 @@
             this.selectionStart = this.selectionEnd = start;
           } else if (e.ctrlKey) {  // CTRL+BACKSPACE
             var i = start-1;  // Letter stopped, must delete at least one letter
-            console.log(wordBreakers);
             for (;i > 0 && wordBreakers.includes(this.value[i]); --i);  // First skip all immediate symbols
             for (;i > 0 && !wordBreakers.includes(this.value[i-1]); --i);  // Decrease until previous character is a symbol
             this.value = this.value.substring(0, i) + this.value.substring(end);
+            this.selectionStart = this.selectionEnd = i;
           } else {
             this.value = this.value.substring(0, start-1) + this.value.substring(end);
             this.selectionStart = this.selectionEnd = start-1;
