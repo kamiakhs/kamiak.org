@@ -30,8 +30,9 @@
       const   colemakShift = 'QWFPGJLUY:ARSTDHNEIOZXCVBKMQWFPGJLUY:ARSTDHNEIOZXCVBKM';
       const wordBreakers = ' \t\n!@#$%^&*;:,.?<>()[]{}-+=/\\|\'"';
       const textbox = document.getElementById('textbox');
-      function storeText() { setTimeout(() => { localStorage.text = textbox.value }, 5) }
+      function storeText() { localStorage.text = textbox.value; }
       textbox.value = localStorage.text || (localStorage.text = '');
+
       textbox.onkeydown = function (e) {
         console.log(e);
 
@@ -44,6 +45,7 @@
             this.selectionStart = this.selectionEnd = start;
           } else if (e.ctrlKey) {  // CTRL+BACKSPACE
             var i = start-1;  // Letter stopped, must delete at least one letter
+            console.log(wordBreakers);
             for (;i > 0 && wordBreakers.includes(this.value[i]); --i);  // First skip all immediate symbols
             for (;i > 0 && !wordBreakers.includes(this.value[i-1]); --i);  // Decrease until previous character is a symbol
             this.value = this.value.substring(0, i) + this.value.substring(end);
@@ -52,7 +54,7 @@
             this.value = this.value.substring(0, start-1) + this.value.substring(end);
             this.selectionStart = this.selectionEnd = start-1;
           }
-          return;
+          storeText();
 
         } else {
 
@@ -66,6 +68,7 @@
             const end = this.selectionEnd;
             this.value = this.value.substring(0, start) + mappedKey + this.value.substring(end);
             this.selectionStart = this.selectionEnd = start+1;
+            storeText();
           }
 
           // TO BE ADDED!!!!!!!!!!!!!!! ALSO USE spellcheck="false" while typing to stop popping of error squiggles
@@ -74,13 +77,15 @@
           // ALSO IMPORTANT: MAKE APP AVAILABLE OFFLINE
 
         }
-        storeText();  // Textarea has not been modified yet
       }
-      textbox.onpaste = function (e) {  // don't need this but i'll leave as ref for copy (see line 71)
-        console.log('paste');
-        // navigator.clipboard.writeText('t');
-        storeText();  // Textarea has not been added yet
+      textbox.oninput = function (e) {
+        storeText();
       }
+      window.onstorage = window.onpageshow = function (e) {
+        if (textbox.value != localStorage.text) textbox.value = localStorage.text;
+      }
+
+      caches.open('offline').then(cache => cache.add('/colemak'));  // Cache page for offline use
     </script>
   </body>
 </html>
