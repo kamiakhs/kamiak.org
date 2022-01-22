@@ -173,7 +173,6 @@
 
       var nickname = prompt('Enter your name').trim();
       const socket = io('wss://kamiak.herokuapp.com', {path: '/chat/socket.io', query: `nickname=${nickname}&seed=${localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15))}`});
-      // const socket = io('wss://kamiak.herokuapp.com/', {query: `nickname=${nickname}&seed=${localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15))}`});
       // const socket = io({query: `nickname=${nickname}&seed=${localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15))}`});
 
 
@@ -238,10 +237,10 @@
             break;
           case 3:
             $typing
-              .text(', ')
+              .text(' ')
               .prepend(t$nickname(users[tua[0]]))
               .append(t$nickname(users[tua[1]]))
-              .append(', and ')
+              .append(' and ')
               .append(t$nickname(users[tua[1]]))
               .append(' are typing...')
             ;
