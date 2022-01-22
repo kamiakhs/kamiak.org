@@ -301,10 +301,15 @@
         console.log('join');
         users[data.sid] = data.user;
         if (data.sid === sid) {
-          if (disconnected) log(t$broadcast('Reconnected to server'));
-          log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
-          if (!disconnected) log(t$broadcast('Welcome to the chat!'));
-          else disconnected = false;
+          if (disconnected) {
+            log(t$broadcast('Reconnected to server'));
+            log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
+            disconnected = false;
+          }
+          if (disconnected) {
+            log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
+            log(t$broadcast('Welcome to the chat!'));
+          }
           log(t$broadcastUserList());
           userListCountdown = 1;
         } else {
