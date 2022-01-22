@@ -300,13 +300,20 @@
       socket.on('join', (data) => {
         console.log('join');
         users[data.sid] = data.user;
-        if (disconnected) log(t$broadcast('Reconnected to server'));
-        log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
-        if (!disconnected) log(t$broadcast('Welcome to the chat!'));
-        else disconnected = false;
-        if (data.sid === sid || --userListCountdown <= 0) {
+        if (data.sid === sid) {
+          if (disconnected) log(t$broadcast('Reconnected to server'));
+          log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
+          if (!disconnected) log(t$broadcast('Welcome to the chat!'));
+          else disconnected = false;
+          
           log(t$broadcastUserList());
           userListCountdown = 4;
+        } else {
+          log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
+          if (--userListCountdown <= 0) {
+            log(t$broadcastUserList());
+            userListCountdown = 4;
+          }
         }
       });
 
