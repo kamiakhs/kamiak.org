@@ -305,14 +305,13 @@
           log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
           if (!disconnected) log(t$broadcast('Welcome to the chat!'));
           else disconnected = false;
-          
           log(t$broadcastUserList());
-          userListCountdown = 4;
+          userListCountdown = 1;
         } else {
           log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
           if (--userListCountdown <= 0) {
             log(t$broadcastUserList());
-            userListCountdown = 4;
+            userListCountdown = 1;
           }
         }
       });
