@@ -408,7 +408,7 @@
 
       const setupSocket = () => {
 
-        socket = io({path: '/chat/socket.io', query: `nickname=${encodeURIComponent(nickname)}&seed=${encodeURIComponent(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)))}`});
+        socket = io('wss://kamiak.herokuapp.com', {path: '/chat/socket.io', query: `nickname=${encodeURIComponent(nickname)}&seed=${encodeURIComponent(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)))}`});
         $('.login.page').hide();
         $('.chat.page').show();
 
