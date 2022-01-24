@@ -28,6 +28,7 @@
         ::-webkit-scrollbar-button { display:none; }
         ::-webkit-scrollbar-track-piece:start { background:transparent; margin-top:8px; }
         ::-webkit-scrollbar-track-piece:end { background:transparent; margin-bottom:16px; }
+        .fullscreen { display:none; }
       }
       @media only screen and (max-width: 600px) {
         :root {
@@ -131,7 +132,7 @@
         outline: none;
         /* transition: color 0.2s ease, background 0.2s ease, outline-color 0.2s ease; */
       }
-      .nickname:empty:before{
+      [contenteditable]:empty:before{
         content: attr(data-placeholder);
         color: var(--placeholder-color, #00000000);
         cursor: text;
