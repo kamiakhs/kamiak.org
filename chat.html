@@ -282,7 +282,7 @@
         .html(
           ' '+args.message
           .replace(/[&<>"'`=]/g, function(s) {return ENTITY_MAP[s]})
-          .replace(/((http|https|ftp):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g, '<a href="$1" target="_blank">$1</a>')
+          .replace(/((http|https|ftp):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g, '<a href="$1" target="_blank" rel="nofollow noopener noreferrer">$1</a>')
         )
         .prepend(t$nickname(args.user))
       ;
