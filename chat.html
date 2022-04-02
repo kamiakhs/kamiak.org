@@ -267,7 +267,7 @@
       });
       const submitNickname = () => {
         nickname = $nicknameInput.text().trim().replace('\n', '');
-        if (!$nicknameInput.prop('contenteditable') || nickname.length < 2) return;
+        if (!$nicknameInput.prop('contenteditable') || nickname.length < 2 || nickname.length > 24) return;
         $nicknameInput.prop('contenteditable', false);
         setupSocket();
       }
