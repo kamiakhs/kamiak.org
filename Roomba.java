@@ -21,8 +21,7 @@ public class Roomba extends Critter {
     public Roomba() {
         super();
         lastSteps = steps;
-        countdown--;
-        updateCountdown();
+        updateCountdown(-1);
     }
 
     public Action getMove(CritterInfo info) {
@@ -36,9 +35,8 @@ public class Roomba extends Critter {
         if (countdown > 0 && teammates > 4) countdown += 4;
 
         if (info.getFront() == Neighbor.OTHER) {
-            if (countdown > 0) countdown -= 10;
-            else countdown -= 8;
-            updateCountdown();
+            if (countdown > 0) updateCountdown(-10);
+            else updateCountdown(-8);
             if (keepDirection) turnsIdle = IDLE_LIMIT;
             return Action.INFECT;
         }
@@ -55,7 +53,7 @@ public class Roomba extends Critter {
 
         if (countdown <= 0) {
             if (info.getFront() == Neighbor.WALL) {
-                countdown += 2;
+                countdown += 2;  // No need for updateCountdown here btw
                 if (countdown > 0) {
                     countdown = 1000;
                     side++;
@@ -85,8 +83,7 @@ public class Roomba extends Critter {
         if (keepDirection) {
             turnsIdle -= 5;
             if (turnsIdle > 0) {
-                countdown -= 5;
-                updateCountdown();
+                updateCountdown(-5);
                 return Action.INFECT;
             } else {
                 keepDirection = false;
@@ -106,8 +103,7 @@ public class Roomba extends Critter {
         // If can't go forward anymore and on east wall, don't do anything
         if (info.getDirection() == NORTH) {
             if (info.getRight() == Neighbor.WALL && (info.getFront() == Neighbor.WALL || info.getFront() == Neighbor.SAME)) {
-                countdown -= 5;
-                updateCountdown();
+                updateCountdown(-5);
                 if (turnsIdle++ > IDLE_LIMIT) {
                     keepDirection = true;
                     return Action.RIGHT;
@@ -117,8 +113,7 @@ public class Roomba extends Critter {
         }
         // If couldn't go forward and facing away from wall, spam infect
         if (info.getDirection() == WEST && info.getBack() == Neighbor.WALL && (info.getRight() == Neighbor.WALL || info.getRight() == Neighbor.SAME)) {
-            countdown -= 5;
-            updateCountdown();
+            updateCountdown(-5);
             return Action.INFECT;
         }
 
@@ -132,8 +127,7 @@ public class Roomba extends Critter {
         }
         if (info.getDirection() == SOUTH) {
             if (info.getLeft() == Neighbor.SAME && (info.getFront() == Neighbor.WALL || info.getFront() == Neighbor.SAME)) {
-                countdown -= 5;
-                updateCountdown();
+                updateCountdown(-5);
                 if (turnsIdle++ > IDLE_LIMIT) {
                     keepDirection = true;
                     return Action.RIGHT;
@@ -142,8 +136,7 @@ public class Roomba extends Critter {
             } else turnsIdle = 0;
         }
         if (info.getDirection() == WEST && info.getBack() == Neighbor.SAME && (info.getLeft() == Neighbor.WALL || info.getLeft() == Neighbor.SAME)) {
-            countdown -= 5;
-            updateCountdown();
+            updateCountdown(-5);
             return Action.INFECT;
         }
         // If going down and no teammate is on the right, go right
@@ -174,7 +167,8 @@ public class Roomba extends Critter {
         return "O";
     }
 
-    private static void updateCountdown() {
+    private static void updateCountdown(int num) {
+        countdown += num;
         if (countdown <= 0 && countdownTracker > 0) {
             countdown = -100;
             side++;
