@@ -182,7 +182,7 @@ public class Roomba extends Critter {
         countdownTracker = countdown;
     }
 
-    public static Neighbor getWest(CritterInfo info) {
+    private static Neighbor getWest(CritterInfo info) {
         switch (info.getDirection()) {
             case NORTH: return info.getLeft();
             case EAST: return info.getBack();
