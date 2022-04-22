@@ -9,7 +9,7 @@ public class Roomba extends Critter {
     private int lastSteps; // for tracking number of steps
     private int turnsIdle = 0;
     private boolean keepDirection = false;  // whether or not to point in the same direction after reinfecting
-    public static int countdown = 100;
+    private static int countdown = 100;
     private static int side = 0;
     private int sideTracker = 0;  // for keeping track of side changing
     private static int countdownTracker = 0;  // for keeping track of countdown
