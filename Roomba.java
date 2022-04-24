@@ -141,18 +141,13 @@ public class Roomba extends Critter {
         }
         // If going down and no teammate is on the right, go right
         if (info.getDirection() == SOUTH && info.getLeft() == Neighbor.EMPTY) {
-            return Action.RIGHT;
+            return Action.LEFT;
         }
 
 
         // Go to the east
         if (info.getDirection() != EAST) {
-            if (info.getDirection() == WEST || info.getDirection() == NORTH) {
-                return Action.RIGHT;
-            }
-            if (info.getDirection() == SOUTH) {
-                return Action.RIGHT;
-            }
+            return Action.RIGHT;
         }
 
         return Action.HOP;
@@ -161,6 +156,7 @@ public class Roomba extends Critter {
 
     public Color getColor() {
         return new Color(90, 90, 90);
+        // return Color.MAGENTA;
     }
 
     public String toString() {
