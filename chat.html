@@ -271,6 +271,13 @@
         $nicknameInput.prop('contenteditable', false);
         setupSocket();
       }
+      const getDaysLeftOfSchool = () => {
+        const daysLeftOfSchool = [0,1,2,3,4,7,8,9,10,11,14,15,16,17,21,22,23,24,25,28,29,30,31,32,35,36,37,38,39,42,43,44,45,46];
+        const lastDayOfSchool = new Date("06/17/2022 14:");  // 6/17 2pm (because most school days end at 2)
+        const daysLeft = (lastDayOfSchool.getTime()-new Date().getTime())/(1000*3600*24);
+        var i; for (i = 0; daysLeft > daysLeftOfSchool[i] && i < daysLeftOfSchool.length; i++);
+        return `There ${i!=1?'are '+i+' days':'is 1 day'} left of school`;
+      }
 
 
 
@@ -443,7 +450,7 @@
             $currentInput = $messageInput.prop('disabled', false).focus();
             log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
             log(t$broadcast('Welcome to the chat!'));
-            log(t$broadcast('Btw the district blocked kamiak.org because it was "suspicious," so we may be stuck with this domain for a while'));
+            log(t$broadcast(getDaysLeftOfSchool()));
           }
           log(t$broadcastUserList());
         });
