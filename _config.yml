@@ -1,3 +1,5 @@
 remote_theme: pages-themes/merlot@v0.2.0
 title: kamiak.org
 description: hello world!
+
+theme: jekyll-theme-merlot
