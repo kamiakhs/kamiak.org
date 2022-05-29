@@ -26,7 +26,7 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
  10. Minimum Path Sum [[64]](https://leetcode.com/problems/minimum-path-sum/) (Dynamic Programming)
 
 ## Advanced
- 1. Find First and Last Position of Element [[34]](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) (Two Pointer, Binary Search)
+ 1. Find First and Last Position of Element in O(log n) [[34]](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) (Two Pointer, Binary Search)
  2. Merge Intervals [[56]](https://leetcode.com/problems/merge-intervals/) (Array)
  3. Merge k Sorted Lists [[23]](https://leetcode.com/problems/merge-k-sorted-lists) (LinkedList)
  4. Reverse Nodes in k-Group [[25]](https://leetcode.com/problems/reverse-nodes-in-k-group/) (LinkedList)
