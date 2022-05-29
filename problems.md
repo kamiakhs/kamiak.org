@@ -41,7 +41,7 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
 ## Beginner
 ```java
 int findCharacter(String string, char ch) {
-    for (int i = 0; i < string.length(); ++i) {
+    for (int i = 0; i < string.length(); i++) {
         if (string.charAt(i) == ch) {
             return i;
         }
