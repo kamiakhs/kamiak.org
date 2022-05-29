@@ -36,3 +36,16 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
  8. Longest Valid Parentheses [[32]](https://leetcode.com/problems/longest-valid-parentheses/) (Stack)
  9. Trapping Rain Water [[42]](https://leetcode.com/problems/trapping-rain-water/) (Two Pointer)
  10. Largest Rectangle in Histogram [[84]](https://leetcode.com/problems/largest-rectangle-in-histogram/) (Stack)
+
+# Solutions
+## Beginner
+```java
+int findCharacter(String string, char ch) {
+    for (int i = 0; i < string.length(); ++i) {
+        if (string.charAt(i) == ch) {
+            return i;
+        }
+    }
+    return -1;
+}
+```
