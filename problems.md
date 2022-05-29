@@ -8,10 +8,10 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
  4. FizzBuzz [[412]](https://leetcode.com/problems/fizz-buzz/) (Stacked If-Statements)
  5. Index of Substring in String Without indexOf [[28]](https://leetcode.com/problems/implement-strstr/) (Linear Search, Index Manipulation)
  6. Two Numbers in Array That Add to Target [[1]](https://leetcode.com/problems/two-sum/) (Special Traversal of 2D Array)
- 7. Most Occuring Number in Array, aka Mode (Map)
- 8. Nth Term of Fibonacci Sequence [[509]](https://leetcode.com/problems/fibonacci-number/) (Recursion/Repitition)
- 9. Binary Search [[704]](https://leetcode.com/problems/binary-search/) (Basic Sorted Array Manipulation)
- 10. Sort Array of 0s, 1s, and 2s [[75]](https://leetcode.com/problems/sort-colors/) (Simple Counting Sort)
+ 7. Nth Term of Fibonacci Sequence [[509]](https://leetcode.com/problems/fibonacci-number/) (Recursion/Repitition)
+ 8. Binary Search [[704]](https://leetcode.com/problems/binary-search/) (Basic Sorted Array Manipulation)
+ 9. Sort Array of 0s, 1s, and 2s In-Place [[75]](https://leetcode.com/problems/sort-colors/) (Simple Counting Sort)
+ 10. Most Occuring Number in Array, aka Mode (Map)
 
 ## Intermediate
  1. Climbing Stairs [[70]](https://leetcode.com/problems/climbing-stairs/) (Pattern Recognition, Dynamic Programming)
@@ -109,10 +109,51 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
         return new int[]{-1, -1};
     }
     ```
+ 7. ```java
+    int fibonacci(int n) {
+        int a = 0, b = 1, c = 1;
+        for (int i = 0; i < n; i++) {
+            c = a+b;
+            a = b;
+            b = c;
+        }
+        return a;
+    }
+    ```
  8. ```java
+    int binarySearch(int[] arr, int target) {
+        int l = 0, r = arr.length-1;
+        while (l <= r) {
+            int m = (l+r)/2;
+            if (target < arr[m]) {
+                r = m-1;
+            } else if (arr[m] < target) {
+                l = m+1;
+            } else {
+                return m;
+            }
+        }
+        return -1;
+    }
+    ```
+ 9. ```java
+    void countingSort(int[] arr) {
+        int[] count = {0, 0, 0};
+        for (int num: arr) count[num]++;
+        int i = 0;
+        for (int color = 0; color <= 2; ++color) {
+            while (count[color] > 0) {
+                arr[i] = color;
+                count[color]--;
+                i++;
+            }
+        }
+    }
+    ```
+ 10. ```java
     int mostFrequent(int[] arr) {
         Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
-        for (int i = 0; i < arr.length; i++) {
+        for (int num: arr) {
             int num = arr[i];
             if (counts.containsKey(num)) {
                 counts.put(num, counts.get(num)+1);
@@ -130,4 +171,4 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
         }
         return maxNum;
     }
-```
+    ```
