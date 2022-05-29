@@ -1,22 +1,22 @@
 # Sample Problems
-I tried to cover as much as I could, but I skipped Binary Tree in intermediate because I thought the other algorithms were more important. These problems are based on interview problems and should be quite challenging.
+I tried to cover as much as I could, but I skipped Binary Tree in intermediate because I thought the other algorithms were more important. These are interview problems and should be quite challenging.
 
 ## Beginner
  1. Index of Character in String Without indexOf (Linear Search)
  2. Sum of 2D Array (Basic Traversal of 2D Array)
- 3. Deep Copy 3D Array (Deep/Shallow Copies)
- 4. N Factorial (Basic Index Manipulation)
- 5. Index of Substring in String Without indexOf (Linear Search, Index Manipulation)
+ 3. N Factorial (Basic Index Manipulation)
+ 4. FizzBuzz [[412]](https://leetcode.com/problems/fizz-buzz/) (Stacked If-Statements)
+ 5. Index of Substring in String Without indexOf [[28]](https://leetcode.com/problems/implement-strstr/) (Linear Search, Index Manipulation)
  6. Two Numbers in Array That Add to Target [[1]](https://leetcode.com/problems/two-sum/) (Special Traversal of 2D Array)
  7. Most Occuring Number in Array, aka Mode (Map)
  8. Nth Term of Fibonacci Sequence [[509]](https://leetcode.com/problems/fibonacci-number/) (Recursion/Repitition)
- 9. Sort Array of 0s, 1s, and 2s [[75]](https://leetcode.com/problems/sort-colors/) (Simple Counting Sort)
- 10. Binary Search [[704]](https://leetcode.com/problems/binary-search/) (Basic Sorted Array Manipulation)
+ 9. Binary Search [[704]](https://leetcode.com/problems/binary-search/) (Basic Sorted Array Manipulation)
+ 10. Sort Array of 0s, 1s, and 2s [[75]](https://leetcode.com/problems/sort-colors/) (Simple Counting Sort)
 
 ## Intermediate
  1. Climbing Stairs [[70]](https://leetcode.com/problems/climbing-stairs/) (Pattern Recognition, Dynamic Programming)
- 2. Two Numbers in Array That Add to Target in O(n) [[1]](https://leetcode.com/problems/two-sum/) (HashMap/HashSet)
- 3. Longest Common Prefix of String Array [[14]](https://leetcode.com/problems/longest-common-prefix/) (Traversal of Jagged Array)
+ 2. Longest Common Prefix of String Array [[14]](https://leetcode.com/problems/longest-common-prefix/) (Traversal of Jagged Array)
+ 3. Two Numbers in Array That Add to Target in O(n) [[1]](https://leetcode.com/problems/two-sum/) (HashMap/HashSet)
  4. Remove All Occurences of Element From List [[27]](https://leetcode.com/problems/remove-element/) (LinkedList)
  5. Rotate 2D Array [[48]](https://leetcode.com/problems/rotate-image/) (2D Array Index Manipulation)
  6. Sort Numbers From -50,000 to 50,000 [[912]](https://leetcode.com/problems/sort-an-array/) (MergeSort/RadixSort)
