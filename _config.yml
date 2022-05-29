@@ -1,6 +1,4 @@
-theme: jekyll-theme-minima
 #theme: jekyll-theme-merlot
 title: kamiak.org
 description: Hello world!
-minima:
-  skin: dark
+skin: dark
