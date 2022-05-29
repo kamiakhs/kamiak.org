@@ -89,11 +89,26 @@ List<String> fizzBuzz(int n) {
 ```
 ```java
 int findSubstring(String string, String sub) {
-    for (int i = 0; i < string.length()-sub.length(); i++) {
+    for (int i = 0; i < string.length()-sub.length()+1; i++) {
         if (string.substring(i, i+sub.length()).equals(sub)) {
             return i;
         }
     }
     return -1;
 }
+```
+```java
+int[] twoSum(int[] arr, int target) {
+    for (int i = 0; i < arr.length-1; i++) {
+        for (int j = i+1; j < arr.length; j++) {
+            if (arr[i]+arr[j] == target) {
+                return new int[]{i, j};
+            }
+        }
+    }
+    return new int[]{-1, -1};
+}
+```
+```java
+
 ```
