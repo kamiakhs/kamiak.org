@@ -1,3 +1,6 @@
+# Sample Problems
+I tried to cover as much as I could, but I skipped Binary Tree in intermediate because I thought the other algorithms were more important. These problems are based on interview problems and should be quite challenging.
+
 ## Beginner
  1. Index of Character in String Without indexOf (Linear Search)
  2. Sum of 2D Array (Basic Traversal of 2D Array)
