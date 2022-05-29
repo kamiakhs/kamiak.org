@@ -62,12 +62,12 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
     ```
  3. ```java
     int factorial(int n) {
-        int prod = 1;
+        int res = 1;
         while (n > 1) {
-            prod *= n;
+            res *= n;
             n--;
         }
-        return prod;
+        return res;
     }
     ```
  4. ```java
