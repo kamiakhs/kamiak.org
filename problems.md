@@ -38,7 +38,7 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
  10. Largest Rectangle in Histogram [[84]](https://leetcode.com/problems/largest-rectangle-in-histogram/) (Stack)
 
 # Solutions
-### Beginner
+#### Beginner
  1. ```java
     int findCharacter(String string, char ch) {
         for (int i = 0; i < string.length(); i++) {
