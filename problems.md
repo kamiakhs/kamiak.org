@@ -213,7 +213,7 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
     int[] twoSum(int[] arr, int target) {
         Map<Integer, Integer> hash = new HashMap<Integer, Integer>();  // this will store values and index in arr
         for (int i = 0; i < arr.length; i++) {
-            int addend = target-arr[i];  // number that, when added to arr[i], will equal target
+            int addend = target-arr[i];  // number that when added to arr[i] equals target
             if (hash.containsKey(addend)) {
                 return new int[]{i, hash.get(addend)};
             }
