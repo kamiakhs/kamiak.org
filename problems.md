@@ -110,5 +110,24 @@ int[] twoSum(int[] arr, int target) {
 }
 ```
 ```java
-
+int mostFrequent(int[] arr) {
+    Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
+    for (int i = 0; i < arr.length; i++) {
+        int num = arr[i];
+        if (counts.containsKey(num)) {
+            counts.put(num, counts.get(num)+1);
+        } else {
+            counts.put(num, 1);
+        }
+    }
+    int maxNum = arr[0], maxCount = 1;
+    for (Integer num: counts.keySet()) {
+        int count = counts.get(num);
+        if (count > maxCount) {
+            maxNum = num;
+            maxCount = count;
+        }
+    }
+    return maxNum;
+}
 ```
