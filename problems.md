@@ -60,74 +60,74 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
         return sum;
     }
     ```
-```java
-int factorial(int n) {
-    int prod = 1;
-    while (n > 1) {
-        prod *= n;
-        n--;
-    }
-    return prod;
-}
-```
-```java
-List<String> fizzBuzz(int n) {
-    List<String> res = new ArrayList<String>();
-    for (int i = 1; i <= n; i++) {
-        if (i%3 == 0 && i%5 == 0) {
-            res.add("FizzBuzz");
-        } else if (i%3 == 0) {
-            res.add("Fizz");
-        } else if (i%5 == 0) {
-            res.add("Buzz");
-        } else {
-            res.add(""+i);
+ 3. ```java
+    int factorial(int n) {
+        int prod = 1;
+        while (n > 1) {
+            prod *= n;
+            n--;
         }
+        return prod;
     }
-    return res;
-}
-```
-```java
-int findSubstring(String string, String sub) {
-    for (int i = 0; i < string.length()-sub.length()+1; i++) {
-        if (string.substring(i, i+sub.length()).equals(sub)) {
-            return i;
-        }
-    }
-    return -1;
-}
-```
-```java
-int[] twoSum(int[] arr, int target) {
-    for (int i = 0; i < arr.length-1; i++) {
-        for (int j = i+1; j < arr.length; j++) {
-            if (arr[i]+arr[j] == target) {
-                return new int[]{i, j};
+    ```
+ 4. ```java
+    List<String> fizzBuzz(int n) {
+        List<String> res = new ArrayList<String>();
+        for (int i = 1; i <= n; i++) {
+            if (i%3 == 0 && i%5 == 0) {
+                res.add("FizzBuzz");
+            } else if (i%3 == 0) {
+                res.add("Fizz");
+            } else if (i%5 == 0) {
+                res.add("Buzz");
+            } else {
+                res.add(""+i);
             }
         }
+        return res;
     }
-    return new int[]{-1, -1};
-}
-```
-```java
-int mostFrequent(int[] arr) {
-    Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
-    for (int i = 0; i < arr.length; i++) {
-        int num = arr[i];
-        if (counts.containsKey(num)) {
-            counts.put(num, counts.get(num)+1);
-        } else {
-            counts.put(num, 1);
+    ```
+ 5. ```java
+    int findSubstring(String string, String sub) {
+        for (int i = 0; i < string.length()-sub.length()+1; i++) {
+            if (string.substring(i, i+sub.length()).equals(sub)) {
+                return i;
+            }
         }
+        return -1;
     }
-    int maxNum = arr[0], maxCount = 1;
-    for (Integer num: counts.keySet()) {
-        int count = counts.get(num);
-        if (count > maxCount) {
-            maxNum = num;
-            maxCount = count;
+    ```
+ 6. ```java
+    int[] twoSum(int[] arr, int target) {
+        for (int i = 0; i < arr.length-1; i++) {
+            for (int j = i+1; j < arr.length; j++) {
+                if (arr[i]+arr[j] == target) {
+                    return new int[]{i, j};
+                }
+            }
         }
+        return new int[]{-1, -1};
     }
-    return maxNum;
-}
+    ```
+ 8. ```java
+    int mostFrequent(int[] arr) {
+        Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
+        for (int i = 0; i < arr.length; i++) {
+            int num = arr[i];
+            if (counts.containsKey(num)) {
+                counts.put(num, counts.get(num)+1);
+            } else {
+                counts.put(num, 1);
+            }
+        }
+        int maxNum = arr[0], maxCount = 1;
+        for (Integer num: counts.keySet()) {
+            int count = counts.get(num);
+            if (count > maxCount) {
+                maxNum = num;
+                maxCount = count;
+            }
+        }
+        return maxNum;
+    }
 ```
