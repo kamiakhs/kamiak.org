@@ -1,5 +1,5 @@
 # Solutions
-Sample solutions for [these problems](/problems.md) below.
+Sample solutions for [these problems](/problems) below.
 
 ## Beginner
  1. ```java
