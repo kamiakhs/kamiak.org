@@ -1,5 +1,5 @@
 # Sample Problems
-I tried to cover as much as I could, but I skipped Binary Tree in intermediate because I thought the other algorithms were more important. These are interview problems and should be quite challenging.
+I tried to cover as much as I could, but I skipped Binary Tree in intermediate because I thought the other algorithms were more important. These are interview problems, so they should be quite challenging.
 
 ## Beginner
  1. Index of Character in String Without indexOf (Linear Search)
