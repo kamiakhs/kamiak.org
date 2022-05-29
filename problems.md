@@ -38,7 +38,7 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
  10. Largest Rectangle in Histogram [[84]](https://leetcode.com/problems/largest-rectangle-in-histogram/) (Stack)
 
 # Solutions
-#### Beginner
+## Beginner
  1. ```java
     int findCharacter(String string, char ch) {
         for (int i = 0; i < string.length(); i++) {
@@ -111,11 +111,14 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
     ```
  7. ```java
     int fibonacci(int n) {
-        int a = 0, b = 1, c = 1;
-        for (int i = 0; i < n; i++) {
+        int a = 0;
+        int b = 1;
+        int c = 1;
+        for (n > 0) {
             c = a+b;
             a = b;
             b = c;
+            n--;
         }
         return a;
     }
@@ -172,3 +175,50 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
          return maxNum;
      }
      ```
+## Intermediate
+ 1. ```java
+    int climbStairs(int n) {
+        int a = 0;
+        int b = 1;
+        int c;
+        while (n > 0) {
+            c = a+b;
+            a = b;
+            b = c;
+            n--;
+        }
+        return c;
+    }
+    ```
+ 2. ```java
+    public String longestCommonPrefix(String[] strings) {
+        int n = Integer.MAX_VALUE;
+        for (String string: strings) {
+            if (string.length() < n) {
+                n = string.length();
+            }
+        }
+        for (int c = 0; c < n; c++) {
+            for (int i = 1; i < strings.length; i++) {
+                if (strings[i].charAt(c) != strings[i-1].charAt(c)) {
+                    return strings[0].substring(0, c);
+                }
+            }
+        }
+        return strings[0].substring(0, n);
+        
+    }
+    ```
+ 3. ```java
+    int[] twoSum(int[] arr, int target) {
+        Map<Integer, Integer> hash = new HashMap<Integer, Integer>();  // this will store values and index in arr
+        for (int i = 0; i < arr.length; i++) {
+            int addend = target-arr[i];  // number that, when added to arr[i], will equal target
+            if (hash.containsKey(addend)) {
+                return new int[]{i, hash.get(addend)};
+            }
+            hash.put(arr[i], i);
+        }
+        return new int[]{-1, -1};
+    }
+    ```
