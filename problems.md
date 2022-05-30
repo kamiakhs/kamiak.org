@@ -14,8 +14,8 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
  10. Most Occuring Number in Array, aka Mode (Map)
 
 ## Intermediate
- 1. Climbing Stairs [[70]](https://leetcode.com/problems/climbing-stairs/) (Pattern Recognition, Dynamic Programming)
- 2. Longest Common Prefix of String Array [[14]](https://leetcode.com/problems/longest-common-prefix/) (Traversal of Jagged Array)
+ 1. Minimum Cost Climbing Stairs [[746]](https://leetcode.com/problems/min-cost-climbing-stairs/) (Dynamic Programming)
+ 2. Longest Common Prefix of String Array [[14]](https://leetcode.com/problems/longest-common-prefix/) (Jagged Array)
  3. Two Numbers in Array That Add to Target in O(n) [[1]](https://leetcode.com/problems/two-sum/) (HashMap/HashSet)
  4. Remove All Occurences of Element From List [[27]](https://leetcode.com/problems/remove-element/) (LinkedList)
  5. Rotate 2D Array [[48]](https://leetcode.com/problems/rotate-image/) (2D Array Index Manipulation)
