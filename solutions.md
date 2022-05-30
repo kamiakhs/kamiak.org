@@ -179,39 +179,37 @@ Sample solutions for [these problems](/problems) below.
     ```
 
 ## Advanced
- 1. ```
-    ```
  10. ```java
-    int largestRectangleArea(int[] arr) {
-        int res = arr[0];
-        Stack<Integer> s = new Stack<Integer>();
-        s.push(0);
-        for (int i = 1; i < arr.length; i++) {
-            while (!s.empty() && arr[i] <= arr[s.peek()]) {
-                int h = arr[s.peek()];
-                s.pop();
-                int a;
-                if (!s.empty()) {
-                    a = h*((i-1)-s.peek());
-                } else {
-                    a = h*i;
-                }
-                if (a > res) res = a;
-            }
-            s.push(i);
-        }
-        // repeat an extra time to clear remaining stack
-        while (!s.empty()) {
-            int h = arr[s.peek()];
-            s.pop();
-            int a;
-            if (!s.empty()) {
-                a = h*((arr.length-1)-s.peek());
-            } else {
-                a = h*arr.length;
-            }
-            if (a > res) res = a;
-        }
-        return res;
-    }
-    ```
+     int largestRectangleArea(int[] arr) {
+         int res = arr[0];
+         Stack<Integer> s = new Stack<Integer>();
+         s.push(0);
+         for (int i = 1; i < arr.length; i++) {
+             while (!s.empty() && arr[i] <= arr[s.peek()]) {
+                 int h = arr[s.peek()];
+                 s.pop();
+                 int a;
+                 if (!s.empty()) {
+                     a = h*((i-1)-s.peek());
+                 } else {
+                     a = h*i;
+                 }
+                 if (a > res) res = a;
+             }
+             s.push(i);
+         }
+         // repeat an extra time to clear remaining stack
+         while (!s.empty()) {
+             int h = arr[s.peek()];
+             s.pop();
+             int a;
+             if (!s.empty()) {
+                 a = h*((arr.length-1)-s.peek());
+             } else {
+                 a = h*arr.length;
+             }
+             if (a > res) res = a;
+         }
+         return res;
+     }
+     ```
