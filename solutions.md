@@ -146,7 +146,7 @@ Sample solutions for [these problems](/problems) below.
     }
     ```
  2. ```java
-    public String longestCommonPrefix(String[] strings) {
+    String longestCommonPrefix(String[] strings) {
         int n = Integer.MAX_VALUE;
         for (String string: strings) {
             if (string.length() < n) {
