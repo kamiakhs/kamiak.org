@@ -74,18 +74,13 @@ Sample solutions for [these problems](/problems) below.
     ```
  7. ```java
     int fibonacci(int n) {
-        // This method minimizes memory and overflow
-        if (n <= 1) return n;
-        int a = 0;
-        int b = 1;
-        int c = 1;
+        int a = 0, b = 1;
         while (n > 0) {
-            c = a+b;
-            a = b;
-            b = c;
+            b = b+a;
+            a = b-a;
             n--;
         }
-        return c;
+        return a;
     }
     ```
  8. ```java
@@ -144,16 +139,13 @@ Sample solutions for [these problems](/problems) below.
 ## Intermediate
  1. ```java
     int climbStairs(int n) {
-        int a = 0;
-        int b = 1;
-        int c;
-        while (n > 0) {
-            c = a+b;
-            a = b;
-            b = c;
+        int a = 1, b = 2;
+        while (n > 1) {
+            b = b+a;
+            a = b-a;
             n--;
         }
-        return c;
+        return a;
     }
     ```
  2. ```java
