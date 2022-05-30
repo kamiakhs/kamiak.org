@@ -35,4 +35,4 @@ I tried to cover as much as I could, but I skipped Binary Tree in intermediate b
  7. Maximum Path Sum [[124]](https://leetcode.com/problems/binary-tree-maximum-path-sum/) (Binary Tree, Dynamic Programming)
  8. Longest Valid Parentheses [[32]](https://leetcode.com/problems/longest-valid-parentheses/) (Stack)
  9. Trapping Rain Water [[42]](https://leetcode.com/problems/trapping-rain-water/) (Two Pointer)
- 10. Largest Rectangle in Histogram [[84]](https://leetcode.com/problems/largest-rectangle-in-histogram/) (Dynamic Programming, Monotonic Stack)
+ 10. Largest Rectangle in Histogram [[84]](https://leetcode.com/problems/largest-rectangle-in-histogram/) (Monotonic Stack)
