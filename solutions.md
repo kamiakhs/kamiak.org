@@ -138,14 +138,11 @@ Sample solutions for [these problems](/problems) below.
      
 ## Intermediate
  1. ```java
-    int climbStairs(int n) {
-        int a = 1, b = 2;
-        while (n > 1) {
-            b = b+a;
-            a = b-a;
-            n--;
+    int minCostClimbingStairs(int[] cost) {
+        for (int i = 2; i < cost.length; i++) {
+            cost[i] += Math.min(cost[i-1], cost[i-2]);
         }
-        return a;
+        return Math.min(cost[cost.length-1], cost[cost.length-2]); 
     }
     ```
  2. ```java
