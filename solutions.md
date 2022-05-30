@@ -179,7 +179,9 @@ Sample solutions for [these problems](/problems) below.
     ```
 
 ## Advanced
- 10. ```
+ 1. ```
+    ```
+ 10. ```java
     int largestRectangleArea(int[] arr) {
         int res = arr[0];
         Stack<Integer> s = new Stack<Integer>();
