@@ -74,16 +74,18 @@ Sample solutions for [these problems](/problems) below.
     ```
  7. ```java
     int fibonacci(int n) {
+        // This method minimizes memory and overflow
+        if (n <= 1) return n;
         int a = 0;
         int b = 1;
         int c = 1;
-        for (n > 0) {
+        while (n > 0) {
             c = a+b;
             a = b;
             b = c;
             n--;
         }
-        return a;
+        return c;
     }
     ```
  8. ```java
