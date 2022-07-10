@@ -1,1 +1,1 @@
-repository for https://kamiak.org
+repository for https://kamiak.org/
