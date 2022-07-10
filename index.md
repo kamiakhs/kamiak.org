@@ -1,4 +1,5 @@
-# Hyperlinks
+# Homepage
+## Useful Hyperlinks
 - [Battleship](/battleship)
 - [Homework Tips](/hw)
 - [Book PDFs (R&J, Kite Runner, etc.)](/books)
