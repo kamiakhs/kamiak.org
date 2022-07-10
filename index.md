@@ -1,4 +1,4 @@
-## Hyperlinks
+# Hyperlinks
 - [Battleship](/battleship)
 - [Homework Tips](/hw)
 - [Books](/books)
