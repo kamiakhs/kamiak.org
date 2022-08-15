@@ -1,5 +1,4 @@
 # Homepage
-## Useful Hyperlinks
 - [Battleship](/battleship)
 - [Kamiak Chat](/chat)
 - [Homework Tips](/hw)
