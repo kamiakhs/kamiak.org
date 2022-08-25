@@ -43,7 +43,8 @@
           // The AuthCredential type that was used.
           const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
-          console.log('OOF');
+          console.log(error.code);
+          console.log(error.message);
         })
       ;
     </script>
