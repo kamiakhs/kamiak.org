@@ -18,7 +18,7 @@ provider.setCustomParameters({
   'login_hint': 'user@mukilteo.wednet.edu'
 });
 
-const auth = getAuth();
+const auth = getAuth(app);
 let user = null;
 
 signInWithPopup(auth, provider)
