@@ -27,7 +27,7 @@
       
       const auth = getAuth();
       console.log(auth);
-      console.log(auth['currentUser']);
+      console.log(Object.keys(auth));
       if (auth.currentUser != null) {
         console.log("YAY USER IS NOT NULL");
         console.log(auth.currentUser);
