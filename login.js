@@ -44,6 +44,6 @@ signInWithPopup(auth, provider)
   })
 ;
 
-onAuthStateChanged((user) => {
+onAuthStateChanged(auth, user => {
   console.log(user);
 });
