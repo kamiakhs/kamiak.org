@@ -38,6 +38,7 @@ const login = () => signInWithPopup(auth, provider)
 onAuthStateChanged(auth, user => {
   if (user) {
     console.log(user);
+    document.querySelector('body').style.background = 'blue';
   } else {
     login();
   }
