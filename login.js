@@ -19,7 +19,6 @@ provider.setCustomParameters({
 });
 
 const auth = getAuth(app);
-let user = null;
 
 const login = () => signInWithPopup(auth, provider)
   .then((result) => {
@@ -34,6 +33,8 @@ const login = () => signInWithPopup(auth, provider)
     console.log(error.message);
   })
 ;
+
+let user = null;
 
 onAuthStateChanged(auth, user => {
   if (user) {
