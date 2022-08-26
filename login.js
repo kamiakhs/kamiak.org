@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithRedirect, onIdTokenChanged } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAmq6TPQkTz8-gILGlfztha41Uo8400brU",
@@ -18,25 +18,14 @@ provider.setCustomParameters({
 const auth = getAuth(app);
 window.auth = auth;
 
-if (auth.currentUser) getRedirectResult(auth)
-  .then((result) => {
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    // const token = credential.accessToken;
-    window.user = result.user;
-  }).catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    console.log(error.code);
-    console.log(error.message);
-  })
-;
 
 onAuthStateChanged(auth, user => {
   window.user = user;
-  if (window.user) {
-    console.log(window.user);
+  if (user) {
+    if (!user.email.endsWith('@mukilteo.wednet.edu')) window.signOut();
     document.querySelector('body').style.background = 'blue';
+    console.log('Signed into Google')
+    $('#myAvatar').addClass(user.uid);
     $('.avatar, .avatarLarge').attr('src', window.user.photoURL);
   } else {
     signInWithRedirect(auth, provider);
@@ -45,4 +34,4 @@ onAuthStateChanged(auth, user => {
 
 
 window.signOut = () => signOut(auth);
-window.getToken = async () => await window.user.getIdToken();
+window.onIdTokenChanged = (_) => onIdTokenChanged(auth, _);
