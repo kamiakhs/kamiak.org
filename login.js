@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-auth.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAmq6TPQkTz8-gILGlfztha41Uo8400brU",
@@ -10,21 +10,18 @@ const firebaseConfig = {
   messagingSenderId: "606268222806",
   appId: "1:606268222806:web:6497ac82fb82434d397af7"
 };
-
 const app = initializeApp(firebaseConfig);
-
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   'login_hint': 'user@mukilteo.wednet.edu'
 });
-
 const auth = getAuth(app);
 
-const login = () => signInWithPopup(auth, provider)
+getRedirectResult(auth)
   .then((result) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;
-    user = result.user;
+    window.user = result.user;
   }).catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -34,15 +31,17 @@ const login = () => signInWithPopup(auth, provider)
   })
 ;
 
-let user = null;
-
-onAuthStateChanged(auth, _ => {
-  user = _;
-  if (user) {
-    console.log(user);
+onAuthStateChanged(auth, user => {
+  window.user = user;
+  if (window.user) {
+    console.log(window.user);
     document.querySelector('body').style.background = 'blue';
-    $('.avatar, .avatarLarge').attr('src', user.photoURL);
+    $('.avatar, .avatarLarge').attr('src', window.user.photoURL);
   } else {
-    login();
+    signInWithRedirect(auth, provider);
   }
 });
+
+
+window.signOut = () => signOut(auth);
+window.getToken = async () => await window.user.getIdToken();

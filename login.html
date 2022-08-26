@@ -156,18 +156,24 @@
       .avatar {
         width: 32px;
         height: 32px;
+        cursor: pointer;
       }
       .avatarLarge {
         width: 72px;
         height: 72px;
         /* box-shadow: 1px 1.5px 6px 0 #1d1d1d10; */
       }
-      .avatar:hover {
-        cursor: pointer;
+      /* .avatar:hover {
         box-shadow: 0 0 0 4px #d5d9da;
       }
       .avatar:active, .avatar:focus {
         box-shadow: 0 0 0 4px #ccd0d1;
+      } */
+      .avatar:hover, .avatar:active {
+        box-shadow: 0 1px 4px #4f515055;
+      }
+      .avatar:active {
+        transform: translateY(1px);
       }
       .popupWrapper {
         position: relative;
@@ -186,12 +192,32 @@
       .popupName {
         font-family: "Whitney-Bold";
         white-space: nowrap;
-        margin: 4px 0;
+        margin-top: 8px;
         font-size: 20px;
       }
       .popupId {
         font-size: 14px;
+        color: #d5d9da;
+        margin-top: 6px;
         /* font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace; */
+      }
+      button {
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+      }
+      button.light {
+        background: #e0e4e5;
+        color: #4f5150;
+      }
+      button.light:hover {
+        background: #e0e4e5d5;
+      }
+      button.light:active {
+        background: #e0e4e5be;
       }
     </style>
   </head>
@@ -218,19 +244,25 @@
               <img class="avatarLarge" referrerpolicy="no-referrer" tabindex="1">
               <div class="popupName">Joseph Jackson</div>
               <div class="popupId">#1602362</div>
+              <button class="light signOut" style="margin-top:16px;">Sign out</button>
             </div>
           </div>
         </h1>
         <ul class="messages"></ul>
-        <input class="messageInput" placeholder="Message Kamiak Chat" disabled/>
+        <input class="messageInput" placeholder="Message Kamiak Chat" tabindex="1" disabled/>
         <div class="typing"></div>
       </div>
     </div>
+    <script type="module" src="login.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
     <script>
       /// <reference path="./jquery.min.js" />
       /// <reference path="./socket.io.min.js" />
-      $(()=>{
+      $(() => {
+
+      $('.signOut').on('click', window.signOut);
+      
 
       //#region JQuery Vars
       const $window = $(window);
@@ -336,7 +368,7 @@
 
       var users = {};   // (Obj) Data of users
       const typingUsers = new Set();  // List of typing users
-      let socket;
+      let socket;setTimeout(() => console.log(users), 5000);
 
 
       const viewingNewMessages = () => ($messages[0].scrollHeight-$messages.scrollTop() <= 2*$messages.outerHeight());
@@ -434,7 +466,7 @@
 
       const setupSocket = () => {
 
-        socket = io('wss://kamiak.herokuapp.com', {path: '/chat/socket.io', query: `nickname=${encodeURIComponent(nickname)}&seed=${encodeURIComponent(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)))}`});
+        socket = io('wss://kamiak.herokuapp.com', {path: '/chat/socket.io', query: `nickname=${encodeURIComponent(nickname)}&seed=${encodeURIComponent(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)))}&token=${window.getToken()}`});
         $('.login.page').hide();
         $('.chat.page').show();
 
@@ -510,7 +542,5 @@
 
       });
     </script>
-    <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
-    <script type="module" src="login.js"></script>
   </body>
 </html>
