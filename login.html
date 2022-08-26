@@ -182,16 +182,16 @@
         position: absolute;
         background: #4f5150;
         color: #e0e4e5;
-        box-shadow: 0 2px 12px 1px #4f51507a;
+        box-shadow: 0 2px 8px 1px #4f51503f;
         border-radius: 8px;
         right: 0;
         padding: 24px;
-        width: 224px;
+        width: 256px;
         text-align: center;
       }
       .popupName {
-        font-family: "Whitney-Bold";
-        white-space: nowrap;
+        font-family: "Whitney-Semibold";
+        /* white-space: nowrap; */
         margin-top: 8px;
         font-size: 20px;
       }
@@ -199,6 +199,7 @@
         font-size: 14px;
         color: #d5d9da;
         margin-top: 6px;
+        white-space: normal;
         /* font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace; */
       }
       button {
@@ -207,17 +208,20 @@
         border-radius: 4px;
         padding: 8px 16px;
         cursor: pointer;
-        transition: background 0.2s ease-in-out;
+        transition: background 0.05s ease-in-out;
       }
       button.light {
-        background: #e0e4e5;
-        color: #4f5150;
+        color: #e0e4e5;
+        background: #4f5150;
+        border: 1px solid #e0e4e5;
       }
       button.light:hover {
-        background: #e0e4e5d5;
+        /* background: #e0e4e5d5; */
+        background: #e0e4e51f;
       }
       button.light:active {
-        background: #e0e4e5be;
+        /* background: #e0e4e5be; */
+        background: #e0e4e52d;
       }
     </style>
   </head>
@@ -243,8 +247,8 @@
             <div id="myPopup" class="popup">
               <img class="avatarLarge" referrerpolicy="no-referrer" tabindex="1">
               <div class="popupName">Joseph Jackson</div>
-              <div class="popupId">#1602362</div>
-              <button class="light signOut" style="margin-top:16px;">Sign out</button>
+              <div class="popupId">bloemkerha&#8203;@mukilteo.wednet.edu</div>
+              <!-- <button class="light" style="margin-top:16px;" onclick="window.signOut()">Sign out</button> -->
             </div>
           </div>
         </h1>
@@ -260,8 +264,6 @@
       /// <reference path="./jquery.min.js" />
       /// <reference path="./socket.io.min.js" />
       $(() => {
-
-      $('.signOut').on('click', window.signOut);
       
 
       //#region JQuery Vars

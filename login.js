@@ -16,11 +16,12 @@ provider.setCustomParameters({
   'login_hint': 'user@mukilteo.wednet.edu'
 });
 const auth = getAuth(app);
+window.auth = auth;
 
-getRedirectResult(auth)
+if (auth.currentUser) getRedirectResult(auth)
   .then((result) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
+    // const token = credential.accessToken;
     window.user = result.user;
   }).catch((error) => {
     const errorCode = error.code;
