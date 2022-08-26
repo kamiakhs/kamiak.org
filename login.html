@@ -335,11 +335,25 @@
         var i; for (i = 0; daysLeft > daysLeftOfSchool[i] && i < daysLeftOfSchool.length; i++);
         return `There ${i!=1?'are '+i+' days':'is 1 day'} left of school`;
       }
+      const getAvatar = args => {
+        let temp = args.user.avatar;
+        args.user.avatar = t$avatar(args);  // preload next element
+        return temp;
+      }
 
 
 
 
       //#region Templates
+      const t$avatar = args =>
+      $('<div class="popupWrapper">')
+        .html(
+          $('<img class="avatar" referrerpolicy="no-referrer" tabindex="1">')
+            .addClass(args.user.uid)
+            .attr('src', args.user.picture)
+            .attr('data-x', '42')
+        )
+      ;
       const t$message = args =>
       $('<li>')
         .addClass('message')
@@ -349,6 +363,7 @@
           .replace(/((http|https|ftp):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g, '<a href="$1" target="_blank" rel="nofollow noopener noreferrer">$1</a>')
         )
         .prepend(t$nickname(args.user))
+        .prepend(getAvatar(args))
       ;
       const t$nickname = user =>
       $('<div>')
@@ -392,7 +407,7 @@
 
       var users = {};   // (Obj) Data of users
       const typingUsers = new Set();  // List of typing users
-      let socket;setTimeout(() => console.log(users), 5000);
+      let socket;
 
 
       const viewingNewMessages = () => ($messages[0].scrollHeight-$messages.scrollTop() <= 2*$messages.outerHeight());
@@ -410,7 +425,7 @@
         if (message.length == 0) return;
         socket.emit('send message', {message: message});
         $messageInput.val('');
-        log(t$message({message: message, user: {nickname: nickname, color: color}}), true);
+        log(t$message({message: message, user: users[sid]}), true);
       }
 
       const updateTyping = () => {
@@ -523,6 +538,7 @@
           nickname = data.nickname;
           color = data.color;
           users = data.users;
+          Object.values(users).forEach(user => user.avatar = t$avatar({user: user}));
 
           if (disconnected) {
             log(t$broadcast('Reconnected to server'));
@@ -551,6 +567,7 @@
         socket.on('add user', (data) => {
           console.log('add user');
           users[data.sid] = data.user;
+          data.user.avatar = t$avatar(data);
           log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
           log(t$broadcastUserList());
         });
