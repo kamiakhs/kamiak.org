@@ -36,10 +36,12 @@ const login = () => signInWithPopup(auth, provider)
 
 let user = null;
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, _ => {
+  user = _;
   if (user) {
     console.log(user);
     document.querySelector('body').style.background = 'blue';
+    $('.avatar, .avatarLarge').attr('src', user.photoURL);
   } else {
     login();
   }
