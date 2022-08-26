@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
-  'login_hint': 'user@mukilteo.wednet.edu'
+  hd: 'mukilteo.wednet.edu',
 });
 const auth = getAuth(app);
 window.auth = auth;
