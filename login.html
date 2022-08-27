@@ -103,6 +103,8 @@
       }
       .nick {
         cursor: pointer;
+        font-family: "Whitney-Semibold";
+        filter: brightness(0.8);
       }
       .broadcast {
         font-size: 14px;
@@ -145,6 +147,7 @@
         top: -8px;  /* calc(-0.5em - 16.5px) */
         border: none;
         outline: none;
+        appearance: none;
         background: #d5d9da;
         color: #1d1d1d;
         z-index: 1;
@@ -249,7 +252,6 @@
         font-size: 12px;
         flex-direction: column;
         justify-content: flex-end;
-        line-height: 1.155rem;
       }
       .timestamp2 {
         margin-left: calc(-1 * var(--avatar-padding));
@@ -304,7 +306,7 @@
           </div>
         </h1>
         <ul class="messages"></ul>
-        <input class="messageInput" placeholder="Message Kamiak Chat" type="text" tabindex="1" disabled/>
+        <input class="messageInput" placeholder="Message Kamiak Chat" type="search" tabindex="1" disabled/>
         <div class="typing"></div>
       </div>
     </div>
@@ -396,7 +398,7 @@
           .append(getAvatar(args).css('margin', '4px var(--avatar-padding) 4px 0'))
           .append(
             $('<div style="flex-grow:1;">').append(
-              $('<div style="display:flex;">').append(
+              $('<div style="display:flex; align-items:baseline;">').append(
                 t$nickname2(args.user)
               ).append(
                 $('<div class="timestamp1">').text('Today at '+timeString(args.timestamp))
@@ -599,6 +601,10 @@
 
         socket.on('connect', () => {
           console.log('connected');
+        });
+
+        socket.on('reconnect_attempt', () => {
+          socket.auth.token = user.accessToken;
         });
 
         socket.on('login', (data) => {
