@@ -22,7 +22,7 @@ window.auth = auth;
 onAuthStateChanged(auth, user => {
   window.user = user;
   if (user) {
-    if (!user.email.endsWith('@mukilteo.wednet.edu')) window.signOut();
+    // if (!user.email.endsWith('@mukilteo.wednet.edu')) window.signOut();
     document.querySelector('body').style.background = 'blue';
     console.log('Signed into Google')
     $('#myAvatar').addClass(user.uid);

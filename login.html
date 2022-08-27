@@ -104,7 +104,7 @@
       .nick {
         cursor: pointer;
         font-family: "Whitney-Semibold";
-        filter: brightness(0.8);
+        color: #3e403f;
       }
       .broadcast {
         font-size: 14px;
@@ -305,7 +305,7 @@
           </div>
         </h1>
         <ul class="messages"></ul>
-        <input class="messageInput" placeholder="Message Kamiak Chat" type="text" autocomplete="off" tabindex="1" disabled/>
+        <input class="messageInput" placeholder="Message Kamiak Chat" tabindex="1" disabled/>
         <div class="typing"></div>
       </div>
     </div>
@@ -324,6 +324,7 @@
       const $messageInput = $('.messageInput');
       const $messages = $('.messages');
       const $typing = $('.typing');
+      const $avatarGutter = $('.avatarGutter');
       var $currentInput = $nicknameInput.focus();
       //#endregion JQuery Vars
 
@@ -377,6 +378,20 @@
         return temp;
       }
       const timeString = ms => (ms ? new Date(ms) : new Date()).toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true});
+      const updateUserList = () => {
+        const $avatars = $('<div>');
+        const addedUids = new Set();
+        Object.values(users).forEach(user => {
+          if (user.uid == uid || addedUids.has(user.uid)) return;
+          addedUids.add(user.uid);
+          $avatars.append(getAvatar({user: user}));
+        });
+        $avatarGutter
+          .html($avatars.children())
+          .next()
+          .html(getAvatar({user: users[sid]}))
+        ;
+      }
 
 
 
@@ -629,6 +644,7 @@
             log(t$broadcast(getDaysLeftOfSchool()));
           }
           log(t$broadcastUserList());
+          updateUserList();
         });
 
         socket.on('disconnect', () => {
