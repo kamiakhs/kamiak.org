@@ -365,7 +365,7 @@
       ;
       const t$message = args => {
         console.log(lastUid);
-        let res = args.user.sid != lastUid ? 
+        let res = args.user.uid != lastUid ? 
         $(`<div class="messageWrapper" style="display:flex; margin-top:var(--message-padding);">`)
           .append(getAvatar(args).css('margin', '4px 10px 4px 0'))
           .append(
@@ -392,7 +392,7 @@
               // .prepend(t$nickname(args.user))
           )
         ;
-        lastUid = args.user.sid;
+        lastUid = args.user.uid;
         return res;
       }
       const t$nickname = user =>
