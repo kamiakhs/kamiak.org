@@ -112,11 +112,17 @@
         padding: 0 calc(var(--side-padding) + var(--broadcast-padding));
         text-align: center;
         line-height: calc(16px + 8px);
+        width: 100%;
+        margin-left: -100%;
       }
       .message, .broadcast {
         overflow-wrap: break-word;
       }
-      .messageWrapper:hover, .broadcast:hover {
+      .broadcastWrapper {
+        padding: 0 var(--side-padding);
+        display: flex;
+      }
+      .messageWrapper:hover, .broadcastWrapper:hover {
         background: #d5d9da60;
       }
       .nickname {
@@ -261,8 +267,12 @@
         align-items: center;
         justify-content: center;
       }
-      .messageWrapper:hover .timestamp2, .timestamp1 {
+      .timestamp1, .messageWrapper:hover .timestamp2, .broadcastWrapper:hover .timestamp2 {
         color: #7a7b7c;
+      }
+      .broadcastTimestampWrapper {
+        width: 100%;
+        display: flex;
       }
     </style>
   </head>
@@ -291,7 +301,7 @@
               <div class="popupWrapper"><img class="avatar" referrerpolicy="no-referrer" tabindex="1"></div>
               <div class="popupWrapper"><img class="avatar" referrerpolicy="no-referrer" tabindex="1"></div>
             </div>
-            <div style="margin-left:16px;">
+            <div class="myAvatarWrapper" style="margin-left:16px;">
               <div class="popupWrapper">
                 <img id="myAvatar" class="avatar" referrerpolicy="no-referrer" tabindex="1">
                 <!-- <div class="popup">
@@ -315,7 +325,7 @@
     <script>
       /// <reference path="./jquery.min.js" />
       /// <reference path="./socket.io.min.js" />
-      $(() => {
+      const main = () => {
       
 
       //#region JQuery Vars
@@ -324,7 +334,6 @@
       const $messageInput = $('.messageInput');
       const $messages = $('.messages');
       const $typing = $('.typing');
-      const $avatarGutter = $('.avatarGutter');
       var $currentInput = $nicknameInput.focus();
       //#endregion JQuery Vars
 
@@ -382,15 +391,12 @@
         const $avatars = $('<div>');
         const addedUids = new Set();
         Object.values(users).forEach(user => {
-          if (user.uid == uid || addedUids.has(user.uid)) return;
+          if (user.uid == users[sid].uid || addedUids.has(user.uid)) return;
           addedUids.add(user.uid);
           $avatars.append(getAvatar({user: user}));
         });
-        $avatarGutter
-          .html($avatars.children())
-          .next()
-          .html(getAvatar({user: users[sid]}))
-        ;
+        $('.avatarGutter').html($avatars.children());
+        $('.myAvatarWrapper').html(getAvatar({user: users[sid]}));
       }
 
 
@@ -413,7 +419,7 @@
           .append(
             $('<div style="flex-grow:1;">').append(
               $('<div style="display:flex; align-items:baseline;">').append(
-                t$nickname2(args.user)
+                t$nickname2(args)
               ).append(
                 $('<div class="timestamp1">').text('Today at '+timeString(args.timestamp))
               )
@@ -451,30 +457,26 @@
           color: user.color
         })
       ;
-      const t$nickname2 = user =>
+      const t$nickname2 = args =>
       $('<span class="nick">')
-        .text(user.nickname)
+        .text(args.user.nickname)
         .css({
-          color: user.color
+          color: args.user.color
         })
       ;
-      const t$broadcast = message => {
-        let res = lastUid != null ? $(`<li class="broadcast" style="margin-top:var(--message-padding);">`)
-          .text(message)
-        : $(`<li class="broadcast">`)
-          .text(message)
+      const t$broadcast = args => {
+        let res = (lastUid != null ? $('<div class="broadcastWrapper" style="margin-top:var(--message-padding);">') : $('<div class="broadcastWrapper">'))
+          .append(
+            $('<div class="broadcastTimestampWrapper">').append(
+              $('<div class="timestamp2">').text(timeString(args.timestamp))
+            )
+          )
+          .append(
+            args.user ? $(`<li class="broadcast">`).text(' '+args.message).prepend(t$nickname(args.user)) : $(`<li class="broadcast">`).text(args.message)
+          )
         ;
         lastUid = null;
         return res;
-      }
-      const t$broadcastUser = args =>
-      t$broadcast(' '+args.message)
-        .prepend(t$nickname(args.user))
-      ;
-      const t$broadcastUserList = () => {
-        const $broadcast = t$broadcast(`Online users (${Object.keys(users).length}): `);
-        Object.values(users).forEach(user => $broadcast.append(t$nickname(user)).append(' '));
-        return $broadcast;
       }
       //#endregion Templates
 
@@ -482,19 +484,16 @@
       const ENTITY_MAP = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#x60;', '=': '&#x3D;'};  // For escaping strings
 
       let sid;
-      let name;
-      let picture;
-      let email;
-      let uid;
-      let nickname;
-      let color;
 
       var typing;  // Bool
       var lastTyping;  // Unix timestamp (ms)
       var disconnected = false;
       var lastUid;
 
-      var users = {};   // (Obj) Data of users
+      var users = {undefined: {name: window.user.name, email: window.user.email, uid: window.user.uid, picture: window.user.photoURL}};   // (Obj) Data of users
+      users[sid].avatar = t$avatar({user: user});
+      updateUserList();
+
       const typingUsers = new Set();  // List of typing users
       let socket;
 
@@ -624,26 +623,19 @@
         socket.on('login', (data) => {
           console.log('login')
           sid = data.sid;
-          name = data.name;
-          picture = data.picture;
-          email = data.email;
-          uid = data.uid;
-          nickname = data.nickname;
-          color = data.color;
           users = data.users;
           Object.values(users).forEach(user => user.avatar = t$avatar({user: user}));
 
           if (disconnected) {
-            log(t$broadcast('Reconnected to server'));
-            log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
+            log(t$broadcast({message: 'Reconnected to server'}));
+            log(t$broadcast({message: 'joined', user: users[sid]}));
             disconnected = false;
           } else {
             $currentInput = $messageInput.prop('disabled', false).focus();
-            log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
-            log(t$broadcast('Welcome to the chat!'));
-            log(t$broadcast(getDaysLeftOfSchool()));
+            log(t$broadcast({message: 'joined', user: users[sid]}));
+            log(t$broadcast({message: 'Welcome to the chat!'}));
+            log(t$broadcast({message: getDaysLeftOfSchool()}));
           }
-          log(t$broadcastUserList());
           updateUserList();
         });
 
@@ -651,8 +643,8 @@
           console.log('disconnected');
           if (!disconnected) {
             disconnected = true;
-            log(t$broadcastUser({message: 'left', user: {nickname: nickname, color: color}}));
-            log(t$broadcast('Connection lost. Trying to reconnect...'));
+            log(t$broadcast({message: 'left', user: users[sid]}));
+            log(t$broadcast({message: 'Connection lost. Trying to reconnect...'}));
             typingUsers.clear();
             updateTypingUsers();
           }
@@ -662,16 +654,16 @@
           console.log('add user');
           users[data.sid] = data.user;
           data.user.avatar = t$avatar(data);
-          log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
-          log(t$broadcastUserList());
+          log(t$broadcast({message: 'joined', user: users[data.sid], timestamp: data.timestamp}));
+          updateUserList();
         });
 
         socket.on('remove user', (data) => {
           console.log('remove user');
-          log(t$broadcastUser({message: 'left', user: users[data.sid]}));
+          log(t$broadcast({message: 'left', user: users[data.sid], timestamp: data.timestamp}));
           delete users[data.sid];
           typingUsers.delete(data.sid);
-          log(t$broadcastUserList());
+          updateUserList();
           updateTypingUsers();
         });
 
@@ -694,7 +686,7 @@
       }
 
 
-      });
+      };
     </script>
   </body>
 </html>

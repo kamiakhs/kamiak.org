@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
-  hd: 'mukilteo.wednet.edu',
+//   hd: 'mukilteo.wednet.edu',
 });
 const auth = getAuth(app);
 window.auth = auth;
@@ -26,7 +26,8 @@ onAuthStateChanged(auth, user => {
     document.querySelector('body').style.background = 'blue';
     console.log('Signed into Google')
     $('#myAvatar').addClass(user.uid);
-    $('.avatar, .avatarLarge').attr('src', window.user.photoURL);
+    main();
+    // $('.avatar, .avatarLarge').attr('src', window.user.photoURL);
   } else {
     signInWithRedirect(auth, provider);
   }
