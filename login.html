@@ -18,6 +18,7 @@
         --side-padding: 18px;
         --broadcast-padding: 12.5%;
         --heading-padding: 10px;
+        --message-padding: 8px;
       }
       ::selection { background: #4433ff98; color: #2e249e; }
       @media not screen and (max-width: 600px) {
@@ -362,8 +363,9 @@
         )
       ;
       const t$message = args => {
+        console.log(lastUid);
         let res = args.user.uid != lastUid ? 
-        $('<div class="messageWrapper" style="display:flex;">')
+        $(`<div class="messageWrapper" style="display:flex; margin-top:var(--message-padding);">`)
           .append(getAvatar(args).css('margin', '3px 10px 3px 0'))
           .append(
             $('<div style="flex-grow:1;">')
@@ -407,10 +409,15 @@
           color: user.color
         })
       ;
-      const t$broadcast = message =>
-      $('<li class="broadcast">')
-        .text(message)
-      ;
+      const t$broadcast = message => {
+        let res = lastUid != null ? $(`<li class="broadcast" style="margin-top:var(--message-padding);">`)
+          .text(message)
+        : $(`<li class="broadcast">`)
+          .text(message)
+        ;
+        lastUid = null;
+        return res;
+      }
       const t$broadcastUser = args =>
       t$broadcast(' '+args.message)
         .prepend(t$nickname(args.user))
