@@ -7,7 +7,7 @@
 
 
 <style>
-  * { color:red; }
+  * { color:#c9d1d9; }
   html { height:100%; }
   body { min-height:100%; background:#0d1117; }
   .markdown-body { margin-top:0!important; padding-top:32px; }
