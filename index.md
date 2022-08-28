@@ -5,4 +5,8 @@
 - [Book PDFs (R&J, Kite Runner, etc.)](/books)
 - [Email (admin@kamiak.org)](https://mail.google.com/mail/?view=cm&fs=1&to=admin@kamiak.org)
 
-<a href="https://github.com/kamiakhs/kamiak.org/edit/main/index.md">test</a>
+<style>
+  * {
+    color: red;
+  }
+</style>
