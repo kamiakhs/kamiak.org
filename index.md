@@ -7,5 +7,8 @@
 
 <!---
 <style>
-  html { height:100%; } body { min-height:100%; /* background:#0d1117; */ } .markdown-body { margin-top:0!important; padding-top:32px; } </style>"
+  html { height:100%; }
+  body { min-height:100%; /* background:#0d1117; */ }
+  .markdown-body { margin-top:0!important; padding-top:32px; }
+</style>
 -->
