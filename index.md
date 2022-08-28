@@ -5,4 +5,4 @@
 - [Book PDFs (R&J, Kite Runner, etc.)](/books)
 - [Email (admin@kamiak.org)](https://mail.google.com/mail/?view=cm&fs=1&to=admin@kamiak.org)
 
-<script>console.log('test')</script>
+<a href="https://github.com/kamiakhs/kamiak.org/edit/main/index.md">test</a>
