@@ -16,25 +16,27 @@
       }
       :root {
         --side-padding: 18px;
-        --broadcast-padding: 12.5%;
+        --broadcast-padding: 20%;
         --heading-padding: 10px;
         --message-padding: 8px;
         --avatar-padding: 11px;
+        --message-input-height: 45px;
       }
       ::selection { background: #5533ff98; color: #38249e; }
       @media not screen and (max-width: 600px) {
-        ::-webkit-scrollbar { width:16px; background:rgba(0 0 0 / 0); left:-100px; }
+        ::-webkit-scrollbar { width:16px; background:rgba(0 0 0 / 0); }
         ::-webkit-scrollbar-thumb { min-height:32px; background:#ccd0d1; border-radius:16px; border:4px solid #e0e4e5; }
-        ::-webkit-scrollbar-thumb:hover { background:#bdc1c2; }
-        ::-webkit-scrollbar-thumb:active { background:#bdc1c2; }
+        ::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-thumb:active { background:#bdc1c2; }
         ::-webkit-scrollbar-button { display:none; }
-        ::-webkit-scrollbar-track-piece:start { background:transparent; }
-        ::-webkit-scrollbar-track-piece:end { background:transparent; margin-bottom:8px; }
+        ::-webkit-scrollbar-track-piece:start, ::-webkit-scrollbar-track-piece:end { background:transparent; }
       }
+      .messages::-webkit-scrollbar-track-piece:end { margin-bottom:8px; }
+      .messageInput::-webkit-scrollbar-thumb { min-height:32px; background: #b7babb; border-radius:16px; border:4px solid #d5d9da; }
+      .messageInput::-webkit-scrollbar-thumb:hover, .messageInput::-webkit-scrollbar-thumb:active { background:#7a7b7c; }
       @media only screen and (max-width: 600px) {
-        :root {
+        :root { 
           --side-padding: 16px;
-          --broadcast-padding: 6.25%;
+          --broadcast-padding: calc(36px + var(--avatar-padding));
           --heading-padding: 10px;
         }
       }
@@ -79,10 +81,11 @@
         list-style: none;
         padding: 22px 0 30px 0;
         margin: 0;
-        height: calc(calc(100vh - calc(2 * var(--heading-padding))) - 114px);
+        /* height: calc(calc(100vh - calc(2 * var(--heading-padding))) - 114px); */
+        height: calc(calc(calc(100vh - calc(2 * var(--heading-padding))) - var(--message-input-height)) - 80px);
         overflow-y: scroll;
       }
-      .messageWrapper {
+      .messageWrapper, .broadcastWrapper {
         padding: 1px var(--side-padding);
         display: flex;
       }
@@ -109,18 +112,17 @@
       .broadcast {
         font-size: 14px;
         color: #7a7b7c;
-        padding: 0 calc(var(--side-padding) + var(--broadcast-padding));
+        /* padding: 0 calc(var(--side-padding) + var(--broadcast-padding)); */
+        padding: 0 var(--broadcast-padding);
         text-align: center;
-        line-height: calc(16px + 8px);
+        line-height: 22px;
         width: 100%;
         margin-left: -100%;
       }
       .message, .broadcast {
         overflow-wrap: break-word;
-      }
-      .broadcastWrapper {
-        padding: 0 var(--side-padding);
-        display: flex;
+        word-break: break-word;
+        white-space: pre-wrap;
       }
       .messageWrapper:hover, .broadcastWrapper:hover {
         background: #d5d9da60;
@@ -147,15 +149,18 @@
         position: relative;
         margin: 0 var(--side-padding);
         padding: 13px 15px;
+        scroll-padding: 13px 0;
         width: calc(100% - calc(2 * var(--side-padding)));
         font-size: 16px;
         border-radius: 8px;  /* calc(0.5em + 16.5px) */
         top: -8px;  /* calc(-0.5em - 16.5px) */
         border: none;
         outline: none;
+        resize: none;
         background: #d5d9da;
         color: #1d1d1d;
         z-index: 1;
+        height: var(--message-input-height);
       }
       .messageInput::placeholder {
         color: #7a7b7c;
@@ -164,7 +169,7 @@
         display: block;
         position: absolute;
         margin: -3.5px var(--side-padding) 0px;
-        height: calc(21px + 2px);
+        min-height: calc(21px + 2px);
         line-height: calc(21px + 2px);
         font-size: 14px;
         color: #7a7b7c;
@@ -251,6 +256,7 @@
       }
       .timestamp1, .timestamp2 {
         display: flex;
+        white-space: nowrap;
       }
       .timestamp1 {
         padding-left: 7px;
@@ -261,11 +267,12 @@
       .timestamp2 {
         margin-left: calc(-1 * var(--avatar-padding));
         color: transparent;
-        width: calc(47px + var(--avatar-padding));
+        min-width: calc(47px + var(--avatar-padding));
         float: right;
         font-size: 11px;
         align-items: center;
         justify-content: center;
+        height: 22px;
       }
       .timestamp1, .messageWrapper:hover .timestamp2, .broadcastWrapper:hover .timestamp2 {
         color: #7a7b7c;
@@ -315,7 +322,7 @@
           </div>
         </h1>
         <ul class="messages"></ul>
-        <input class="messageInput" placeholder="Message Kamiak Chat" tabindex="1" disabled/>
+        <textarea class="messageInput" placeholder="Message Kamiak Chat" rows="1" tabindex="1" data-gramm="false" disabled></textarea>
         <div class="typing"></div>
       </div>
     </div>
@@ -338,6 +345,10 @@
       //#endregion JQuery Vars
 
 
+      $messageInput.clear = () => {
+        $messageInput.val('');
+        refreshMessageInputHeight();
+      };
       const randomHue = seed => {
         var hash = 7;
         for (let i = 0; i < seed.length; ++i)
@@ -398,6 +409,15 @@
         $('.avatarGutter').html($avatars.children());
         $('.myAvatarWrapper').html(getAvatar({user: users[sid]}));
       }
+      const refreshMessageInputHeight = () => {
+        const prevHeight = $messageInput.outerHeight();
+        $messageInput.css('height', 'auto');
+        $(':root')[0].style.setProperty('--message-input-height', Math.min($messageInput[0].scrollHeight, 292)+'px');
+        $messageInput.css('height', 'var(--message-input-height)');
+        if ($messageInput[0].scrollHeight != prevHeight) {
+          scrollToBottom();
+        }
+      }
 
 
 
@@ -425,7 +445,7 @@
               )
             ).append(
               $('<li class="message">').html(
-                ' '+args.message
+                args.message
                 .replace(/[&<>"'`=]/g, function(s) {return ENTITY_MAP[s]})
                 .replace(/((http|https|ftp):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g, '<a href="$1" target="_blank" rel="nofollow noopener noreferrer">$1</a>')
               )
@@ -439,7 +459,7 @@
           .append(
             $('<li class="message">')
               .html(
-                ' '+args.message
+                args.message
                 .replace(/[&<>"'`=]/g, function(s) {return ENTITY_MAP[s]})
                 .replace(/((http|https|ftp):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g, '<a href="$1" target="_blank" rel="nofollow noopener noreferrer">$1</a>')
               )
@@ -451,7 +471,7 @@
       }
       const t$nickname = user =>
       $('<div class="nickname">')
-        .text(user.nickname)
+        .text(sync[user.uid].nickname)
         .css({
           background: user.color+'22',
           color: user.color
@@ -459,7 +479,8 @@
       ;
       const t$nickname2 = args =>
       $('<span class="nick">')
-        .text(args.user.nickname)
+        .addClass(args.user.uid)
+        .text(sync[args.user.uid].nickname)
         .css({
           color: args.user.color
         })
@@ -494,6 +515,8 @@
       users[sid].avatar = t$avatar({user: user});
       updateUserList();
 
+      var sync = {};
+
       const typingUsers = new Set();  // List of typing users
       let socket;
 
@@ -508,12 +531,45 @@
       }
 
       const sendMessage = () => {
-        var message = $messageInput.val();
-        message = message.trim();
+        const message = $messageInput.val().trim();
         if (message.length == 0) return;
-        socket.emit('send message', {message: message});
-        $messageInput.val('');
-        log(t$message({message: message, user: users[sid]}), true);
+        if (message.startsWith('/nick ')) {
+          // Change nickname
+          const nickname = message.substr(6).trim().replace(/\s+/g, ' ');
+          if (nickname.length < 2 || nickname.length > 24) {
+            alert('Nickname length must be between 2 and 24 characters');
+          } else {
+            $messageInput.clear();
+            sync[users[sid].uid].nickname = nickname;
+            log(t$broadcast({message: 'Your changed your nickname to '+nickname}));
+            socket.emit('set nickname', {nickname: nickname});
+          }
+        }
+        else if (message == '/help') {
+          // Help
+          $messageInput.clear();
+          log(t$broadcast({message: 'Commands:    /help    /nick <nickname>    /ping    /reconnect'}));
+        }
+        else if (message == '/ping') {
+          // Ping
+          $messageInput.clear();
+          const start = Date.now();
+          socket.emit('ping', () => {
+            const duration = Date.now()-start;
+            log(t$broadcast({message: `Ping: ${duration}ms`}));
+          })
+        }
+        else if (message == '/reconnect') {
+          // Reconnect
+          $messageInput.clear();
+          window.user.getIdToken().then(() => socket.close().open());
+        }
+        else {
+          // Send message normally
+          $messageInput.clear();
+          socket.emit('send message', {message: message});
+          log(t$message({message: message, user: users[sid]}), true);
+        }
       }
 
       const updateTyping = () => {
@@ -534,7 +590,7 @@
         const tua = [...typingUsers];  // typing users Array
         switch (typingUsers.size) {
           case 0:
-            $typing.html('&nbsp');
+            $typing.html('');
             break;
           case 1:
             $typing
@@ -571,7 +627,8 @@
         if (!(e.ctrlKey || e.metaKey || e.altKey)) {
           $currentInput.focus();
         }
-        if (e.which == 13) {
+        if (e.which == 13 && !e.shiftKey) {
+          e.preventDefault();
           if (nickname) {
             sendMessage();
             typing = false;
@@ -589,11 +646,12 @@
 
       $messageInput.on('input', () => {
         updateTyping();
+        refreshMessageInputHeight()
       });
 
       const setupSocket = () => {
 
-        socket = io(
+        window.socket = socket = io(
           'wss://kamiak.herokuapp.com',
           {
             path: '/chat/socket.io',
@@ -601,29 +659,30 @@
               token: window.user.accessToken,
             },
             query: {
-              nickname: nickname,
+              nickname: localStorage.nickname || ' ',
               seed: localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)),
             },
             // query: `nickname=${encodeURIComponent(nickname)}&seed=${encodeURIComponent(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)))}&token=${window.user.accessToken}`
           }
-        );console.log(socket);
+        );
         $('.login.page').hide();
         $('.chat.page').show();
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
+        socket.io.on('reconnect_failed', async () => {
+          console.log('reconnect failed');
+          window.user.getIdToken().then(() => socket.close().open());
+        });
 
         socket.on('connect', () => {
           console.log('connected');
-        });
-
-        socket.on('reconnect_attempt', () => {
-          socket.auth.token = user.accessToken;
         });
 
         socket.on('login', (data) => {
           console.log('login')
           sid = data.sid;
           users = data.users;
+          sync = data.sync;
           Object.values(users).forEach(user => user.avatar = t$avatar({user: user}));
 
           if (disconnected) {
@@ -633,7 +692,7 @@
           } else {
             $currentInput = $messageInput.prop('disabled', false).focus();
             log(t$broadcast({message: 'joined', user: users[sid]}));
-            log(t$broadcast({message: 'Welcome to the chat!'}));
+            log(t$broadcast({message: 'Welcome to the chat!\nType /help for a list of commands'}));
             log(t$broadcast({message: getDaysLeftOfSchool()}));
           }
           updateUserList();
@@ -652,6 +711,7 @@
 
         socket.on('add user', (data) => {
           console.log('add user');
+          sync = data.sync;
           users[data.sid] = data.user;
           data.user.avatar = t$avatar(data);
           log(t$broadcast({message: 'joined', user: users[data.sid], timestamp: data.timestamp}));
@@ -681,6 +741,10 @@
         socket.on('stop typing', (data) => {
           typingUsers.delete(data.sid);
           updateTypingUsers();
+        });
+
+        socket.on('set nickname', (data) => {
+          sync[data.uid].nickname = data.nickname;
         });
 
       }
