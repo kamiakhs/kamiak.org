@@ -670,11 +670,16 @@
         $('.login.page').hide();
         $('.chat.page').show();
 
-        window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
-        socket.io.on('reconnect_failed', async () => {
-          console.log('reconnect failed');
-          window.user.getIdToken().then(() => socket.close().open());
-        });
+        // window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
+        // socket.io.on('reconnect_failed', async () => {
+        //   window.user.getIdToken().then(() => socket.close().open());
+        // });
+        let worker = new Worker('on_wakeup.js');
+        worker.onmessage = (ev) => {
+          if (socket.disconnected) {
+            socket.open();
+          }
+        }
 
         socket.on('connect', () => {
           console.log('connected');
