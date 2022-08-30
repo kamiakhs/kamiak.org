@@ -20,7 +20,7 @@
         --heading-padding: 10px;
         --message-padding: 8px;
         --avatar-padding: 11px;
-        --message-input-height: 45px;
+        --message-input-height: 44px;
       }
       ::selection { background: #5533ff98; color: #38249e; }
       @media not screen and (max-width: 600px) {
@@ -145,15 +145,22 @@
         cursor: text;
         /* transition: color 0.2s ease; */
       }
+      .messageInputWrapper {
+        display: flex;
+        position: relative;
+        top: -8px;
+        margin: 0 var(--side-padding);
+        border-radius: 8px;
+        /* background: blueviolet; */
+        background: #d5d9da;
+      }
       .messageInput {
         position: relative;
-        margin: 0 var(--side-padding);
-        padding: 13px 15px;
-        scroll-padding: 13px 0;
-        width: calc(100% - calc(2 * var(--side-padding)));
+        padding: 12.5px 16px 12.5px 0;
+        scroll-padding: 12.5px 0;
+        flex-grow: 1;
         font-size: 16px;
-        border-radius: 8px;  /* calc(0.5em + 16.5px) */
-        top: -8px;  /* calc(-0.5em - 16.5px) */
+        border-radius: 0 8px 8px 0;
         border: none;
         outline: none;
         resize: none;
@@ -164,6 +171,23 @@
       }
       .messageInput::placeholder {
         color: #7a7b7c;
+      }
+      .messageInputWrapper .iconButton {
+        color: #1d1d1de8;
+        cursor: pointer;
+      }
+      .messageInputWrapper .iconButton:hover {
+        color: #1d1d1d;
+      }
+      .fileInput {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        border-radius: 8px 0 0 8px;
+        padding: 10px 16px;
+      }
+      #fileInput {
+        display: none;
       }
       .typing {
         display: block;
@@ -324,10 +348,18 @@
           </div>
         </h1>
         <ul class="messages"></ul>
-        <textarea class="messageInput" placeholder="Message Kamiak Chat" rows="1" tabindex="1" data-gramm="false" disabled></textarea>
+        <div class="messageInputWrapper">
+          <div>
+            <div class="iconButton fileInput">
+              <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg>
+            </div>
+          </div>
+          <textarea class="messageInput" placeholder="Message Kamiak Chat" rows="1" tabindex="1" data-gramm="false" disabled></textarea>
+        </div>
         <div class="typing"></div>
       </div>
     </div>
+    <input type="file" id="fileInput"/>
     <script type="module" src="login.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
@@ -341,6 +373,7 @@
       const $window = $(window);
       const $nicknameInput = $('.nicknameInput');
       const $messageInput = $('.messageInput');
+      const $fileInput = $('#fileInput');
       const $messages = $('.messages');
       const $typing = $('.typing');
       var $currentInput = $nicknameInput.focus();
@@ -420,6 +453,13 @@
           scrollToBottom();
         }
       }
+      const saveBuffer = (filename, buffer) => {
+        var blob = new Blob([buffer], {type: "application/pdf"});
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+      };
 
 
 
@@ -534,7 +574,6 @@
 
       const sendMessage = () => {
         const message = $messageInput.val().trim();
-        if (message.length == 0) return;
         if (message.startsWith('/nick ')) {
           // Change nickname
           const nickname = message.substr(6).trim().replace(/\s+/g, ' ');
@@ -566,10 +605,15 @@
           $messageInput.clear();
           window.user.getIdToken().then(() => socket.close().open());
         }
-        else {
-          // Send message normally
+        else if (message.length > 0 || $fileInput[0].files.length > 0) {
+          // Send message normally (possibly with attachments)
           $messageInput.clear();
-          socket.emit('send message', {message: message});
+          let fileList = $fileInput[0].files;
+          let files = [];
+          for (let i = 0; i < fileList.length; i++) {
+            files[i] = {name: fileList[i].name, buffer: fileList[i]};
+          }
+          socket.emit('send message', {message: message, files: files});
           log(t$message({message: message, user: users[sid]}), true);
         }
       }
@@ -681,6 +725,8 @@
           }
         }
 
+        $('.fileInput').on('click', () => $fileInput.click());
+
         socket.on('connect', () => {
           console.log('connected');
         });
@@ -736,6 +782,11 @@
 
 
         socket.on('new message', (data) => {
+          if (data.file) {
+            log(t$broadcast({message: 'File was received!'}));
+            saveBuffer('unnamed.jpg', data.file);
+            return;
+          }
           console.log('received', data.message, 'from', data.sid);
           if (data.sid != sid) log(t$message({message: data.message, user: users[data.sid], timestamp: data.timestamp}));
         });
