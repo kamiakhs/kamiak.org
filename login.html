@@ -372,7 +372,7 @@
         <div class="typing"></div>
       </div>
     </div>
-    <input type="file" id="fileInput"/>
+    <input type="file" id="fileInput" multiple/>
     <script type="module" src="login.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
@@ -460,6 +460,7 @@
       const refreshMessageInputHeight = () => {
         const prevHeight = $messageInput.outerHeight();
         $messageInput.css('height', 'auto');
+        $messageInput.css('overflow', $messageInput[0].scrollHeight < 292 ? 'hidden' : '');
         $(':root')[0].style.setProperty('--message-input-height', Math.min($messageInput[0].scrollHeight, 292)+'px');
         $messageInput.css('height', 'var(--message-input-height)');
         if ($messageInput[0].scrollHeight != prevHeight) {
