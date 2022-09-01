@@ -444,6 +444,28 @@
     </div>
     <input type="file" id="fileInput" multiple/>
     <script type="module" src="login.js"></script>
+    
+    <script type="text/javascript" src="https://unpkg.com/pcloud-sdk-js@latest/dist/pcloudsdk.js"></script>
+    <script>
+      const client = pCloudSdk.createClient('J9Xj7ZPmbbXdKKtaHZq62kc7Zz1yVQX7TcEVrLcijqQzliy4QiS70');
+      const locationid = 1;
+      const options = {
+        onBegin: () => {
+          console.log('started');
+        },
+        onProgress: progress => {
+          console.log(progress.loaded, progress.total, progress.loaded/progress.total*100+'%');
+        },
+        onFinish: fileMetadata => {
+          console.log('finished', fileMetadata);
+        }
+      };
+      const upload = () => client.upload(fileList[0], 0, options).catch(function(error) {
+        console.error(error);
+      });
+      const download = fileid => client.downloadfile(fileid, 0, options);
+    </script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
     <script>
@@ -890,7 +912,7 @@
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
         $(window).on('focus', () => {
-          if (socket.disconnected) window.user.getIdToken().then(() => socket.close().open())
+          if (socket.disconnected) window.user.getIdToken().then(() => socket.close().open());
         });
         // socket.io.on('reconnect_failed', async () => {
         //   window.user.getIdToken().then(() => socket.close().open());
