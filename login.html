@@ -98,10 +98,13 @@
         color: #553adc; /* #502efa */
         text-decoration: none;
       }
+      a:disabled {
+        cursor: initial;
+      }
       a, .nick {
         text-decoration-thickness: 1px !important;
       }
-      a:hover, .nick:hover {
+      a:not(.disabled):hover, .nick:hover {
         text-decoration: underline;
       }
       .attachment {
@@ -139,7 +142,10 @@
         padding-left: 4px;
         color: #4f5150;
       }
-      .attachmentDownloadWrapper:hover {
+      .attachmentDownloadWrapper.disabled {
+        opacity: 0.3;
+      }
+      .attachmentDownloadWrapper:not(.disabled):hover {
         color: #1d1d1d;
       }
       .nick {
@@ -444,28 +450,41 @@
     </div>
     <input type="file" id="fileInput" multiple/>
     <script type="module" src="login.js"></script>
-    
-    <script type="text/javascript" src="https://unpkg.com/pcloud-sdk-js@latest/dist/pcloudsdk.js"></script>
+    <!-- <script>
+      const upload = (file, callback) => {
+        let data = new FormData();
+        data.append('file', file)
+        $.post({
+          url: 'https://api.tempfiles.download/upload/',
+          dataType: 'JSON',
+          cache: false,
+          processData: false,
+          contentType: false,
+          data: data,
+          success: (data, textStatus, xhr) => {
+            callback(data['url']);
+          }
+        });
+      }
+    </script> -->
+    <script type="text/javascript" src="assets/pcloudsdk.js"></script>
     <script>
       const client = pCloudSdk.createClient('J9Xj7ZPmbbXdKKtaHZq62kc7Zz1yVQX7TcEVrLcijqQzliy4QiS70');
       const locationid = 1;
-      const options = {
+      const options = (callback) => ({
         onBegin: () => {
-          console.log('started');
+          console.log('Upload begin');
         },
         onProgress: progress => {
-          console.log(progress.loaded, progress.total, progress.loaded/progress.total*100+'%');
+          console.log(progress.percent);
         },
         onFinish: fileMetadata => {
           console.log('finished', fileMetadata);
+          callback();
         }
-      };
-      const upload = () => client.upload(fileList[0], 0, options).catch(function(error) {
-        console.error(error);
       });
-      const download = fileid => client.downloadfile(fileid, 0, options);
+      const upload = (file, callback) => client.upload(file, 0, options(callback)).catch(error => console.error(error));
     </script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
     <script>
@@ -586,7 +605,6 @@
           $files.append(t$file({fileIndex: i}));
         }
         $files.css('display', '');
-        refreshMessageInputHeight();
       }
       const formatFileSize = size => {
         if (Math.abs(size) < 1024) {
@@ -612,7 +630,6 @@
           $('<img class="avatar" referrerpolicy="no-referrer" tabindex="1">')
             .addClass(args.user.uid)
             .attr('src', args.user.picture)
-            .attr('data-x', '42')
         )
       ;
       const t$message = args => {
@@ -625,15 +642,16 @@
         );
         if (args.files) {
           window.files = args.files;
-          if (args.user.sid == sid) {
-            args.files.forEach((file) => messageBody.append(t$attachment({blob: file})));
-          } else {
-            args.files.forEach((file) => {
-              let blob = new Blob([file.buffer]);
-              blob.name = file.name;
-              messageBody.append(t$attachment({blob: blob}));
-            });
-          }
+          args.files.forEach((file) => messageBody.append(t$attachment({file: file})));
+          // if (args.user.sid == sid) {
+          //   args.files.forEach((file) => messageBody.append(t$attachment({blob: file})));
+          // } else {
+          //   args.files.forEach((file) => {
+          //     let blob = new Blob([file.buffer]);
+          //     blob.name = file.name;
+          //     messageBody.append(t$attachment({blob: blob}));
+          //   });
+          // }
         }
         
         let res = args.user.uid != lastUid ? 
@@ -661,29 +679,27 @@
         return res;
       }
       const t$attachment = args => {
-        let url = window.URL.createObjectURL(args.blob);
         let res = 
         $('<div class="attachment">')
+        .addClass(args.file.id)
         .append(
           $('<img class="attachmentIcon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA3MiA5NiIgd2lkdGg9IjcyIj48cGF0aCBmaWxsPSIjYTY5NWY5IiBkPSJtNzIgMjkuM3Y2MC4zYzAgMi4yNCAwIDMuMzYtLjQ0IDQuMjItLjM4Ljc0LTEgMS4zNi0xLjc0IDEuNzQtLjg2LjQ0LTEuOTguNDQtNC4yMi40NGgtNTkuMmMtMi4yNCAwLTMuMzYgMC00LjIyLS40NC0uNzQtLjM4LTEuMzYtMS0xLjc0LTEuNzQtLjQ0LS44Ni0uNDQtMS45OC0uNDQtNC4yMnYtODMuMmMwLTIuMjQgMC0zLjM2LjQ0LTQuMjIuMzgtLjc0IDEtMS4zNiAxLjc0LTEuNzQuODYtLjQ0IDEuOTgtLjQ0IDQuMjItLjQ0aDM2LjNjMS45NiAwIDIuOTQgMCAzLjg2LjIyLjUuMTIuOTguMjggMS40NC41djE2Ljg4YzAgMi4yNCAwIDMuMzYuNDQgNC4yMi4zOC43NCAxIDEuMzYgMS43NCAxLjc0Ljg2LjQ0IDEuOTguNDQgNC4yMi40NGgxNi44OGMuMjIuNDYuMzguOTQuNSAxLjQ0LjIyLjkyLjIyIDEuOS4yMiAzLjg2eiIvPjxwYXRoIGZpbGw9IiM3YjY3ZGIiIGQ9Im02OC4yNiAyMC4yNmMxLjM4IDEuMzggMi4wNiAyLjA2IDIuNTYgMi44OC4xOC4yOC4zMi41Ni40Ni44NmgtMTYuODhjLTIuMjQgMC0zLjM2IDAtNC4yMi0uNDQtLjc0LS4zOC0xLjM2LTEtMS43NC0xLjc0LS40NC0uODYtLjQ0LTEuOTgtLjQ0LTQuMjJ2LTE2Ljg4MDAyOWMuMy4xNC41OC4yOC44Ni40NTk5OTkuODIuNSAxLjUgMS4xOCAyLjg4IDIuNTZ6Ii8+PC9zdmc+">')
         )
         .append(
           $('<div class="attachmentBody">')
           .append(
-            $('<a>')
-            .attr('href', url)
-            .attr('download', args.blob.name)
-            .text(args.blob.name)
+            $('<a class="disabled">')
+            .attr('download', args.file.name)
+            .text(args.file.name)
           )
           .append(
             $('<div class="attachmentFileSize">')
-            .text(formatFileSize(args.blob.size))
+            .text(formatFileSize(args.file.size))
           )
         )
         .append(
-          $('<a class="attachmentDownloadWrapper" tabindex="0"><svg role="img" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z"></path></svg></a>')
-          .attr('href', url)
-          .attr('download', args.blob.name)
+          $('<a class="attachmentDownloadWrapper disabled" tabindex="0"><svg role="img" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z"></path></svg></a>')
+          .attr('download', args.file.name)
         )
         ;
         return $('<div>').append(res);
@@ -728,7 +744,7 @@
       )
       .append(
         $('<div class="iconButton removeFile"><svg role="img" viewBox="0 0 24 24"><path fill="currentColor" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg></div>')
-        .on('click', () => { fileList.splice(args.fileIndex, 1); updateFiles(); })
+        .on('click', () => { fileList.splice(args.fileIndex, 1); updateFiles(); refreshMessageInputHeight(); })
       )
       ;
       //#endregion Templates
@@ -803,10 +819,28 @@
           let files = [];
           for (let i = 0; i < fileList.length; i++) {
             console.log(fileList[i]);
-            files[i] = {name: fileList[i].name, buffer: fileList[i]};
+            files[i] = {name: fileList[i].name, size: fileList[i].size};
           }
-          socket.emit('send message', {message: message, files: files});
-          log(t$message({message: message, user: users[sid], files: fileList}), true);
+          $message = t$message({message: message, user: users[sid], files: files});
+          log($message, true);
+          fileList2 = fileList;
+          socket.emit('send message', {message: message, files: files}, (data) => {
+            $attachments = $message.find('.attachment');
+            console.log($attachments);
+            window.$attachments = $attachments;
+            files = data.files;
+            for (let i = 0; i < files.length; i++) {
+              $($attachments[i]).addClass(files[i].id);
+              Object.defineProperty(fileList2[i], 'name', {writable: true, value: files[i].key});
+              upload(fileList2[i], () => {
+                console.log('timeout');
+                socket.emit('update file', files[i]);
+                // setTimeout(() => {
+                //   socket.emit('update file', files[i]);
+                // }, 1000);
+              });
+            }
+          });
           fileList = [];
           updateFiles();
           refreshMessageInputHeight();
@@ -929,6 +963,7 @@
           window.fileList = fileList = fileList.concat(Array.from(this.files));
           $(this).val('')
           updateFiles();
+          refreshMessageInputHeight();
         });
 
         socket.on('connect', () => {
@@ -1003,6 +1038,12 @@
 
         socket.on('set nickname', (data) => {
           sync[data.uid].nickname = data.nickname;
+        });
+
+        socket.on('update file', (data) => {
+          console.log('update file');
+          $(`.${data.id} a`).removeClass('disabled').attr('href', data.link);
+          console.log('update file 2');
         });
 
       }
