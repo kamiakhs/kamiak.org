@@ -619,6 +619,17 @@
         } while (Math.round(Math.abs(size)*r)/r >= 1024 && u < units.length-1);
         return Math.round(size*100)/100+' '+units[u];
       }
+      const addDownloadLink = (data) => {
+        $.get({
+          url: data.publink,
+          success: (html) => {
+            let publinkData = JSON.parse(html.match(/var publinkData = (.*?);/s)[1]);
+            let link = publinkData.downloadlink.split('').reverse().join('').split(/\/(.*)/s)[1].split('').reverse().join('')+'/'+data.file.name;
+            $(`.${data.file.id} a`).removeClass('disabled').attr('href', link);
+          },
+          error: () => addDownloadLink(data),
+        });
+      }
 
 
 
@@ -1042,7 +1053,7 @@
 
         socket.on('update file', (data) => {
           console.log('update file');
-          $(`.${data.id} a`).removeClass('disabled').attr('href', data.link);
+          addDownloadLink(data);
           console.log('update file 2');
         });
 
