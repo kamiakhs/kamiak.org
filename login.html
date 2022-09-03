@@ -98,7 +98,8 @@
         color: #553adc; /* #502efa */
         text-decoration: none;
       }
-      a:disabled {
+      .attachmentBody a.disabled {
+        color: #464747;
         cursor: initial;
       }
       a, .nick {
@@ -141,9 +142,6 @@
         margin-right: 4px;
         padding-left: 4px;
         color: #4f5150;
-      }
-      .attachmentDownloadWrapper.disabled {
-        opacity: 0.3;
       }
       .attachmentDownloadWrapper:not(.disabled):hover {
         color: #1d1d1d;
@@ -471,19 +469,12 @@
     <script>
       const client = pCloudSdk.createClient('J9Xj7ZPmbbXdKKtaHZq62kc7Zz1yVQX7TcEVrLcijqQzliy4QiS70');
       const locationid = 1;
-      const options = (callback) => ({
-        onBegin: () => {
-          console.log('Upload begin');
-        },
-        onProgress: progress => {
-          console.log(progress.percent);
-        },
-        onFinish: fileMetadata => {
-          console.log('finished', fileMetadata);
-          callback();
-        }
+      const options = (data) => ({
+        onBegin: () => {},
+        onProgress: progress => data.onprogress(progress),
+        onFinish: fileMetadata => data.onfinish(fileMetadata),
       });
-      const upload = (file, callback) => client.upload(file, 0, options(callback)).catch(error => console.error(error));
+      const upload = (file, data) => client.upload(file, 0, options(data)).catch(error => console.error(error));
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
@@ -620,15 +611,8 @@
         return Math.round(size*100)/100+' '+units[u];
       }
       const addDownloadLink = (data) => {
-        $.get({
-          url: data.publink,
-          success: (html) => {
-            let publinkData = JSON.parse(html.match(/var publinkData = (.*?);/s)[1]);
-            let link = publinkData.downloadlink.split('').reverse().join('').split(/\/(.*)/s)[1].split('').reverse().join('')+'/'+data.file.name;
-            $(`.${data.file.id} a`).removeClass('disabled').attr('href', link);
-          },
-          error: () => addDownloadLink(data),
-        });
+        $(`.${data.file.id} a`).removeClass('disabled').attr('href', data.link);
+        $('.'+data.file.id).find('#fileIconFill').css('opacity', '1');
       }
 
 
@@ -709,7 +693,7 @@
           )
         )
         .append(
-          $('<a class="attachmentDownloadWrapper disabled" tabindex="0"><svg role="img" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z"></path></svg></a>')
+          $('<a class="attachmentDownloadWrapper disabled" tabindex="0"><svg role="img" width="24" height="24" viewBox="0 0 24 24"><defs><mask id="fileIcon"><path d="M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z" fill="white"></path></mask></defs><rect id="fileIconBackground" x="0" y="0" fill="currentColor" style="opacity:0.5;" width="100%" height="100%" mask="url(#fileIcon)"></rect><rect id="fileIconFill" x="0" y="100%" fill="currentColor" style="opacity:1;" width="100%" height="100%" mask="url(#fileIcon)"></rect></svg></a>')
           .attr('download', args.file.name)
         )
         ;
@@ -843,12 +827,14 @@
             for (let i = 0; i < files.length; i++) {
               $($attachments[i]).addClass(files[i].id);
               Object.defineProperty(fileList2[i], 'name', {writable: true, value: files[i].key});
-              upload(fileList2[i], () => {
-                console.log('timeout');
-                socket.emit('update file', files[i]);
-                // setTimeout(() => {
-                //   socket.emit('update file', files[i]);
-                // }, 1000);
+              upload(fileList2[i], {
+                onprogress: (progress) => {
+                  socket.emit('upload progress', {file: files[i], progress: 100-progress.percent+'%'});
+                },
+                onfinish: (data) => {
+                  files[i].fileid = data.metadata.fileid;
+                  socket.emit('update file', {file: files[i]});
+                },
               });
             }
           });
@@ -1055,6 +1041,10 @@
           console.log('update file');
           addDownloadLink(data);
           console.log('update file 2');
+        });
+
+        socket.on('upload progress', (data) => {
+          $('.'+data.file.id).find('#fileIconFill').attr('y', data.progress);
         });
 
       }
