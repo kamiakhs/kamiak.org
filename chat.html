@@ -1,80 +1,62 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Kamiak Chat</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A very basic chatroom">
     <meta name="google" content="notranslate">
+    <meta name="theme-color" content="#e0e4e5">
+    <link rel="stylesheet" href="whitney.css">
     <style>
       * {
         box-sizing: border-box;
-        font-family: Outfit;
-        /* font-weight: 400; */
+        font-family: "Whitney-Medium";
+        /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; */
+        font-weight: 400;
       }
       :root {
-        --side-padding: 36px;
-        --broadcast-padding: 12.5%;
-        --heading-padding: 18px;
+        --side-padding: 18px;
+        --broadcast-padding: 20%;
+        --heading-padding: 10px;
+        --message-padding: 8px;
+        --avatar-padding: 11px;
+        --message-input-height: 44px;
       }
-      ::selection { background: #B4D5ff; }
+      ::selection { background: #5533ff98; color: #38249e; }
       @media not screen and (max-width: 600px) {
-        ::-webkit-scrollbar { width:16px; background:rgba(0 0 0 / 0); left:-100px; }
-        ::-webkit-scrollbar-thumb { min-height:32px; background-color:#babac0; border-radius:16px; border:4px solid #f5f5f5; }
-        ::-webkit-scrollbar-thumb:hover { background-color:#a0a0a5; }
-        ::-webkit-scrollbar-thumb:active { background-color:#89898d; }
+        ::-webkit-scrollbar { width:16px; background:rgba(0 0 0 / 0); }
+        ::-webkit-scrollbar-thumb { min-height:32px; background:#ccd0d1; border-radius:16px; border:4px solid #e0e4e5; }
+        ::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-thumb:active { background:#bdc1c2; }
         ::-webkit-scrollbar-button { display:none; }
-        ::-webkit-scrollbar-track-piece:start { background:transparent; margin-top:8px; }
-        ::-webkit-scrollbar-track-piece:end { background:transparent; margin-bottom:16px; }
-        .fullscreen { display:none; }
+        ::-webkit-scrollbar-track-piece:start, ::-webkit-scrollbar-track-piece:end { background:transparent; }
       }
+      .messages::-webkit-scrollbar-track-piece:end { margin-bottom:8px; }
+      .messageInputWrapper::-webkit-scrollbar-thumb { min-height:32px; background: #b7babb; border-radius:16px; border:4px solid #d5d9da; }
+      .messageInputWrapper::-webkit-scrollbar-thumb:hover, .messageInputWrapper::-webkit-scrollbar-thumb:active { background:#7a7b7c; }
       @media only screen and (max-width: 600px) {
-        :root {
-          --side-padding: 18px;
-          --broadcast-padding: 6.25%;
-          --heading-padding: 14px;
+        :root { 
+          --side-padding: 16px;
+          --broadcast-padding: calc(36px + var(--avatar-padding));
+          --heading-padding: 10px;
         }
       }
       body {
         margin: 0;
         padding: 0;
-        color: #2b2b2b;
-        background: #f5f5f5;
+        color: #4f5150;
+        background: #e0e4e5;
       }
       h1 {
-        font-size: 29px;
         margin: 0;
         padding: var(--heading-padding) var(--side-padding);
-        box-shadow: 0 0 6px rgba(0 0 0 / 12%);
-        background: white;
-      }
-      .fullscreen {
-        cursor: pointer;
-        fill: #2b2b2b;
-        float: right;
-        width: 1.75em;
-        height:1.75em;
-        border-radius: 10000px;
-        padding: 0.125em;
-        margin: -0.25em;
-
-        outline: none;
-        -webkit-tap-highlight-color: transparent;
-      }
-      .fullscreen:hover {
-        background: #f5f5f5;
-      }
-      .fullscreen:active {
-        background: #dfdfdf;
+        background: #e0e4e5;
       }
       .page {
         margin: 0;
         height: 100vh;
       }
       .login.page {
-        background: #f5f5f5;
+        background: #e0e4e5;
       }
       .loginBoxWrapper {
         position: absolute;
@@ -84,61 +66,108 @@
         display: flex;
         align-items: center;
         justify-content: center;
-      }
-      .loginBox {
-        display: block;
-        margin: 0 auto;
-        text-align: center;
-        word-break: break-word;
-        font-size: 48px;
+        flex-direction: column;
       }
       .chat.page {
-        background: #f5f5f5;
+        background: #e0e4e5;
       }
       .messages {
         list-style: none;
-        padding: 48px 0 26px 0;
+        padding: 22px 0 30px 0;
         margin: 0;
-        height: calc(calc(100vh - calc(2 * var(--heading-padding))) - 114px);
+        /* height: calc(calc(100vh - calc(2 * var(--heading-padding))) - 114px); */
+        height: calc(calc(calc(100vh - calc(2 * var(--heading-padding))) - var(--message-input-height)) - 52px);
         overflow-y: scroll;
       }
-      .message {
-        font-size: 20px;
-        line-height: calc(28px + 8px);
-        padding: 0 var(--side-padding);
+      .messageWrapper, .broadcastWrapper {
+        padding: 1px var(--side-padding);
+        display: flex;
       }
-      .message a {
-        color: #4c2dfa;
+      .message {
+        font-size: 16px;
+        line-height: 1.375rem;
+        /* min-height: 1.375rem; */
+      }
+      a {
+        color: #553adc; /* #502efa */
         text-decoration: none;
+      }
+      .attachmentBody a.disabled {
+        color: #464747;
+        cursor: initial;
+      }
+      a, .nick {
         text-decoration-thickness: 1px !important;
       }
-      .message a:hover {
+      a:not(.disabled):hover, .nick:hover {
         text-decoration: underline;
       }
+      .attachment {
+        display: inline-flex;
+        align-items: center;
+        margin: 2px 0;
+        padding: 8px;
+        background: #d5d9da;
+        color: #1d1d1d;
+        border: 1px solid #b7babb;
+        border-radius: 4px;
+      }
+      .attachmentIcon {
+        width: 30px;
+        height: 40px;
+        margin-right: 8px;
+        flex-shrink: 0;
+      }
+      .attachmentBody {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      .attachmentFileSize {
+        line-height: 16px;
+        font-size: 12px;
+        color: #4f5150;
+        margin-right: 8px;
+      }
+      .attachmentDownloadWrapper {
+        display: block;
+        height: 24px;
+        margin-right: 4px;
+        padding-left: 4px;
+        color: #4f5150;
+      }
+      .attachmentDownloadWrapper:not(.disabled):hover {
+        color: #1d1d1d;
+      }
+      .nick {
+        cursor: pointer;
+        font-family: "Whitney-Semibold";
+        color: #3e403f;
+        min-height: 1.375rem;
+        line-height: 1.375rem;
+        font-size: inherit;
+      }
+      .broadcast .nick, .typing .nick {
+        color: #6d6d6e;
+      }
       .broadcast {
-        font-size: 16px;
-        color: #979797;
-        padding: 0 calc(var(--side-padding) + var(--broadcast-padding));
+        font-size: 14px;
+        color: #7a7b7c;
+        /* padding: 0 calc(var(--side-padding) + var(--broadcast-padding)); */
+        padding: 0 var(--broadcast-padding);
         text-align: center;
-        line-height: calc(21px + 8px);
+        line-height: 22px;
+        width: 100%;
+        margin-left: -100%;
       }
-      .message, .broadcast {
+      .message, .broadcast, .attachment {
         overflow-wrap: break-word;
+        word-break: break-word;
+        white-space: pre-wrap;
       }
-      .message:hover, .broadcast:hover {
-        background: rgba(0 0 0 / 2.5%);
-      }
-      .nickname {
-        display: inline-block;
-        width: fit-content;
-        margin: 0 0.1em;
-        padding: 0 0.25em;
-        border-radius: 0.35em;
-        min-width: 1.35em;
-        text-align: center;
-        line-height: 1.32em;
-        outline: none;
-        /* transition: color 0.2s ease, background 0.2s ease, outline-color 0.2s ease; */
+      .messageWrapper:hover, .broadcastWrapper:hover {
+        background: #d5d9da60;
       }
       [contenteditable]:empty:before{
         content: attr(data-placeholder);
@@ -146,131 +175,349 @@
         cursor: text;
         /* transition: color 0.2s ease; */
       }
-      .messageInput {
-        position: relative;
-        margin: 0 var(--side-padding);
-        padding: 14px 18px;
-        width: calc(100% - calc(2 * var(--side-padding)));
-        font-size: 21px;
-        border-radius: 8px;  /* calc(0.5em + 16.5px) */
-        top: -8px;  /* calc(-0.5em - 16.5px) */
+      .files {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid #7a7b7c30;
+        padding: 6px 0 5px 0;
+      }
+      .fileWrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        white-space: nowrap;
+        line-height: 1.375rem;
+        background: transparent;
+        color: #1d1d1d;
+      }
+      .file {
+        min-height: 1.375rem;
+        padding: 6px 12px;
         border: none;
         outline: none;
-        background: white;
-        box-shadow: 1.5px 2px 6px rgba(0 0 0 / 12%);
+        flex-grow: 1;
+        font-family: inherit;
+        font-size: inherit;
+        background: inherit;
+        color: inherit;
+      }
+      .removeFile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 12px;
+      }
+      .removeFile svg {
+        width: 16px;
+        height: 16px;
+      }
+      .messageInputWrapper {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: auto;
+        top: -8px;
+        margin: 0 var(--side-padding);
+        border-radius: 8px;
+        /* background: blueviolet; */
+        background: #d5d9da;
+        height: var(--message-input-height);
+        scroll-padding: 12.5px 0;
+      }
+      .messageInput {
+        padding: 12.5px 16px 12.5px 0;
+        scroll-padding: 12.5px 0;
+        flex-grow: 1;
+        font-size: 16px;
+        border-radius: 0 8px 8px 0;
+        border: none;
+        outline: none;
+        resize: none;
+        background: #d5d9da;
+        color: #1d1d1d;
         z-index: 1;
+        height: var(--message-input-height);
+      }
+      .messageInput::placeholder {
+        color: #7a7b7c;
+      }
+      .messageInputWrapper .iconButton {
+        color: #1d1d1de8;
+        cursor: pointer;
+      }
+      .messageInputWrapper .iconButton:hover {
+        color: #1d1d1d;
+      }
+      .fileInput {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        border-radius: 8px 0 0 8px;
+        padding: 10px 16px;
+      }
+      #fileInput {
+        display: none;
       }
       .typing {
-        display: block;
-        position: absolute;
-        margin: -3.5px var(--side-padding) 0px;
-        height: calc(21px + 2px);
-        line-height: calc(21px + 2px);
-        font-size: 16px;
-        color: #979797;
+        margin: -7px var(--side-padding) 0 var(--side-padding);
+        min-height: 22px;
+        line-height: 22px;
+        font-size: 14px;
+        color: #7a7b7c;
+        white-space: nowrap;
         z-index: 1;
       }
+      .avatar, .avatarLarge {
+        border-radius: 50%;
+      }
+      .avatar {
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+      }
+      .avatarLarge {
+        width: 72px;
+        height: 72px;
+        /* box-shadow: 1px 1.5px 6px 0 #1d1d1d10; */
+      }
+      /* .avatar:hover {
+        box-shadow: 0 0 0 4px #d5d9da;
+      }
+      .avatar:active, .avatar:focus {
+        box-shadow: 0 0 0 4px #ccd0d1;
+      } */
+      .avatar:hover, .avatar:active {
+        box-shadow: 0 1px 4px #4f515055;
+      }
+      .avatar:active {
+        transform: translateY(1px);
+      }
+      .popupWrapper {
+        position: relative;
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
+      }
+      .avatarGutter > .popupWrapper {
+        margin-left: -10px;
+      }
+      .popup {
+        position: absolute;
+        background: #4f5150;
+        color: #e0e4e5;
+        box-shadow: 0 2px 8px 1px #4f51503f;
+        border-radius: 8px;
+        right: 0;
+        padding: 24px;
+        width: 256px;
+        text-align: center;
+      }
+      .popupName {
+        font-family: "Whitney-Semibold";
+        /* white-space: nowrap; */
+        margin-top: 8px;
+        font-size: 20px;
+      }
+      .popupId {
+        font-size: 14px;
+        color: #d5d9da;
+        margin-top: 6px;
+        white-space: normal;
+        /* font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace; */
+      }
+      button {
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: background 0.05s ease-in-out;
+      }
+      button.light {
+        color: #e0e4e5;
+        background: #4f5150;
+        border: 1px solid #e0e4e5;
+      }
+      button.light:hover {
+        /* background: #e0e4e5d5; */
+        background: #e0e4e51f;
+      }
+      button.light:active {
+        /* background: #e0e4e5be; */
+        background: #e0e4e52d;
+      }
+      .timestamp1, .timestamp2 {
+        display: flex;
+        white-space: nowrap;
+      }
+      .timestamp1 {
+        padding-left: 7px;
+        font-size: 12px;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .timestamp2 {
+        margin-left: calc(-1 * var(--avatar-padding));
+        color: transparent;
+        min-width: calc(47px + var(--avatar-padding));
+        float: right;
+        font-size: 11px;
+        align-items: center;
+        justify-content: center;
+        height: 22px;
+      }
+      .timestamp1, .messageWrapper:hover .timestamp2, .broadcastWrapper:hover .timestamp2 {
+        color: #7a7b7c;
+      }
+      .broadcastTimestampWrapper {
+        width: 100%;
+        display: flex;
+      }
+      
+      /* Spinner */
+      .spinner,.spinner-container{pointer-events:none;position:absolute;top:50%;left:50%}.spinner{width:64px;margin-left:-32px;z-index:18}.spinner-container{width:100%;padding-bottom:100%;margin-top:-50%;margin-left:-50%;animation:1.568s linear infinite spinner-linspin}.spinner-left,.spinner-right{top:0;bottom:0;overflow:hidden;position:absolute}.spinner-rotator{position:absolute;width:100%;height:100%;animation:5332ms cubic-bezier(.4,0,.2,1) infinite both spinner-easespin}.spinner-left{right:49%;left:0}.spinner-right{left:49%;right:0}.spinner-circle{box-sizing:border-box;position:absolute;width:200%;height:100%;border-style:solid;border-color:#4f5150 #4f5150 transparent;border-radius:50%;border-width:6px}.spinner-left .spinner-circle{left:0;right:-100%;border-right-color:transparent;animation:1333ms cubic-bezier(.4,0,.2,1) infinite both spinner-left-spin}.spinner-right .spinner-circle{left:-100%;right:0;border-left-color:transparent;animation:1333ms cubic-bezier(.4,0,.2,1) infinite both spinner-right-spin}@-webkit-keyframes spinner-linspin{to{-webkit-transform:rotate(360deg)}}@keyframes spinner-linspin{to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes spinner-easespin{12.5%{-webkit-transform:rotate(135deg)}25%{-webkit-transform:rotate(270deg)}37.5%{-webkit-transform:rotate(405deg)}50%{-webkit-transform:rotate(540deg)}62.5%{-webkit-transform:rotate(675deg)}75%{-webkit-transform:rotate(810deg)}87.5%{-webkit-transform:rotate(945deg)}to{-webkit-transform:rotate(1080deg)}}@keyframes spinner-easespin{12.5%{-webkit-transform:rotate(135deg);transform:rotate(135deg)}25%{-webkit-transform:rotate(270deg);transform:rotate(270deg)}37.5%{-webkit-transform:rotate(405deg);transform:rotate(405deg)}50%{-webkit-transform:rotate(540deg);transform:rotate(540deg)}62.5%{-webkit-transform:rotate(675deg);transform:rotate(675deg)}75%{-webkit-transform:rotate(810deg);transform:rotate(810deg)}87.5%{-webkit-transform:rotate(945deg);transform:rotate(945deg)}to{-webkit-transform:rotate(1080deg);transform:rotate(1080deg)}}@-webkit-keyframes spinner-left-spin{0%{-webkit-transform:rotate(130deg)}50%{-webkit-transform:rotate(-5deg)}to{-webkit-transform:rotate(130deg)}}@keyframes spinner-left-spin{0%{-webkit-transform:rotate(130deg);transform:rotate(130deg)}50%{-webkit-transform:rotate(-5deg);transform:rotate(-5deg)}to{-webkit-transform:rotate(130deg);transform:rotate(130deg)}}@-webkit-keyframes spinner-right-spin{0%{-webkit-transform:rotate(-130deg)}50%{-webkit-transform:rotate(5deg)}to{-webkit-transform:rotate(-130deg)}}@keyframes spinner-right-spin{0%{-webkit-transform:rotate(-130deg);transform:rotate(-130deg)}50%{-webkit-transform:rotate(5deg);transform:rotate(5deg)}to{-webkit-transform:rotate(-130deg);transform:rotate(-130deg)}}
     </style>
   </head>
-  <body>
+  <body style="background:#e0e4e5">
     <div class="pages">
       <div class="login page">
-        <h1>
-          Kamiak Chat
-          <svg class="fullscreen" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path class="enter" d="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z"/>
-            <path class="exit" d="M14,14H19V16H16V19H14V14M5,14H10V19H8V16H5V14M8,5H10V10H5V8H8V5M19,8V10H14V5H16V8H19Z" style="display:none"/>
-          </svg>
+        <h1 style="display:flex; justify-content:space-between; align-items:center;">
+          <svg height="20" viewBox="0 0 572 74.801" xmlns="http://www.w3.org/2000/svg"><g stroke-linecap="round" fill-rule="evenodd" font-size="9pt" stroke="#4f5150" stroke-width="0" fill="#4f5150" style="stroke:#4f5150;stroke-width:0;fill:#4f5150"><path d="M 117.8 73.2 L 117.8 24.2 L 130.1 24.2 L 130.1 30.6 L 130.9 30.6 A 17.122 17.122 0 0 1 136.905 24.939 A 20.024 20.024 0 0 1 137.15 24.8 A 17.576 17.576 0 0 1 145.452 22.605 A 20.69 20.69 0 0 1 145.9 22.6 A 19.975 19.975 0 0 1 150.229 23.046 A 14.403 14.403 0 0 1 155.3 25.2 A 16.074 16.074 0 0 1 158.634 28.201 A 13.547 13.547 0 0 1 160.7 31.6 A 18.927 18.927 0 0 1 164.874 26.916 A 23.715 23.715 0 0 1 167.2 25.25 Q 171.4 22.6 177.4 22.6 A 23.537 23.537 0 0 1 181.108 22.878 Q 183.2 23.212 184.959 23.947 A 14.468 14.468 0 0 1 185.2 24.05 A 14.918 14.918 0 0 1 189.427 26.8 A 13.907 13.907 0 0 1 190.65 28.1 A 16.771 16.771 0 0 1 193.198 32.38 A 20.619 20.619 0 0 1 193.9 34.35 A 25.926 25.926 0 0 1 194.893 39.676 A 31.38 31.38 0 0 1 195 42.3 L 195 73.2 L 181.9 73.2 L 181.9 44.7 A 17.809 17.809 0 0 0 181.549 40.988 Q 180.381 35.536 175.337 34.811 A 11.519 11.519 0 0 0 173.7 34.7 A 9.991 9.991 0 0 0 171.107 35.025 A 8.33 8.33 0 0 0 169.1 35.85 Q 167.1 37 165.75 38.95 A 13.817 13.817 0 0 0 164.358 41.53 A 17.902 17.902 0 0 0 163.65 43.6 Q 162.9 46.3 162.9 49.4 L 162.9 73.2 L 149.8 73.2 L 149.8 44.7 A 16.922 16.922 0 0 0 149.419 40.934 Q 148.226 35.729 143.295 34.87 A 12.215 12.215 0 0 0 141.2 34.7 A 9.225 9.225 0 0 0 138.781 35.006 A 7.682 7.682 0 0 0 136.8 35.85 A 10.11 10.11 0 0 0 133.641 38.89 A 11.606 11.606 0 0 0 133.6 38.95 A 13.636 13.636 0 0 0 132.283 41.493 A 17.855 17.855 0 0 0 131.6 43.6 A 22.086 22.086 0 0 0 130.949 47.782 A 26.111 26.111 0 0 0 130.9 49.4 L 130.9 73.2 L 117.8 73.2 Z M 0 73.2 L 0 1.6 L 13.5 1.6 L 13.5 32.3 L 14.3 32.3 L 40.5 1.6 L 56.8 1.6 L 56.8 2.4 L 30.9 32 L 59.5 72.4 L 59.5 73.2 L 43 73.2 L 21.7 42.7 L 13.5 52.2 L 13.5 73.2 L 0 73.2 Z M 412.3 52.6 L 421.9 61.7 Q 416.6 68.1 409.4 71.45 Q 402.2 74.8 393.3 74.8 A 38.762 38.762 0 0 1 382.003 73.186 A 35.528 35.528 0 0 1 378.45 71.9 Q 371.6 69 366.6 64 Q 361.6 59 358.7 52.15 A 37.249 37.249 0 0 1 355.806 38.139 A 42.646 42.646 0 0 1 355.8 37.4 A 37.931 37.931 0 0 1 357.865 24.817 A 35.812 35.812 0 0 1 358.7 22.65 Q 361.6 15.8 366.6 10.8 Q 371.6 5.8 378.45 2.9 A 37.189 37.189 0 0 1 391.564 0.035 A 43.135 43.135 0 0 1 393.3 0 A 42.023 42.023 0 0 1 400.912 0.66 A 31.891 31.891 0 0 1 408.45 3 A 35.066 35.066 0 0 1 419.619 11.172 A 40.227 40.227 0 0 1 420.1 11.7 L 410.6 20.9 Q 407.4 17.2 403.25 15 A 18.443 18.443 0 0 0 397.775 13.164 A 25.196 25.196 0 0 0 393.4 12.8 A 25.309 25.309 0 0 0 384.552 14.339 A 24.232 24.232 0 0 0 384 14.55 Q 379.6 16.3 376.35 19.5 A 22.967 22.967 0 0 0 371.712 26.1 A 26.784 26.784 0 0 0 371.2 27.25 Q 369.3 31.8 369.3 37.4 A 28.551 28.551 0 0 0 369.901 43.368 A 23.614 23.614 0 0 0 371.2 47.55 A 24.156 24.156 0 0 0 374.629 53.394 A 21.895 21.895 0 0 0 376.35 55.3 Q 379.6 58.5 384 60.25 A 25.16 25.16 0 0 0 393.244 62 A 28.495 28.495 0 0 0 393.4 62 A 25.045 25.045 0 0 0 399.311 61.329 A 20.452 20.452 0 0 0 404.05 59.55 A 25.47 25.47 0 0 0 410.913 54.216 A 30.247 30.247 0 0 0 412.3 52.6 Z M 430.1 73.2 L 430.1 1.6 L 443.2 1.6 L 443.2 21.7 L 442.4 30.6 L 443.2 30.6 A 15.62 15.62 0 0 1 447.61 25.895 A 19.288 19.288 0 0 1 449.25 24.85 Q 453.2 22.6 458.1 22.6 Q 467.6 22.6 472.15 28.2 A 19.03 19.03 0 0 1 475.632 35.066 Q 476.429 37.853 476.631 41.177 A 38.269 38.269 0 0 1 476.7 43.5 L 476.7 73.2 L 463.6 73.2 L 463.6 45.1 Q 463.6 41.644 462.498 39.313 A 7.988 7.988 0 0 0 461.2 37.35 A 7.855 7.855 0 0 0 456.776 34.912 A 11.671 11.671 0 0 0 454.5 34.7 A 10.83 10.83 0 0 0 451.801 35.025 A 9.022 9.022 0 0 0 449.7 35.85 Q 447.6 37 446.15 39 A 14.02 14.02 0 0 0 444.376 42.347 A 16.83 16.83 0 0 0 443.95 43.65 A 20.153 20.153 0 0 0 443.226 48.188 A 23.243 23.243 0 0 0 443.2 49.3 L 443.2 73.2 L 430.1 73.2 Z M 284.7 73.2 L 284.7 1.6 L 297.8 1.6 L 297.8 40.6 L 298.4 40.6 L 314.8 24.2 L 331 24.2 L 331 25 L 312.8 42.7 L 332.5 72.4 L 332.5 73.2 L 317 73.2 L 303.6 51.7 L 297.8 57.4 L 297.8 73.2 L 284.7 73.2 Z M 94.5 73.2 L 94.5 68 L 93.7 68 Q 91.4 70.8 88.15 72.8 A 12.581 12.581 0 0 1 84.568 74.269 Q 82.964 74.668 81.084 74.767 A 24.253 24.253 0 0 1 79.8 74.8 A 20.53 20.53 0 0 1 73.601 73.877 A 19.254 19.254 0 0 1 72.65 73.55 A 19.036 19.036 0 0 1 67.945 71.025 A 17.472 17.472 0 0 1 66.8 70.1 Q 64.3 67.9 62.9 64.8 A 15.977 15.977 0 0 1 61.534 59.142 A 18.852 18.852 0 0 1 61.5 58 A 16.556 16.556 0 0 1 62.001 53.857 A 14.067 14.067 0 0 1 63 51.15 Q 64.5 48.1 67.2 45.9 Q 69.9 43.7 73.55 42.55 A 25.019 25.019 0 0 1 79.068 41.497 A 30.174 30.174 0 0 1 81.5 41.4 Q 84.873 41.4 87.406 41.771 A 22.074 22.074 0 0 1 89.4 42.15 Q 91.642 42.693 93.308 43.261 A 24.609 24.609 0 0 1 94.5 43.7 L 94.5 42.2 A 7.91 7.91 0 0 0 91.954 36.24 A 10.156 10.156 0 0 0 91.4 35.75 A 11.1 11.1 0 0 0 85.774 33.341 A 14.88 14.88 0 0 0 83.7 33.2 A 14.104 14.104 0 0 0 73.102 37.879 A 19.652 19.652 0 0 0 72.2 38.9 L 62.7 32.4 A 25.211 25.211 0 0 1 81.115 22.718 A 34.773 34.773 0 0 1 84 22.6 A 38.956 38.956 0 0 1 90.598 23.123 Q 94.197 23.743 97.055 25.097 A 18.182 18.182 0 0 1 101.4 27.95 Q 106.952 32.901 107.367 42.26 A 34.793 34.793 0 0 1 107.4 43.8 L 107.4 73.2 L 94.5 73.2 Z M 261.4 73.2 L 261.4 68 L 260.6 68 Q 258.3 70.8 255.05 72.8 A 12.581 12.581 0 0 1 251.468 74.269 Q 249.864 74.668 247.984 74.767 A 24.253 24.253 0 0 1 246.7 74.8 A 20.53 20.53 0 0 1 240.501 73.877 A 19.254 19.254 0 0 1 239.55 73.55 A 19.036 19.036 0 0 1 234.845 71.025 A 17.472 17.472 0 0 1 233.7 70.1 Q 231.2 67.9 229.8 64.8 A 15.977 15.977 0 0 1 228.434 59.142 A 18.852 18.852 0 0 1 228.4 58 A 16.556 16.556 0 0 1 228.901 53.857 A 14.067 14.067 0 0 1 229.9 51.15 Q 231.4 48.1 234.1 45.9 Q 236.8 43.7 240.45 42.55 A 25.019 25.019 0 0 1 245.968 41.497 A 30.174 30.174 0 0 1 248.4 41.4 Q 251.773 41.4 254.306 41.771 A 22.074 22.074 0 0 1 256.3 42.15 Q 258.542 42.693 260.208 43.261 A 24.609 24.609 0 0 1 261.4 43.7 L 261.4 42.2 A 7.91 7.91 0 0 0 258.854 36.24 A 10.156 10.156 0 0 0 258.3 35.75 A 11.1 11.1 0 0 0 252.674 33.341 A 14.88 14.88 0 0 0 250.6 33.2 A 14.104 14.104 0 0 0 240.002 37.879 A 19.652 19.652 0 0 0 239.1 38.9 L 229.6 32.4 A 25.211 25.211 0 0 1 248.015 22.718 A 34.773 34.773 0 0 1 250.9 22.6 A 38.956 38.956 0 0 1 257.498 23.123 Q 261.097 23.743 263.955 25.097 A 18.182 18.182 0 0 1 268.3 27.95 Q 273.852 32.901 274.267 42.26 A 34.793 34.793 0 0 1 274.3 43.8 L 274.3 73.2 L 261.4 73.2 Z M 517.2 73.2 L 517.2 68 L 516.4 68 Q 514.1 70.8 510.85 72.8 A 12.581 12.581 0 0 1 507.268 74.269 Q 505.664 74.668 503.784 74.767 A 24.253 24.253 0 0 1 502.5 74.8 A 20.53 20.53 0 0 1 496.301 73.877 A 19.254 19.254 0 0 1 495.35 73.55 A 19.036 19.036 0 0 1 490.645 71.025 A 17.472 17.472 0 0 1 489.5 70.1 Q 487 67.9 485.6 64.8 A 15.977 15.977 0 0 1 484.234 59.142 A 18.852 18.852 0 0 1 484.2 58 A 16.556 16.556 0 0 1 484.701 53.857 A 14.067 14.067 0 0 1 485.7 51.15 Q 487.2 48.1 489.9 45.9 Q 492.6 43.7 496.25 42.55 A 25.019 25.019 0 0 1 501.768 41.497 A 30.174 30.174 0 0 1 504.2 41.4 Q 507.573 41.4 510.106 41.771 A 22.074 22.074 0 0 1 512.1 42.15 Q 514.342 42.693 516.008 43.261 A 24.609 24.609 0 0 1 517.2 43.7 L 517.2 42.2 A 7.91 7.91 0 0 0 514.654 36.24 A 10.156 10.156 0 0 0 514.1 35.75 A 11.1 11.1 0 0 0 508.474 33.341 A 14.88 14.88 0 0 0 506.4 33.2 A 14.104 14.104 0 0 0 495.802 37.879 A 19.652 19.652 0 0 0 494.9 38.9 L 485.4 32.4 A 25.211 25.211 0 0 1 503.815 22.718 A 34.773 34.773 0 0 1 506.7 22.6 A 38.956 38.956 0 0 1 513.298 23.123 Q 516.897 23.743 519.755 25.097 A 18.182 18.182 0 0 1 524.1 27.95 Q 529.652 32.901 530.067 42.26 A 34.793 34.793 0 0 1 530.1 43.8 L 530.1 73.2 L 517.2 73.2 Z M 544.9 56.9 L 544.9 35.4 L 536.3 35.4 L 536.3 24.2 L 544.9 24.2 L 544.9 9.2 L 558 9.2 L 558 24.2 L 570 24.2 L 570 35.4 L 558 35.4 L 558 54.4 Q 558 56.1 558.35 57.55 A 5.178 5.178 0 0 0 559.228 59.455 A 4.991 4.991 0 0 0 559.7 60 A 4.543 4.543 0 0 0 562.227 61.452 A 6.906 6.906 0 0 0 563.7 61.6 A 13.541 13.541 0 0 0 564.694 61.566 Q 565.713 61.491 566.4 61.25 Q 567.4 60.9 568.3 60.3 L 572 71.8 A 21.469 21.469 0 0 1 567.38 73.38 A 23.841 23.841 0 0 1 567.05 73.45 A 25.832 25.832 0 0 1 563.895 73.895 A 33.27 33.27 0 0 1 561.2 74 A 20.449 20.449 0 0 1 557.506 73.681 A 16.142 16.142 0 0 1 554.55 72.85 A 15.257 15.257 0 0 1 551.382 71.185 A 12.947 12.947 0 0 1 549.6 69.7 Q 545.125 65.416 544.911 57.686 A 28.37 28.37 0 0 1 544.9 56.9 Z M 219.7 73.2 L 206.6 73.2 L 206.6 24.2 L 219.7 24.2 L 219.7 73.2 Z M 94.5 53.3 Q 92.2 52.2 89.75 51.55 A 19.304 19.304 0 0 0 86.512 50.992 A 23.757 23.757 0 0 0 84.4 50.9 Q 79.7 50.9 77.15 52.95 A 7.345 7.345 0 0 0 75.547 54.697 A 5.986 5.986 0 0 0 74.6 58 Q 74.6 60.878 76.854 62.651 A 7.456 7.456 0 0 0 77.05 62.8 A 9.281 9.281 0 0 0 82.65 64.6 A 11.333 11.333 0 0 0 82.7 64.6 A 12.466 12.466 0 0 0 86.086 64.151 A 11.21 11.21 0 0 0 87.5 63.65 Q 89.7 62.7 91.25 61.15 Q 92.8 59.6 93.65 57.55 Q 94.5 55.5 94.5 53.3 Z M 261.4 53.3 Q 259.1 52.2 256.65 51.55 A 19.304 19.304 0 0 0 253.412 50.992 A 23.757 23.757 0 0 0 251.3 50.9 Q 246.6 50.9 244.05 52.95 A 7.345 7.345 0 0 0 242.447 54.697 A 5.986 5.986 0 0 0 241.5 58 Q 241.5 60.878 243.754 62.651 A 7.456 7.456 0 0 0 243.95 62.8 A 9.281 9.281 0 0 0 249.55 64.6 A 11.333 11.333 0 0 0 249.6 64.6 A 12.466 12.466 0 0 0 252.986 64.151 A 11.21 11.21 0 0 0 254.4 63.65 Q 256.6 62.7 258.15 61.15 Q 259.7 59.6 260.55 57.55 Q 261.4 55.5 261.4 53.3 Z M 517.2 53.3 Q 514.9 52.2 512.45 51.55 A 19.304 19.304 0 0 0 509.212 50.992 A 23.757 23.757 0 0 0 507.1 50.9 Q 502.4 50.9 499.85 52.95 A 7.345 7.345 0 0 0 498.247 54.697 A 5.986 5.986 0 0 0 497.3 58 Q 497.3 60.878 499.554 62.651 A 7.456 7.456 0 0 0 499.75 62.8 A 9.281 9.281 0 0 0 505.35 64.6 A 11.333 11.333 0 0 0 505.4 64.6 A 12.466 12.466 0 0 0 508.786 64.151 A 11.21 11.21 0 0 0 510.2 63.65 Q 512.4 62.7 513.95 61.15 Q 515.5 59.6 516.35 57.55 Q 517.2 55.5 517.2 53.3 Z M 213.1 17.1 Q 211.4 17.1 209.85 16.45 Q 208.3 15.8 207.15 14.65 Q 206 13.5 205.35 12 A 7.959 7.959 0 0 1 204.727 9.419 A 9.494 9.494 0 0 1 204.7 8.7 A 8.678 8.678 0 0 1 204.967 6.517 A 7.591 7.591 0 0 1 205.35 5.4 Q 206 3.9 207.15 2.75 Q 208.3 1.6 209.85 0.95 Q 211.4 0.3 213.1 0.3 A 8.266 8.266 0 0 1 219.09 2.741 A 10.274 10.274 0 0 1 219.1 2.75 A 8.005 8.005 0 0 1 221.599 8.537 A 9.699 9.699 0 0 1 221.6 8.7 A 8.005 8.005 0 0 1 219.216 14.535 A 9.701 9.701 0 0 1 219.1 14.65 A 8.266 8.266 0 0 1 213.114 17.1 A 10.15 10.15 0 0 1 213.1 17.1 Z" vector-effect="non-scaling-stroke"/></g></svg>
+          <!-- <svg height="20" viewBox="0 0 599.864 79.638" xmlns="http://www.w3.org/2000/svg"><g stroke-linecap="round" fill-rule="evenodd" font-size="9pt" stroke="#4f5150" stroke-width="0.00mm" fill="#4f5150" style="stroke:#4f5150;stroke-width:0.00mm;fill:#4f5150"><g transform="translate(-0.0 0)"><path d="M 0 3.182 L 0 78.182 L 14 78.182 L 14 46.273 L 44.318 78.182 L 63.682 78.182 L 26.773 39.364 L 59.227 3.182 L 42.091 3.182 L 14 34.727 L 14 3.182 L 0 3.182 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-2.5 0)"><path d="M 100.818 71.682 L 100.818 78.182 L 114.091 78.182 L 114.091 31.636 L 100.818 31.636 L 100.818 38.136 A 20.673 20.673 0 0 0 84.273 30.182 C 71.874 30.182 62.701 39.314 61.389 51.757 A 29.611 29.611 0 0 0 61.227 54.864 C 61.227 68.864 70.864 79.636 84.273 79.636 A 20.673 20.673 0 0 0 100.818 71.682 Z M 75.182 54.909 C 75.182 47.136 80.682 41.5 88.182 41.5 A 13.015 13.015 0 0 1 95.851 43.859 C 99.128 46.208 101.136 50.145 101.136 54.909 A 14.304 14.304 0 0 1 99.233 62.231 C 97.021 65.977 93.045 68.318 88.182 68.318 A 12.946 12.946 0 0 1 80.02 65.572 C 77.536 63.593 75.848 60.661 75.341 57.159 A 15.706 15.706 0 0 1 75.182 54.909 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-5.0 0)"><path d="M 127.045 78.182 L 140.318 78.182 L 140.318 51.455 A 13.141 13.141 0 0 1 141.068 46.912 C 142.498 43.02 145.852 40.818 150.091 40.818 C 154.418 40.818 157.417 43.17 158.525 47.033 A 13.058 13.058 0 0 1 159 50.636 L 159 78.182 L 172.273 78.182 L 172.273 51.182 A 12.755 12.755 0 0 1 173.018 46.716 C 174.421 42.952 177.698 40.818 181.955 40.818 A 9.199 9.199 0 0 1 186.575 41.96 C 188.345 42.972 189.644 44.629 190.35 46.81 A 13.459 13.459 0 0 1 190.955 50.955 L 190.955 78.182 L 204.227 78.182 L 204.227 47.318 C 204.227 37.857 198.323 31.533 189.805 30.374 A 21.479 21.479 0 0 0 186.909 30.182 A 18.214 18.214 0 0 0 173.593 35.69 A 29.796 29.796 0 0 0 170.591 39.136 A 14.795 14.795 0 0 0 162.819 31.811 A 20.286 20.286 0 0 0 154.727 30.182 A 16.007 16.007 0 0 0 143.04 34.798 A 23.625 23.625 0 0 0 140.318 37.955 L 140.318 31.636 L 127.045 31.636 L 127.045 78.182 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-7.5 0)"><path d="M 229.545 78.182 L 229.545 31.636 L 216.273 31.636 L 216.273 78.182 L 229.545 78.182 Z M 215 14.045 C 215 18.409 218.545 21.955 222.909 21.955 C 227.273 21.955 230.818 18.409 230.818 14.045 C 230.818 9.682 227.273 6.136 222.909 6.136 C 218.545 6.136 215 9.682 215 14.045 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-10.0 0)"><path d="M 278.5 71.682 L 278.5 78.182 L 291.773 78.182 L 291.773 31.636 L 278.5 31.636 L 278.5 38.136 A 20.673 20.673 0 0 0 261.955 30.182 C 249.556 30.182 240.383 39.314 239.071 51.757 A 29.611 29.611 0 0 0 238.909 54.864 C 238.909 68.864 248.545 79.636 261.955 79.636 A 20.673 20.673 0 0 0 278.5 71.682 Z M 252.864 54.909 C 252.864 47.136 258.364 41.5 265.864 41.5 A 13.015 13.015 0 0 1 273.533 43.859 C 276.81 46.208 278.818 50.145 278.818 54.909 A 14.304 14.304 0 0 1 276.915 62.231 C 274.703 65.977 270.727 68.318 265.864 68.318 A 12.946 12.946 0 0 1 257.702 65.572 C 255.218 63.593 253.53 60.661 253.023 57.159 A 15.706 15.706 0 0 1 252.864 54.909 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-12.5 0)"><path d="M 318.136 78.182 L 318.136 59.455 L 336.682 78.182 L 353.727 78.182 L 330.045 54.364 L 352.682 31.636 L 335.5 31.636 L 318.136 48.818 L 318.136 0 L 304.864 0 L 304.864 78.182 L 318.136 78.182 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-15.0 0)"><path d="M 444.045 72.5 L 437.273 61.045 A 23.937 23.937 0 0 1 429.638 64.689 A 31.254 31.254 0 0 1 421.091 65.864 C 405.273 65.864 395.318 54.955 395.318 40.727 A 25.465 25.465 0 0 1 400.692 24.595 C 404.001 20.474 408.734 17.51 414.591 16.256 A 31.011 31.011 0 0 1 421.091 15.591 A 30.45 30.45 0 0 1 432.105 17.598 A 22.531 22.531 0 0 1 437.273 20.409 L 444.045 8.955 A 36.156 36.156 0 0 0 435.217 4.408 C 430.953 2.877 426.158 1.94 421.18 1.829 A 44.717 44.717 0 0 0 420.182 1.818 A 41.301 41.301 0 0 0 396.948 8.663 A 38.166 38.166 0 0 0 380.136 40.727 A 38.332 38.332 0 0 0 412.574 78.993 A 44.648 44.648 0 0 0 420.182 79.636 A 44.916 44.916 0 0 0 434.474 77.305 C 438.089 76.083 441.347 74.436 444.045 72.5 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-17.5 0)"><path d="M 452.5 0 L 452.5 78.182 L 465.773 78.182 L 465.773 50.409 C 465.773 44.909 469.682 40.591 476.136 40.591 C 480.928 40.591 484.294 42.986 485.59 47.259 A 14.913 14.913 0 0 1 486.182 51.591 L 486.182 78.182 L 499.455 78.182 L 499.455 48.773 C 499.455 37.636 492.045 30.182 481.364 30.182 A 22.067 22.067 0 0 0 473.172 31.723 C 470.218 32.902 467.703 34.691 465.817 36.858 A 17.114 17.114 0 0 0 465.773 36.909 L 465.773 0 L 452.5 0 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-20.0 0)"><path d="M 547.545 71.682 L 547.545 78.182 L 560.818 78.182 L 560.818 31.636 L 547.545 31.636 L 547.545 38.136 A 20.673 20.673 0 0 0 531 30.182 C 518.602 30.182 509.429 39.314 508.116 51.757 A 29.611 29.611 0 0 0 507.955 54.864 C 507.955 68.864 517.591 79.636 531 79.636 A 20.673 20.673 0 0 0 547.545 71.682 Z M 521.909 54.909 C 521.909 47.136 527.409 41.5 534.909 41.5 A 13.015 13.015 0 0 1 542.578 43.859 C 545.855 46.208 547.864 50.145 547.864 54.909 A 14.304 14.304 0 0 1 545.96 62.231 C 543.748 65.977 539.772 68.318 534.909 68.318 A 12.946 12.946 0 0 1 526.748 65.572 C 524.263 63.593 522.575 60.661 522.069 57.159 A 15.706 15.706 0 0 1 521.909 54.909 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-22.5 0)"><path d="M 567.955 31.636 L 567.955 41.727 L 574.045 41.727 L 574.045 63.136 A 23.505 23.505 0 0 0 574.952 69.895 C 576.68 75.645 580.82 79.091 586.854 79.577 A 18.81 18.81 0 0 0 588.364 79.636 A 22.009 22.009 0 0 0 591.426 79.414 C 593.698 79.093 595.97 78.438 597.908 77.532 A 16.017 16.017 0 0 0 599.864 76.455 L 594.955 66.818 A 6.333 6.333 0 0 1 592.139 67.746 A 6.685 6.685 0 0 1 591.545 67.773 A 4.245 4.245 0 0 1 589.522 67.315 C 588.07 66.54 587.318 64.795 587.318 62.182 L 587.318 41.727 L 597.682 41.727 L 597.682 31.636 L 587.318 31.636 L 587.318 14.227 L 574.045 14.227 L 574.045 31.636 L 567.955 31.636 Z" vector-effect="non-scaling-stroke"/></g></g></svg> -->
+          <img class="avatar" style="visibility:hidden; cursor:initial;">
         </h1>
         <div class="loginBoxWrapper">
-          <div class="loginBox">
-            <div style="margin: 16px 0; font-size: 24px">What's your nickname?</div>
-            <div class="nicknameInput nickname" data-placeholder="Type here" style="font-size:48px" spellcheck="false" onkeypress="return (this.innerText.length < 24)" contenteditable></div>
-          </div>
+          <div class="spinner" style="/* display: none; */"><div class="spinner-container"><div class="spinner-rotator"><div class="spinner-left"><div class="spinner-circle"></div></div><div class="spinner-right"><div class="spinner-circle"></div></div></div></div></div>
         </div>
+        <div style="font-family:Whitney-Semibold">&#8203;</div>
       </div>
       <div class="chat page" style="display:none">
-        <h1>
-          Kamiak Chat
-          <svg class="fullscreen" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path class="enter" d="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z"/>
-            <path class="exit" d="M14,14H19V16H16V19H14V14M5,14H10V19H8V16H5V14M8,5H10V10H5V8H8V5M19,8V10H14V5H16V8H19Z" style="display:none"/>
-          </svg>
+        <h1 style="display:flex; justify-content:space-between; align-items:center;">
+          <svg height="20" viewBox="0 0 572 74.801" xmlns="http://www.w3.org/2000/svg"><g stroke-linecap="round" fill-rule="evenodd" font-size="9pt" stroke="#4f5150" stroke-width="0" fill="#4f5150" style="stroke:#4f5150;stroke-width:0;fill:#4f5150"><path d="M 117.8 73.2 L 117.8 24.2 L 130.1 24.2 L 130.1 30.6 L 130.9 30.6 A 17.122 17.122 0 0 1 136.905 24.939 A 20.024 20.024 0 0 1 137.15 24.8 A 17.576 17.576 0 0 1 145.452 22.605 A 20.69 20.69 0 0 1 145.9 22.6 A 19.975 19.975 0 0 1 150.229 23.046 A 14.403 14.403 0 0 1 155.3 25.2 A 16.074 16.074 0 0 1 158.634 28.201 A 13.547 13.547 0 0 1 160.7 31.6 A 18.927 18.927 0 0 1 164.874 26.916 A 23.715 23.715 0 0 1 167.2 25.25 Q 171.4 22.6 177.4 22.6 A 23.537 23.537 0 0 1 181.108 22.878 Q 183.2 23.212 184.959 23.947 A 14.468 14.468 0 0 1 185.2 24.05 A 14.918 14.918 0 0 1 189.427 26.8 A 13.907 13.907 0 0 1 190.65 28.1 A 16.771 16.771 0 0 1 193.198 32.38 A 20.619 20.619 0 0 1 193.9 34.35 A 25.926 25.926 0 0 1 194.893 39.676 A 31.38 31.38 0 0 1 195 42.3 L 195 73.2 L 181.9 73.2 L 181.9 44.7 A 17.809 17.809 0 0 0 181.549 40.988 Q 180.381 35.536 175.337 34.811 A 11.519 11.519 0 0 0 173.7 34.7 A 9.991 9.991 0 0 0 171.107 35.025 A 8.33 8.33 0 0 0 169.1 35.85 Q 167.1 37 165.75 38.95 A 13.817 13.817 0 0 0 164.358 41.53 A 17.902 17.902 0 0 0 163.65 43.6 Q 162.9 46.3 162.9 49.4 L 162.9 73.2 L 149.8 73.2 L 149.8 44.7 A 16.922 16.922 0 0 0 149.419 40.934 Q 148.226 35.729 143.295 34.87 A 12.215 12.215 0 0 0 141.2 34.7 A 9.225 9.225 0 0 0 138.781 35.006 A 7.682 7.682 0 0 0 136.8 35.85 A 10.11 10.11 0 0 0 133.641 38.89 A 11.606 11.606 0 0 0 133.6 38.95 A 13.636 13.636 0 0 0 132.283 41.493 A 17.855 17.855 0 0 0 131.6 43.6 A 22.086 22.086 0 0 0 130.949 47.782 A 26.111 26.111 0 0 0 130.9 49.4 L 130.9 73.2 L 117.8 73.2 Z M 0 73.2 L 0 1.6 L 13.5 1.6 L 13.5 32.3 L 14.3 32.3 L 40.5 1.6 L 56.8 1.6 L 56.8 2.4 L 30.9 32 L 59.5 72.4 L 59.5 73.2 L 43 73.2 L 21.7 42.7 L 13.5 52.2 L 13.5 73.2 L 0 73.2 Z M 412.3 52.6 L 421.9 61.7 Q 416.6 68.1 409.4 71.45 Q 402.2 74.8 393.3 74.8 A 38.762 38.762 0 0 1 382.003 73.186 A 35.528 35.528 0 0 1 378.45 71.9 Q 371.6 69 366.6 64 Q 361.6 59 358.7 52.15 A 37.249 37.249 0 0 1 355.806 38.139 A 42.646 42.646 0 0 1 355.8 37.4 A 37.931 37.931 0 0 1 357.865 24.817 A 35.812 35.812 0 0 1 358.7 22.65 Q 361.6 15.8 366.6 10.8 Q 371.6 5.8 378.45 2.9 A 37.189 37.189 0 0 1 391.564 0.035 A 43.135 43.135 0 0 1 393.3 0 A 42.023 42.023 0 0 1 400.912 0.66 A 31.891 31.891 0 0 1 408.45 3 A 35.066 35.066 0 0 1 419.619 11.172 A 40.227 40.227 0 0 1 420.1 11.7 L 410.6 20.9 Q 407.4 17.2 403.25 15 A 18.443 18.443 0 0 0 397.775 13.164 A 25.196 25.196 0 0 0 393.4 12.8 A 25.309 25.309 0 0 0 384.552 14.339 A 24.232 24.232 0 0 0 384 14.55 Q 379.6 16.3 376.35 19.5 A 22.967 22.967 0 0 0 371.712 26.1 A 26.784 26.784 0 0 0 371.2 27.25 Q 369.3 31.8 369.3 37.4 A 28.551 28.551 0 0 0 369.901 43.368 A 23.614 23.614 0 0 0 371.2 47.55 A 24.156 24.156 0 0 0 374.629 53.394 A 21.895 21.895 0 0 0 376.35 55.3 Q 379.6 58.5 384 60.25 A 25.16 25.16 0 0 0 393.244 62 A 28.495 28.495 0 0 0 393.4 62 A 25.045 25.045 0 0 0 399.311 61.329 A 20.452 20.452 0 0 0 404.05 59.55 A 25.47 25.47 0 0 0 410.913 54.216 A 30.247 30.247 0 0 0 412.3 52.6 Z M 430.1 73.2 L 430.1 1.6 L 443.2 1.6 L 443.2 21.7 L 442.4 30.6 L 443.2 30.6 A 15.62 15.62 0 0 1 447.61 25.895 A 19.288 19.288 0 0 1 449.25 24.85 Q 453.2 22.6 458.1 22.6 Q 467.6 22.6 472.15 28.2 A 19.03 19.03 0 0 1 475.632 35.066 Q 476.429 37.853 476.631 41.177 A 38.269 38.269 0 0 1 476.7 43.5 L 476.7 73.2 L 463.6 73.2 L 463.6 45.1 Q 463.6 41.644 462.498 39.313 A 7.988 7.988 0 0 0 461.2 37.35 A 7.855 7.855 0 0 0 456.776 34.912 A 11.671 11.671 0 0 0 454.5 34.7 A 10.83 10.83 0 0 0 451.801 35.025 A 9.022 9.022 0 0 0 449.7 35.85 Q 447.6 37 446.15 39 A 14.02 14.02 0 0 0 444.376 42.347 A 16.83 16.83 0 0 0 443.95 43.65 A 20.153 20.153 0 0 0 443.226 48.188 A 23.243 23.243 0 0 0 443.2 49.3 L 443.2 73.2 L 430.1 73.2 Z M 284.7 73.2 L 284.7 1.6 L 297.8 1.6 L 297.8 40.6 L 298.4 40.6 L 314.8 24.2 L 331 24.2 L 331 25 L 312.8 42.7 L 332.5 72.4 L 332.5 73.2 L 317 73.2 L 303.6 51.7 L 297.8 57.4 L 297.8 73.2 L 284.7 73.2 Z M 94.5 73.2 L 94.5 68 L 93.7 68 Q 91.4 70.8 88.15 72.8 A 12.581 12.581 0 0 1 84.568 74.269 Q 82.964 74.668 81.084 74.767 A 24.253 24.253 0 0 1 79.8 74.8 A 20.53 20.53 0 0 1 73.601 73.877 A 19.254 19.254 0 0 1 72.65 73.55 A 19.036 19.036 0 0 1 67.945 71.025 A 17.472 17.472 0 0 1 66.8 70.1 Q 64.3 67.9 62.9 64.8 A 15.977 15.977 0 0 1 61.534 59.142 A 18.852 18.852 0 0 1 61.5 58 A 16.556 16.556 0 0 1 62.001 53.857 A 14.067 14.067 0 0 1 63 51.15 Q 64.5 48.1 67.2 45.9 Q 69.9 43.7 73.55 42.55 A 25.019 25.019 0 0 1 79.068 41.497 A 30.174 30.174 0 0 1 81.5 41.4 Q 84.873 41.4 87.406 41.771 A 22.074 22.074 0 0 1 89.4 42.15 Q 91.642 42.693 93.308 43.261 A 24.609 24.609 0 0 1 94.5 43.7 L 94.5 42.2 A 7.91 7.91 0 0 0 91.954 36.24 A 10.156 10.156 0 0 0 91.4 35.75 A 11.1 11.1 0 0 0 85.774 33.341 A 14.88 14.88 0 0 0 83.7 33.2 A 14.104 14.104 0 0 0 73.102 37.879 A 19.652 19.652 0 0 0 72.2 38.9 L 62.7 32.4 A 25.211 25.211 0 0 1 81.115 22.718 A 34.773 34.773 0 0 1 84 22.6 A 38.956 38.956 0 0 1 90.598 23.123 Q 94.197 23.743 97.055 25.097 A 18.182 18.182 0 0 1 101.4 27.95 Q 106.952 32.901 107.367 42.26 A 34.793 34.793 0 0 1 107.4 43.8 L 107.4 73.2 L 94.5 73.2 Z M 261.4 73.2 L 261.4 68 L 260.6 68 Q 258.3 70.8 255.05 72.8 A 12.581 12.581 0 0 1 251.468 74.269 Q 249.864 74.668 247.984 74.767 A 24.253 24.253 0 0 1 246.7 74.8 A 20.53 20.53 0 0 1 240.501 73.877 A 19.254 19.254 0 0 1 239.55 73.55 A 19.036 19.036 0 0 1 234.845 71.025 A 17.472 17.472 0 0 1 233.7 70.1 Q 231.2 67.9 229.8 64.8 A 15.977 15.977 0 0 1 228.434 59.142 A 18.852 18.852 0 0 1 228.4 58 A 16.556 16.556 0 0 1 228.901 53.857 A 14.067 14.067 0 0 1 229.9 51.15 Q 231.4 48.1 234.1 45.9 Q 236.8 43.7 240.45 42.55 A 25.019 25.019 0 0 1 245.968 41.497 A 30.174 30.174 0 0 1 248.4 41.4 Q 251.773 41.4 254.306 41.771 A 22.074 22.074 0 0 1 256.3 42.15 Q 258.542 42.693 260.208 43.261 A 24.609 24.609 0 0 1 261.4 43.7 L 261.4 42.2 A 7.91 7.91 0 0 0 258.854 36.24 A 10.156 10.156 0 0 0 258.3 35.75 A 11.1 11.1 0 0 0 252.674 33.341 A 14.88 14.88 0 0 0 250.6 33.2 A 14.104 14.104 0 0 0 240.002 37.879 A 19.652 19.652 0 0 0 239.1 38.9 L 229.6 32.4 A 25.211 25.211 0 0 1 248.015 22.718 A 34.773 34.773 0 0 1 250.9 22.6 A 38.956 38.956 0 0 1 257.498 23.123 Q 261.097 23.743 263.955 25.097 A 18.182 18.182 0 0 1 268.3 27.95 Q 273.852 32.901 274.267 42.26 A 34.793 34.793 0 0 1 274.3 43.8 L 274.3 73.2 L 261.4 73.2 Z M 517.2 73.2 L 517.2 68 L 516.4 68 Q 514.1 70.8 510.85 72.8 A 12.581 12.581 0 0 1 507.268 74.269 Q 505.664 74.668 503.784 74.767 A 24.253 24.253 0 0 1 502.5 74.8 A 20.53 20.53 0 0 1 496.301 73.877 A 19.254 19.254 0 0 1 495.35 73.55 A 19.036 19.036 0 0 1 490.645 71.025 A 17.472 17.472 0 0 1 489.5 70.1 Q 487 67.9 485.6 64.8 A 15.977 15.977 0 0 1 484.234 59.142 A 18.852 18.852 0 0 1 484.2 58 A 16.556 16.556 0 0 1 484.701 53.857 A 14.067 14.067 0 0 1 485.7 51.15 Q 487.2 48.1 489.9 45.9 Q 492.6 43.7 496.25 42.55 A 25.019 25.019 0 0 1 501.768 41.497 A 30.174 30.174 0 0 1 504.2 41.4 Q 507.573 41.4 510.106 41.771 A 22.074 22.074 0 0 1 512.1 42.15 Q 514.342 42.693 516.008 43.261 A 24.609 24.609 0 0 1 517.2 43.7 L 517.2 42.2 A 7.91 7.91 0 0 0 514.654 36.24 A 10.156 10.156 0 0 0 514.1 35.75 A 11.1 11.1 0 0 0 508.474 33.341 A 14.88 14.88 0 0 0 506.4 33.2 A 14.104 14.104 0 0 0 495.802 37.879 A 19.652 19.652 0 0 0 494.9 38.9 L 485.4 32.4 A 25.211 25.211 0 0 1 503.815 22.718 A 34.773 34.773 0 0 1 506.7 22.6 A 38.956 38.956 0 0 1 513.298 23.123 Q 516.897 23.743 519.755 25.097 A 18.182 18.182 0 0 1 524.1 27.95 Q 529.652 32.901 530.067 42.26 A 34.793 34.793 0 0 1 530.1 43.8 L 530.1 73.2 L 517.2 73.2 Z M 544.9 56.9 L 544.9 35.4 L 536.3 35.4 L 536.3 24.2 L 544.9 24.2 L 544.9 9.2 L 558 9.2 L 558 24.2 L 570 24.2 L 570 35.4 L 558 35.4 L 558 54.4 Q 558 56.1 558.35 57.55 A 5.178 5.178 0 0 0 559.228 59.455 A 4.991 4.991 0 0 0 559.7 60 A 4.543 4.543 0 0 0 562.227 61.452 A 6.906 6.906 0 0 0 563.7 61.6 A 13.541 13.541 0 0 0 564.694 61.566 Q 565.713 61.491 566.4 61.25 Q 567.4 60.9 568.3 60.3 L 572 71.8 A 21.469 21.469 0 0 1 567.38 73.38 A 23.841 23.841 0 0 1 567.05 73.45 A 25.832 25.832 0 0 1 563.895 73.895 A 33.27 33.27 0 0 1 561.2 74 A 20.449 20.449 0 0 1 557.506 73.681 A 16.142 16.142 0 0 1 554.55 72.85 A 15.257 15.257 0 0 1 551.382 71.185 A 12.947 12.947 0 0 1 549.6 69.7 Q 545.125 65.416 544.911 57.686 A 28.37 28.37 0 0 1 544.9 56.9 Z M 219.7 73.2 L 206.6 73.2 L 206.6 24.2 L 219.7 24.2 L 219.7 73.2 Z M 94.5 53.3 Q 92.2 52.2 89.75 51.55 A 19.304 19.304 0 0 0 86.512 50.992 A 23.757 23.757 0 0 0 84.4 50.9 Q 79.7 50.9 77.15 52.95 A 7.345 7.345 0 0 0 75.547 54.697 A 5.986 5.986 0 0 0 74.6 58 Q 74.6 60.878 76.854 62.651 A 7.456 7.456 0 0 0 77.05 62.8 A 9.281 9.281 0 0 0 82.65 64.6 A 11.333 11.333 0 0 0 82.7 64.6 A 12.466 12.466 0 0 0 86.086 64.151 A 11.21 11.21 0 0 0 87.5 63.65 Q 89.7 62.7 91.25 61.15 Q 92.8 59.6 93.65 57.55 Q 94.5 55.5 94.5 53.3 Z M 261.4 53.3 Q 259.1 52.2 256.65 51.55 A 19.304 19.304 0 0 0 253.412 50.992 A 23.757 23.757 0 0 0 251.3 50.9 Q 246.6 50.9 244.05 52.95 A 7.345 7.345 0 0 0 242.447 54.697 A 5.986 5.986 0 0 0 241.5 58 Q 241.5 60.878 243.754 62.651 A 7.456 7.456 0 0 0 243.95 62.8 A 9.281 9.281 0 0 0 249.55 64.6 A 11.333 11.333 0 0 0 249.6 64.6 A 12.466 12.466 0 0 0 252.986 64.151 A 11.21 11.21 0 0 0 254.4 63.65 Q 256.6 62.7 258.15 61.15 Q 259.7 59.6 260.55 57.55 Q 261.4 55.5 261.4 53.3 Z M 517.2 53.3 Q 514.9 52.2 512.45 51.55 A 19.304 19.304 0 0 0 509.212 50.992 A 23.757 23.757 0 0 0 507.1 50.9 Q 502.4 50.9 499.85 52.95 A 7.345 7.345 0 0 0 498.247 54.697 A 5.986 5.986 0 0 0 497.3 58 Q 497.3 60.878 499.554 62.651 A 7.456 7.456 0 0 0 499.75 62.8 A 9.281 9.281 0 0 0 505.35 64.6 A 11.333 11.333 0 0 0 505.4 64.6 A 12.466 12.466 0 0 0 508.786 64.151 A 11.21 11.21 0 0 0 510.2 63.65 Q 512.4 62.7 513.95 61.15 Q 515.5 59.6 516.35 57.55 Q 517.2 55.5 517.2 53.3 Z M 213.1 17.1 Q 211.4 17.1 209.85 16.45 Q 208.3 15.8 207.15 14.65 Q 206 13.5 205.35 12 A 7.959 7.959 0 0 1 204.727 9.419 A 9.494 9.494 0 0 1 204.7 8.7 A 8.678 8.678 0 0 1 204.967 6.517 A 7.591 7.591 0 0 1 205.35 5.4 Q 206 3.9 207.15 2.75 Q 208.3 1.6 209.85 0.95 Q 211.4 0.3 213.1 0.3 A 8.266 8.266 0 0 1 219.09 2.741 A 10.274 10.274 0 0 1 219.1 2.75 A 8.005 8.005 0 0 1 221.599 8.537 A 9.699 9.699 0 0 1 221.6 8.7 A 8.005 8.005 0 0 1 219.216 14.535 A 9.701 9.701 0 0 1 219.1 14.65 A 8.266 8.266 0 0 1 213.114 17.1 A 10.15 10.15 0 0 1 213.1 17.1 Z" vector-effect="non-scaling-stroke"/></g></svg>
+          <!-- <svg height="20" viewBox="0 0 599.864 79.638" xmlns="http://www.w3.org/2000/svg"><g stroke-linecap="round" fill-rule="evenodd" font-size="9pt" stroke="#4f5150" stroke-width="0.00mm" fill="#4f5150" style="stroke:#4f5150;stroke-width:0.00mm;fill:#4f5150"><g transform="translate(-0.0 0)"><path d="M 0 3.182 L 0 78.182 L 14 78.182 L 14 46.273 L 44.318 78.182 L 63.682 78.182 L 26.773 39.364 L 59.227 3.182 L 42.091 3.182 L 14 34.727 L 14 3.182 L 0 3.182 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-2.5 0)"><path d="M 100.818 71.682 L 100.818 78.182 L 114.091 78.182 L 114.091 31.636 L 100.818 31.636 L 100.818 38.136 A 20.673 20.673 0 0 0 84.273 30.182 C 71.874 30.182 62.701 39.314 61.389 51.757 A 29.611 29.611 0 0 0 61.227 54.864 C 61.227 68.864 70.864 79.636 84.273 79.636 A 20.673 20.673 0 0 0 100.818 71.682 Z M 75.182 54.909 C 75.182 47.136 80.682 41.5 88.182 41.5 A 13.015 13.015 0 0 1 95.851 43.859 C 99.128 46.208 101.136 50.145 101.136 54.909 A 14.304 14.304 0 0 1 99.233 62.231 C 97.021 65.977 93.045 68.318 88.182 68.318 A 12.946 12.946 0 0 1 80.02 65.572 C 77.536 63.593 75.848 60.661 75.341 57.159 A 15.706 15.706 0 0 1 75.182 54.909 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-5.0 0)"><path d="M 127.045 78.182 L 140.318 78.182 L 140.318 51.455 A 13.141 13.141 0 0 1 141.068 46.912 C 142.498 43.02 145.852 40.818 150.091 40.818 C 154.418 40.818 157.417 43.17 158.525 47.033 A 13.058 13.058 0 0 1 159 50.636 L 159 78.182 L 172.273 78.182 L 172.273 51.182 A 12.755 12.755 0 0 1 173.018 46.716 C 174.421 42.952 177.698 40.818 181.955 40.818 A 9.199 9.199 0 0 1 186.575 41.96 C 188.345 42.972 189.644 44.629 190.35 46.81 A 13.459 13.459 0 0 1 190.955 50.955 L 190.955 78.182 L 204.227 78.182 L 204.227 47.318 C 204.227 37.857 198.323 31.533 189.805 30.374 A 21.479 21.479 0 0 0 186.909 30.182 A 18.214 18.214 0 0 0 173.593 35.69 A 29.796 29.796 0 0 0 170.591 39.136 A 14.795 14.795 0 0 0 162.819 31.811 A 20.286 20.286 0 0 0 154.727 30.182 A 16.007 16.007 0 0 0 143.04 34.798 A 23.625 23.625 0 0 0 140.318 37.955 L 140.318 31.636 L 127.045 31.636 L 127.045 78.182 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-7.5 0)"><path d="M 229.545 78.182 L 229.545 31.636 L 216.273 31.636 L 216.273 78.182 L 229.545 78.182 Z M 215 14.045 C 215 18.409 218.545 21.955 222.909 21.955 C 227.273 21.955 230.818 18.409 230.818 14.045 C 230.818 9.682 227.273 6.136 222.909 6.136 C 218.545 6.136 215 9.682 215 14.045 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-10.0 0)"><path d="M 278.5 71.682 L 278.5 78.182 L 291.773 78.182 L 291.773 31.636 L 278.5 31.636 L 278.5 38.136 A 20.673 20.673 0 0 0 261.955 30.182 C 249.556 30.182 240.383 39.314 239.071 51.757 A 29.611 29.611 0 0 0 238.909 54.864 C 238.909 68.864 248.545 79.636 261.955 79.636 A 20.673 20.673 0 0 0 278.5 71.682 Z M 252.864 54.909 C 252.864 47.136 258.364 41.5 265.864 41.5 A 13.015 13.015 0 0 1 273.533 43.859 C 276.81 46.208 278.818 50.145 278.818 54.909 A 14.304 14.304 0 0 1 276.915 62.231 C 274.703 65.977 270.727 68.318 265.864 68.318 A 12.946 12.946 0 0 1 257.702 65.572 C 255.218 63.593 253.53 60.661 253.023 57.159 A 15.706 15.706 0 0 1 252.864 54.909 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-12.5 0)"><path d="M 318.136 78.182 L 318.136 59.455 L 336.682 78.182 L 353.727 78.182 L 330.045 54.364 L 352.682 31.636 L 335.5 31.636 L 318.136 48.818 L 318.136 0 L 304.864 0 L 304.864 78.182 L 318.136 78.182 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-15.0 0)"><path d="M 444.045 72.5 L 437.273 61.045 A 23.937 23.937 0 0 1 429.638 64.689 A 31.254 31.254 0 0 1 421.091 65.864 C 405.273 65.864 395.318 54.955 395.318 40.727 A 25.465 25.465 0 0 1 400.692 24.595 C 404.001 20.474 408.734 17.51 414.591 16.256 A 31.011 31.011 0 0 1 421.091 15.591 A 30.45 30.45 0 0 1 432.105 17.598 A 22.531 22.531 0 0 1 437.273 20.409 L 444.045 8.955 A 36.156 36.156 0 0 0 435.217 4.408 C 430.953 2.877 426.158 1.94 421.18 1.829 A 44.717 44.717 0 0 0 420.182 1.818 A 41.301 41.301 0 0 0 396.948 8.663 A 38.166 38.166 0 0 0 380.136 40.727 A 38.332 38.332 0 0 0 412.574 78.993 A 44.648 44.648 0 0 0 420.182 79.636 A 44.916 44.916 0 0 0 434.474 77.305 C 438.089 76.083 441.347 74.436 444.045 72.5 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-17.5 0)"><path d="M 452.5 0 L 452.5 78.182 L 465.773 78.182 L 465.773 50.409 C 465.773 44.909 469.682 40.591 476.136 40.591 C 480.928 40.591 484.294 42.986 485.59 47.259 A 14.913 14.913 0 0 1 486.182 51.591 L 486.182 78.182 L 499.455 78.182 L 499.455 48.773 C 499.455 37.636 492.045 30.182 481.364 30.182 A 22.067 22.067 0 0 0 473.172 31.723 C 470.218 32.902 467.703 34.691 465.817 36.858 A 17.114 17.114 0 0 0 465.773 36.909 L 465.773 0 L 452.5 0 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-20.0 0)"><path d="M 547.545 71.682 L 547.545 78.182 L 560.818 78.182 L 560.818 31.636 L 547.545 31.636 L 547.545 38.136 A 20.673 20.673 0 0 0 531 30.182 C 518.602 30.182 509.429 39.314 508.116 51.757 A 29.611 29.611 0 0 0 507.955 54.864 C 507.955 68.864 517.591 79.636 531 79.636 A 20.673 20.673 0 0 0 547.545 71.682 Z M 521.909 54.909 C 521.909 47.136 527.409 41.5 534.909 41.5 A 13.015 13.015 0 0 1 542.578 43.859 C 545.855 46.208 547.864 50.145 547.864 54.909 A 14.304 14.304 0 0 1 545.96 62.231 C 543.748 65.977 539.772 68.318 534.909 68.318 A 12.946 12.946 0 0 1 526.748 65.572 C 524.263 63.593 522.575 60.661 522.069 57.159 A 15.706 15.706 0 0 1 521.909 54.909 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-22.5 0)"><path d="M 567.955 31.636 L 567.955 41.727 L 574.045 41.727 L 574.045 63.136 A 23.505 23.505 0 0 0 574.952 69.895 C 576.68 75.645 580.82 79.091 586.854 79.577 A 18.81 18.81 0 0 0 588.364 79.636 A 22.009 22.009 0 0 0 591.426 79.414 C 593.698 79.093 595.97 78.438 597.908 77.532 A 16.017 16.017 0 0 0 599.864 76.455 L 594.955 66.818 A 6.333 6.333 0 0 1 592.139 67.746 A 6.685 6.685 0 0 1 591.545 67.773 A 4.245 4.245 0 0 1 589.522 67.315 C 588.07 66.54 587.318 64.795 587.318 62.182 L 587.318 41.727 L 597.682 41.727 L 597.682 31.636 L 587.318 31.636 L 587.318 14.227 L 574.045 14.227 L 574.045 31.636 L 567.955 31.636 Z" vector-effect="non-scaling-stroke"/></g></g></svg> -->
+          <div style="display:flex; align-items:center; justify-content:flex-end;">
+            <div class="avatarGutter" style="display:flex; align-items:center; justify-content:flex-end; margin-left:28px"></div>
+            <div class="myAvatarWrapper" style="margin-left:16px;">
+              <div class="popupWrapper">
+                <img class="avatar" referrerpolicy="no-referrer" tabindex="1">
+                <!-- <div class="popup">
+                  <img class="avatarLarge" referrerpolicy="no-referrer" tabindex="1">
+                  <div class="popupName">Joseph Jackson</div>
+                  <div class="popupId">bloemkerha&#8203;@mukilteo.wednet.edu</div>
+                  <button class="light" style="margin-top:16px;" onclick="window.signOut()">Sign out</button>
+                </div> -->
+              </div>
+            </div>
+          </div>
         </h1>
         <ul class="messages"></ul>
-        <input class="messageInput" placeholder="Message Kamiak Chat" disabled/>
+        <div class="messageInputWrapper">
+          <div class="files" style="display:none;"></div>
+          <div style="display:flex;">
+            <div>
+              <div class="iconButton fileInput">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg>
+              </div>
+            </div>
+            <div style="display:flex; flex-grow:1;">
+              <textarea class="messageInput" placeholder="Message Kamiak Chat" style="overflow:hidden;" rows="1" data-gramm="false" disabled></textarea>
+            </div>
+          </div>
+        </div>
         <div class="typing"></div>
       </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <input type="file" id="fileInput" multiple/>
+    <script type="module">
+      window.t1 = new Date();
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js";
+      import { getAuth, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithRedirect, onIdTokenChanged } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAmq6TPQkTz8-gILGlfztha41Uo8400brU",
+        authDomain: "auth.kamiak.org",
+        // authDomain: "kamiak-chat.firebaseapp.com",
+        projectId: "kamiak-chat",
+        storageBucket: "kamiak-chat.appspot.com",
+        messagingSenderId: "606268222806",
+        appId: "1:606268222806:web:6497ac82fb82434d397af7"
+      };
+      const app = initializeApp(firebaseConfig);
+      const provider = new GoogleAuthProvider();
+      // provider.setCustomParameters({hd: 'mukilteo.wednet.edu'});
+      const auth = getAuth(app);
+      window.auth = auth;
+
+      onAuthStateChanged(auth, user => {
+        window.user = user;
+        if (user) {
+          // if (!user.email.endsWith('@mukilteo.wednet.edu')) window.signOut();
+          console.log('Signed into Google', new Date()-window.t1);
+          $('.avatar').attr('src', user.photoURL).addClass(user.uid);
+          main();
+        } else {
+          signInWithRedirect(auth, provider);
+        }
+      });
+
+      window.signOut = () => signOut(auth);
+      window.onIdTokenChanged = (_) => onIdTokenChanged(auth, _);
+    </script>
+    <!-- <script>
+      const upload = (file, callback) => {
+        let data = new FormData();
+        data.append('file', file)
+        $.post({
+          url: 'https://api.tempfiles.download/upload/',
+          dataType: 'JSON',
+          cache: false,
+          processData: false,
+          contentType: false,
+          data: data,
+          success: (data, textStatus, xhr) => {
+            callback(data['url']);
+          }
+        });
+      }
+    </script> -->
     <script>
-      const $fullscreen = $('.fullscreen');
-      $fullscreen.on('click', function () {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen();
-        } else {
-          document.exitFullscreen();
-        }
-      });
-      $(document).on('fullscreenchange', event => {
-        if (document.fullscreenElement) {
-          $('.fullscreen .enter').hide();
-          $('.fullscreen .exit').show();
-        } else {
-          $('.fullscreen .enter').show();
-          $('.fullscreen .exit').hide();
-        }
-      });
+      let client, locationid, options, upload;
+      let onpCloudload = () => {
+        client = pCloudSdk.createClient('J9Xj7ZPmbbXdKKtaHZq62kc7Zz1yVQX7TcEVrLcijqQzliy4QiS70');
+        locationid = 1;
+        options = (data) => ({
+          onBegin: () => {},
+          onProgress: progress => data.onprogress(progress),
+          onFinish: fileMetadata => data.onfinish(fileMetadata),
+        });
+        upload = (file, data) => client.upload(file, 0, options(data)).catch(error => console.error(error));
+      }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
+    <script>
       /// <reference path="./jquery.min.js" />
       /// <reference path="./socket.io.min.js" />
-      $(()=>{
+      const main = () => {
+      
 
       //#region JQuery Vars
       const $window = $(window);
-      const $nicknameInput = $('.nicknameInput');
+      const $files = $('.files');
       const $messageInput = $('.messageInput');
+      const $fileInput = $('#fileInput');
       const $messages = $('.messages');
       const $typing = $('.typing');
-      var $currentInput = $nicknameInput.focus();
       //#endregion JQuery Vars
 
+      $('.login.page').hide();
+      $('.chat.page').show();
 
-      const randomHue = seed => {
-        var hash = 7;
-        for (let i = 0; i < seed.length; ++i)
-          hash = (seed.charCodeAt(i)+(hash<<5)-(hash>>2))%47160;
-        return hash%360;
-      }
-      const refreshnicknameInputColor = () => {
-        const hue = randomHue($nicknameInput.text().trim().replace('\n', '')+(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15))));
-        $nicknameInput.attr('style', `color:hsl(${hue}, 100%, 40%); background:hsla(${hue}, 100%, 40%, 0.133); --placeholder-color:hsla(${hue}, 100%, 40%, 0.3)`);
-        if ($nicknameInput.text().includes('\n')) {
-          $nicknameInput.text() = $nicknameInput.text().replace('\n', '');
-          submitNickname();
-        }
-      }
-      refreshnicknameInputColor();
-      $nicknameInput.on('input', refreshnicknameInputColor);
-      $nicknameInput.on('keydown', function (e) {
-        console.log(e);
-        if (e.which == 13) {
-          e.preventDefault();
-          console.log('submit');
-          submitNickname();
-        }
-      });
-      $nicknameInput.on('paste', e => {
-        e.preventDefault();
-        const text = (e.originalEvent || e).clipboardData.getData('text/plain').replace('\n', '');
-        document.execCommand('insertText', false, text.substring(0, 24-$nicknameInput.text().length));
-        refreshnicknameInputColor();
-      });
-      const submitNickname = () => {
-        nickname = $nicknameInput.text().trim().replace('\n', '');
-        if (!$nicknameInput.prop('contenteditable') || nickname.length < 2 || nickname.length > 24) return;
-        $nicknameInput.prop('contenteditable', false);
-        setupSocket();
-      }
+
+      $messageInput.clear = () => {
+        $messageInput.val('');
+        refreshMessageInputHeight();
+      };
       const getDaysLeftOfSchool = () => {
         const daysLeftOfSchool = [0,1,2,3,4,7,8,9,10,11,14,15,16,17,21,22,23,24,25,28,29,30,31,32,35,36,37,38,39,42,43,44,45,46];
         const lastDayOfSchool = new Date("06/17/2022 14:");  // 6/17 2pm (because most school days end at 2)
@@ -278,58 +525,215 @@
         var i; for (i = 0; daysLeft > daysLeftOfSchool[i] && i < daysLeftOfSchool.length; i++);
         return `There ${i!=1?'are '+i+' days':'is 1 day'} left of school`;
       }
+      const getAvatar = args => {
+        let temp = args.user.avatar;
+        args.user.avatar = t$avatar(args);  // preload next element
+        return temp;
+      }
+      const timeString = ms => (ms ? new Date(ms) : new Date()).toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true});
+      const updateUserList = () => {
+        const $avatars = $('<div>');
+        const addedUids = new Set();
+        Object.values(users).forEach(user => {
+          if (user.uid == users[sid].uid || addedUids.has(user.uid)) return;
+          addedUids.add(user.uid);
+          $avatars.append(getAvatar({user: user}));
+        });
+        $('.avatarGutter').html($avatars.children());
+        // $('.myAvatarWrapper').html(getAvatar({user: users[sid]}));
+      }
+      const refreshMessageInputHeight = () => {
+        const $messageInputWrapper = $('.messageInputWrapper');
+        const prevHeight = $messageInputWrapper.outerHeight();
+
+        $messageInputWrapper.css('height', 'auto');
+        $messageInput.css('height', 'auto');
+        $messageInput.css('height', $messageInput[0].scrollHeight+'px');
+
+        $messageInputWrapper.css('overflow', $messageInputWrapper[0].scrollHeight < 291 ? 'hidden' : '');
+        $(':root')[0].style.setProperty('--message-input-height', Math.min($messageInputWrapper[0].scrollHeight, 291)+'px');
+        $messageInputWrapper.css('height', 'var(--message-input-height)');
+        
+        if ($messageInputWrapper.outerHeight() != prevHeight) {
+          scrollToBottom();
+        }
+      }
+      const updateFiles = () => {
+        $files.html('')
+        if (fileList.length == 0) {
+          $files.css('display', 'none');
+          return;
+        }
+        for (let i = 0; i < fileList.length; i++) {
+          $files.append(t$file({fileIndex: i}));
+        }
+        $files.css('display', '');
+      }
+      const formatFileSize = size => {
+        if (Math.abs(size) < 1024) {
+          return size+' bytes';
+        }
+        const units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']; 
+        let u = -1;
+        const r = 10;
+        do {
+          size /= 1024;
+          ++u;
+        } while (Math.round(Math.abs(size)*r)/r >= 1024 && u < units.length-1);
+        return Math.round(size*100)/100+' '+units[u];
+      }
+      const addDownloadLink = (data) => {
+        $.get({
+          url: data.publink,
+          success: (html) => {
+            let publinkData = JSON.parse(html.match(/var publinkData = (.*?);/s)[1]);
+            let link = publinkData.downloadlink.split('').reverse().join('').split(/\/(.*)/s)[1].split('').reverse().join('')+'/'+data.file.name;
+            $(`.${data.file.id} a`).removeClass('disabled').attr('href', link);
+            $('.'+data.file.id).find('#fileIconFill').css('opacity', '1');
+          },
+          error: () => addDownloadLink(data),
+        });
+      }
 
 
 
 
       //#region Templates
-      const t$message = args =>
-      $('<li>')
-        .addClass('message')
+      const t$avatar = args =>
+      $('<div class="popupWrapper">')
         .html(
-          ' '+args.message
-          .replace(/[&<>"'`=]/g, function(s) {return ENTITY_MAP[s]})
-          .replace(/((http|https|ftp):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g, '<a href="$1" target="_blank" rel="nofollow noopener noreferrer">$1</a>')
+          $('<img class="avatar" referrerpolicy="no-referrer" tabindex="1">')
+            .addClass(args.user.uid)
+            .attr('src', args.user.picture)
         )
-        .prepend(t$nickname(args.user))
       ;
-      const t$nickname = user =>
-      $('<div>')
-        .addClass('nickname')
-        .text(user.nickname)
+      const t$message = args => {
+        let messageBody = $('<div style="flex-grow:1;">').append(
+          $('<li class="message">').html(
+            args.message
+            .replace(/[&<>"'`=]/g, function(s) {return ENTITY_MAP[s]})
+            .replace(/((http|https|ftp):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g, '<a href="$1" target="_blank" rel="nofollow noopener noreferrer">$1</a>')
+          )
+        );
+        if (args.files) {
+          window.files = args.files;
+          args.files.forEach((file) => messageBody.append(t$attachment({file: file})));
+          // if (args.user.sid == sid) {
+          //   args.files.forEach((file) => messageBody.append(t$attachment({blob: file})));
+          // } else {
+          //   args.files.forEach((file) => {
+          //     let blob = new Blob([file.buffer]);
+          //     blob.name = file.name;
+          //     messageBody.append(t$attachment({blob: blob}));
+          //   });
+          // }
+        }
+        
+        let res = args.user.uid != lastUid ? 
+        $(`<div class="messageWrapper" style="margin-top:var(--message-padding);">`)
+          .append(getAvatar(args).css('margin', '4px var(--avatar-padding) 4px 0'))
+          .append(
+            messageBody.prepend(
+              $('<div style="display:flex; align-items:baseline;">').append(
+                t$nickname2(args)
+              ).append(
+                $('<div class="timestamp1">').text('Today at '+timeString(args.timestamp))
+              )
+            )
+          )
+        : $('<div class="messageWrapper">')
+          .append(
+            $('<div class="timestamp2">')
+              .text(timeString(args.timestamp))
+          )
+          .append(
+            messageBody
+          )
+        ;
+        lastUid = args.user.uid;
+        return res;
+      }
+      const t$attachment = args => {
+        let res = 
+        $('<div class="attachment">')
+        .addClass(args.file.id)
+        .append(
+          $('<img class="attachmentIcon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA3MiA5NiIgd2lkdGg9IjcyIj48cGF0aCBmaWxsPSIjYTY5NWY5IiBkPSJtNzIgMjkuM3Y2MC4zYzAgMi4yNCAwIDMuMzYtLjQ0IDQuMjItLjM4Ljc0LTEgMS4zNi0xLjc0IDEuNzQtLjg2LjQ0LTEuOTguNDQtNC4yMi40NGgtNTkuMmMtMi4yNCAwLTMuMzYgMC00LjIyLS40NC0uNzQtLjM4LTEuMzYtMS0xLjc0LTEuNzQtLjQ0LS44Ni0uNDQtMS45OC0uNDQtNC4yMnYtODMuMmMwLTIuMjQgMC0zLjM2LjQ0LTQuMjIuMzgtLjc0IDEtMS4zNiAxLjc0LTEuNzQuODYtLjQ0IDEuOTgtLjQ0IDQuMjItLjQ0aDM2LjNjMS45NiAwIDIuOTQgMCAzLjg2LjIyLjUuMTIuOTguMjggMS40NC41djE2Ljg4YzAgMi4yNCAwIDMuMzYuNDQgNC4yMi4zOC43NCAxIDEuMzYgMS43NCAxLjc0Ljg2LjQ0IDEuOTguNDQgNC4yMi40NGgxNi44OGMuMjIuNDYuMzguOTQuNSAxLjQ0LjIyLjkyLjIyIDEuOS4yMiAzLjg2eiIvPjxwYXRoIGZpbGw9IiM3YjY3ZGIiIGQ9Im02OC4yNiAyMC4yNmMxLjM4IDEuMzggMi4wNiAyLjA2IDIuNTYgMi44OC4xOC4yOC4zMi41Ni40Ni44NmgtMTYuODhjLTIuMjQgMC0zLjM2IDAtNC4yMi0uNDQtLjc0LS4zOC0xLjM2LTEtMS43NC0xLjc0LS40NC0uODYtLjQ0LTEuOTgtLjQ0LTQuMjJ2LTE2Ljg4MDAyOWMuMy4xNC41OC4yOC44Ni40NTk5OTkuODIuNSAxLjUgMS4xOCAyLjg4IDIuNTZ6Ii8+PC9zdmc+">')
+        )
+        .append(
+          $('<div class="attachmentBody">')
+          .append(
+            $('<a class="disabled">')
+            .attr('download', args.file.name)
+            .text(args.file.name)
+          )
+          .append(
+            $('<div class="attachmentFileSize">')
+            .text(formatFileSize(args.file.size))
+          )
+        )
+        .append(
+          $('<a class="attachmentDownloadWrapper disabled" tabindex="0"><svg role="img" width="24" height="24" viewBox="0 0 24 24"><defs><mask id="fileIcon"><path d="M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z" fill="white"></path></mask></defs><rect id="fileIconBackground" x="0" y="0" fill="currentColor" style="opacity:0.5;" width="100%" height="100%" mask="url(#fileIcon)"></rect><rect id="fileIconFill" x="0" y="100%" fill="currentColor" style="opacity:1;" width="100%" height="100%" mask="url(#fileIcon)"></rect></svg></a>')
+          .attr('download', args.file.name)
+        )
+        ;
+        return $('<div>').append(res);
+      }
+      const t$nickname2 = args =>
+      $('<span class="nick">')
+        .addClass(args.user.uid)
+        .text(sync[args.user.uid].nickname)
         .css({
-          background: user.color+'22',
-          color: user.color
+          color: args.user.color
         })
       ;
-      const t$broadcast = message =>
-      $('<li>')
-        .addClass('broadcast')
-        .text(message)
-      ;
-      const t$broadcastUser = args =>
-      t$broadcast(' '+args.message)
-        .prepend(t$nickname(args.user))
-      ;
-      const t$broadcastUserList = () => {
-        const $broadcast = t$broadcast(`Online users (${Object.keys(users).length}): `);
-        Object.values(users).forEach(user => $broadcast.append(t$nickname(user)).append(' '));
-        return $broadcast;
+      const t$broadcast = args => {
+        let res = (lastUid != null ? $('<div class="broadcastWrapper" style="margin-top:var(--message-padding);">') : $('<div class="broadcastWrapper">'))
+          .append(
+            $('<div class="broadcastTimestampWrapper">').append(
+              $('<div class="timestamp2">').text(timeString(args.timestamp))
+            )
+          )
+          .append(
+            args.user ? $(`<li class="broadcast">`).text(' '+args.message).prepend(t$nickname2(args)) : $(`<li class="broadcast">`).text(args.message)
+          )
+        ;
+        lastUid = null;
+        return res;
       }
+      const t$file = window.t$file = args => 
+      $('<div class="fileWrapper">')
+      .append(
+        $('<input class="file">')
+        .val(fileList[args.fileIndex].name)
+        .on('input', () => console.log('HI!'))
+        .on('input', function () { console.log('yay');console.log(this.value); Object.defineProperty(fileList[args.fileIndex], 'name', {writable: true, value: this.value}); })
+      )
+      .append(
+        $('<div class="iconButton removeFile"><svg role="img" viewBox="0 0 24 24"><path fill="currentColor" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg></div>')
+        .on('click', () => { fileList.splice(args.fileIndex, 1); updateFiles(); refreshMessageInputHeight(); })
+      )
+      ;
       //#endregion Templates
 
       const TYPING_DELAY = 400  // ms
       const ENTITY_MAP = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#x60;', '=': '&#x3D;'};  // For escaping strings
 
-      let sid;  // Client ID
-      let color;
+      let sid;
+
       var typing;  // Bool
       var lastTyping;  // Unix timestamp (ms)
       var disconnected = false;
+      var lastUid;
 
       var users = {};   // (Obj) Data of users
+
+      var sync = {};
+
       const typingUsers = new Set();  // List of typing users
       let socket;
+
+      let fileList = [];
 
 
       const viewingNewMessages = () => ($messages[0].scrollHeight-$messages.scrollTop() <= 2*$messages.outerHeight());
@@ -342,12 +746,73 @@
       }
 
       const sendMessage = () => {
-        var message = $messageInput.val();
-        message = message.trim();
-        if (message.length == 0) return;
-        socket.emit('send message', {message: message});
-        $messageInput.val('');
-        log(t$message({message: message, user: {nickname: nickname, color: color}}), true);
+        const message = $messageInput.val().trim();
+        if (message.startsWith('/nick ')) {
+          // Change nickname
+          const nickname = message.substr(6).trim().replace(/\s+/g, ' ');
+          if (nickname.length < 2 || nickname.length > 24) {
+            alert('Nickname length must be between 2 and 24 characters');
+          } else {
+            $messageInput.clear();
+            sync[users[sid].uid].nickname = nickname;
+            log(t$broadcast({message: 'Your changed your nickname to '+nickname}));
+            socket.emit('set nickname', {nickname: nickname});
+          }
+        }
+        else if (message == '/help') {
+          // Help
+          $messageInput.clear();
+          log(t$broadcast({message: 'Commands:    /help    /nick <nickname>    /ping    /reconnect'}));
+        }
+        else if (message == '/ping') {
+          // Ping
+          $messageInput.clear();
+          const start = Date.now();
+          socket.emit('ping', () => {
+            const duration = Date.now()-start;
+            log(t$broadcast({message: `Ping: ${duration}ms`}));
+          })
+        }
+        else if (message == '/reconnect') {
+          // Reconnect
+          $messageInput.clear();
+          window.user.getIdToken().then(() => socket.close().open());
+        }
+        else if (message.length > 0 || fileList.length > 0) {
+          // Send message normally (possibly with attachments)
+          $messageInput.clear();
+          let files = [];
+          for (let i = 0; i < fileList.length; i++) {
+            console.log(fileList[i]);
+            files[i] = {name: fileList[i].name, size: fileList[i].size};
+          }
+          $message = t$message({message: message, user: users[sid], files: files});
+          log($message, true);
+          fileList2 = fileList;
+          socket.emit('send message', {message: message, files: files}, (data) => {
+            $attachments = $message.find('.attachment');
+            console.log($attachments);
+            window.$attachments = $attachments;
+            files = data.files;
+            for (let i = 0; i < files.length; i++) {
+              $($attachments[i]).addClass(files[i].id);
+              Object.defineProperty(fileList2[i], 'name', {writable: true, value: files[i].key});
+              upload(fileList2[i], {
+                onprogress: (progress) => {
+                  socket.emit('upload progress', {file: files[i], progress: 100-progress.percent+'%'});
+                },
+                onfinish: (data) => {
+                  console.log('fileid', data.metadata.fileid);
+                  files[i].fileid = data.metadata.fileid;
+                  socket.emit('update file', {file: files[i]});
+                },
+              });
+            }
+          });
+          fileList = [];
+          updateFiles();
+          refreshMessageInputHeight();
+        }
       }
 
       const updateTyping = () => {
@@ -368,29 +833,29 @@
         const tua = [...typingUsers];  // typing users Array
         switch (typingUsers.size) {
           case 0:
-            $typing.html('&nbsp');
+            $typing.html('');
             break;
           case 1:
             $typing
               .text(' is typing...')
-              .prepend(t$nickname(users[tua[0]]))
+              .prepend(t$nickname2({user: users[tua[0]]}))
             ;
             break;
           case 2:
             $typing
               .text(' and ')
-              .prepend(t$nickname(users[tua[0]]))
-              .append(t$nickname(users[tua[1]]))
+              .prepend(t$nickname2({user: users[tua[0]]}))
+              .append(t$nickname2({user: users[tua[1]]}))
               .append(' are typing...')
             ;
             break;
           case 3:
             $typing
               .text(' ')
-              .prepend(t$nickname(users[tua[0]]))
-              .append(t$nickname(users[tua[1]]))
+              .prepend(t$nickname2({user: users[tua[0]]}))
+              .append(t$nickname2({user: users[tua[1]]}))
               .append(' and ')
-              .append(t$nickname(users[tua[1]]))
+              .append(t$nickname2({user: users[tua[1]]}))
               .append(' are typing...')
             ;
             break;
@@ -402,17 +867,14 @@
 
 
       const autoFocus = e => {
-        if (!(e.ctrlKey || e.metaKey || e.altKey)) {
-          $currentInput.focus();
-        }
-        if (e.which == 13) {
-          if (nickname) {
-            sendMessage();
-            typing = false;
-            socket.emit('stop typing');
-          } else {
-            nickname = 'ANONYMOUS TEST';
-          }
+        if (e.which == 13 && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+          typing = false;
+          socket.emit('stop typing');
+          $messageInput.focus();
+        } else if (!(e.ctrlKey || e.metaKey || e.altKey) && !$(document.activeElement).is('input.file')) {
+          $messageInput.focus();
         }
       }
 
@@ -423,44 +885,74 @@
 
       $messageInput.on('input', () => {
         updateTyping();
+        refreshMessageInputHeight()
       });
 
       const setupSocket = () => {
 
-        socket = io('wss://kamiak.herokuapp.com', {path: '/chat/socket.io', query: `nickname=${encodeURIComponent(nickname)}&seed=${encodeURIComponent(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)))}`});
-        $('.login.page').hide();
-        $('.chat.page').show();
+        window.socket = socket = io(
+          'wss://kamiak.herokuapp.com',
+          {
+            path: '/chat/socket.io',
+            auth: {
+              token: window.user.accessToken,
+            },
+            // query: `nickname=${encodeURIComponent(nickname)}&seed=${encodeURIComponent(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)))}&token=${window.user.accessToken}`
+          }
+        );
+
+        window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
+        $(window).on('focus', () => {
+          if (socket.disconnected) window.user.getIdToken().then(() => socket.close().open());
+        });
+        // socket.io.on('reconnect_failed', async () => {
+        //   window.user.getIdToken().then(() => socket.close().open());
+        // });
+        // let worker = new Worker('on_wakeup.js');
+        // worker.onmessage = (ev) => {
+        //   if (socket.disconnected) {
+        //     socket.open();
+        //   }
+        // }
+
+        $('.fileInput').on('click', () => $fileInput.click());
+        $('#fileInput').on('change', function () {
+          window.fileList = fileList = fileList.concat(Array.from(this.files));
+          $(this).val('')
+          updateFiles();
+          refreshMessageInputHeight();
+        });
 
         socket.on('connect', () => {
-          console.log('connected');
+          console.log('connected', new Date()-window.t1);
+          $messageInput.prop('disabled', false).focus();
         });
 
         socket.on('login', (data) => {
-          console.log('login')
+          console.log('login', new Date()-window.t1)
           sid = data.sid;
-          nickname = data.nickname;
-          color = data.color;
           users = data.users;
+          sync = data.sync;
+          Object.values(users).forEach(user => user.avatar = t$avatar({user: user}));
 
           if (disconnected) {
-            log(t$broadcast('Reconnected to server'));
-            log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
+            log(t$broadcast({message: 'Reconnected to server'}));
+            log(t$broadcast({message: 'joined', user: users[sid]}));
             disconnected = false;
           } else {
-            $currentInput = $messageInput.prop('disabled', false).focus();
-            log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
-            log(t$broadcast('Welcome to the chat!'));
-            log(t$broadcast(getDaysLeftOfSchool()));
+            log(t$broadcast({message: 'joined', user: users[sid]}));
+            log(t$broadcast({message: 'Welcome to the chat!\nType /help for a list of commands'}));
+            log(t$broadcast({message: getDaysLeftOfSchool()}));
           }
-          log(t$broadcastUserList());
+          updateUserList();
         });
 
         socket.on('disconnect', () => {
           console.log('disconnected');
           if (!disconnected) {
             disconnected = true;
-            log(t$broadcastUser({message: 'left', user: {nickname: nickname, color: color}}));
-            log(t$broadcast('Connection lost. Trying to reconnect...'));
+            log(t$broadcast({message: 'left', user: users[sid]}));
+            log(t$broadcast({message: 'Connection lost. Trying to reconnect...'}));
             typingUsers.clear();
             updateTypingUsers();
           }
@@ -468,24 +960,27 @@
 
         socket.on('add user', (data) => {
           console.log('add user');
+          sync = data.sync;
           users[data.sid] = data.user;
-          log(t$broadcastUser({message: 'joined', user: users[data.sid]}));
-          log(t$broadcastUserList());
+          data.user.avatar = t$avatar(data);
+          log(t$broadcast({message: 'joined', user: users[data.sid], timestamp: data.timestamp}));
+          updateUserList();
         });
 
         socket.on('remove user', (data) => {
           console.log('remove user');
-          log(t$broadcastUser({message: 'left', user: users[data.sid]}));
+          log(t$broadcast({message: 'left', user: users[data.sid], timestamp: data.timestamp}));
           delete users[data.sid];
           typingUsers.delete(data.sid);
-          log(t$broadcastUserList());
+          updateUserList();
           updateTypingUsers();
         });
 
 
         socket.on('new message', (data) => {
+          data.files.forEach((file) => console.log(file));
           console.log('received', data.message, 'from', data.sid);
-          if (data.sid != sid) log(t$message({message: data.message, user: users[data.sid]}));
+          log(t$message({message: data.message, user: users[data.sid], timestamp: data.timestamp, files: data.files}));
         });
 
         socket.on('start typing', (data) => {
@@ -498,11 +993,26 @@
           updateTypingUsers();
         });
 
+        socket.on('set nickname', (data) => {
+          sync[data.uid].nickname = data.nickname;
+        });
+
+        socket.on('update file', (data) => {
+          console.log('update file');
+          addDownloadLink(data);
+          console.log('update file 2');
+        });
+
+        socket.on('upload progress', (data) => {
+          $('.'+data.file.id).find('#fileIconFill').attr('y', data.progress);
+        });
+
       }
 
+      setupSocket();
 
-      });
+      };
     </script>
-    <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/gh/kamiakhs/kamiak.org/assets/pcloudsdk.js" onload="onpCloudload()"></script>
   </body>
 </html>
