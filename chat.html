@@ -313,7 +313,13 @@
         width: 232px;
         text-align: center;
         z-index: 3;
+        transition: transform .2s ease-out;
+        transform: translateZ(0);
       }
+      .slideLeft { transform: translate3d(-10px, 0, 0); }
+      .slideRight { transform: translate3d(10px, 0, 0); }
+      .slideUp { transform: translate3d(0, 10px, 0); }
+      .slideDown { transform: translate3d(0, -10px, 0); }
       .popupName {
         font-family: "Whitney-Semibold";
         /* white-space: nowrap; */
@@ -370,7 +376,6 @@
         width: 100%;
         display: flex;
       }
-      
       /* Spinner */
       .spinner,.spinner-container{pointer-events:none;position:absolute;top:50%;left:50%}.spinner{width:64px;margin-left:-32px;z-index:18}.spinner-container{width:100%;padding-bottom:100%;margin-top:-50%;margin-left:-50%;animation:1.568s linear infinite spinner-linspin}.spinner-left,.spinner-right{top:0;bottom:0;overflow:hidden;position:absolute}.spinner-rotator{position:absolute;width:100%;height:100%;animation:5332ms cubic-bezier(.4,0,.2,1) infinite both spinner-easespin}.spinner-left{right:49%;left:0}.spinner-right{left:49%;right:0}.spinner-circle{box-sizing:border-box;position:absolute;width:200%;height:100%;border-style:solid;border-color:#4f5150 #4f5150 transparent;border-radius:50%;border-width:6px}.spinner-left .spinner-circle{left:0;right:-100%;border-right-color:transparent;animation:1333ms cubic-bezier(.4,0,.2,1) infinite both spinner-left-spin}.spinner-right .spinner-circle{left:-100%;right:0;border-left-color:transparent;animation:1333ms cubic-bezier(.4,0,.2,1) infinite both spinner-right-spin}@-webkit-keyframes spinner-linspin{to{-webkit-transform:rotate(360deg)}}@keyframes spinner-linspin{to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes spinner-easespin{12.5%{-webkit-transform:rotate(135deg)}25%{-webkit-transform:rotate(270deg)}37.5%{-webkit-transform:rotate(405deg)}50%{-webkit-transform:rotate(540deg)}62.5%{-webkit-transform:rotate(675deg)}75%{-webkit-transform:rotate(810deg)}87.5%{-webkit-transform:rotate(945deg)}to{-webkit-transform:rotate(1080deg)}}@keyframes spinner-easespin{12.5%{-webkit-transform:rotate(135deg);transform:rotate(135deg)}25%{-webkit-transform:rotate(270deg);transform:rotate(270deg)}37.5%{-webkit-transform:rotate(405deg);transform:rotate(405deg)}50%{-webkit-transform:rotate(540deg);transform:rotate(540deg)}62.5%{-webkit-transform:rotate(675deg);transform:rotate(675deg)}75%{-webkit-transform:rotate(810deg);transform:rotate(810deg)}87.5%{-webkit-transform:rotate(945deg);transform:rotate(945deg)}to{-webkit-transform:rotate(1080deg);transform:rotate(1080deg)}}@-webkit-keyframes spinner-left-spin{0%{-webkit-transform:rotate(130deg)}50%{-webkit-transform:rotate(-5deg)}to{-webkit-transform:rotate(130deg)}}@keyframes spinner-left-spin{0%{-webkit-transform:rotate(130deg);transform:rotate(130deg)}50%{-webkit-transform:rotate(-5deg);transform:rotate(-5deg)}to{-webkit-transform:rotate(130deg);transform:rotate(130deg)}}@-webkit-keyframes spinner-right-spin{0%{-webkit-transform:rotate(-130deg)}50%{-webkit-transform:rotate(5deg)}to{-webkit-transform:rotate(-130deg)}}@keyframes spinner-right-spin{0%{-webkit-transform:rotate(-130deg);transform:rotate(-130deg)}50%{-webkit-transform:rotate(5deg);transform:rotate(5deg)}to{-webkit-transform:rotate(-130deg);transform:rotate(-130deg)}}
     </style>
@@ -587,7 +592,7 @@
       }
       const displayProfilePopup = function () {
         // Create profile
-        $popup.css('display', 'none');
+        $popup.css('display', 'none').removeClass('slideLeft').removeClass('slideRight').removeClass('slideUp').removeClass('slideDown');
         let uid = this.classList[1];
         let _ = sync[uid];
         $popup.find('.avatarLarge').replaceWith(_._image.addClass('avatarLarge'));
@@ -600,18 +605,22 @@
         let W = $window.width(), H = $window.height();
         let w = $popup.outerWidth(), h = $popup.outerHeight();
         let s = $(this).outerHeight(), S = $(this).outerWidth();  // Avatar size
-        let m = 8;  // Margin between popup and avatar
+        let m = 8, sm = 10;  // m: margin between popup and avatar, sm: slide margin
 
         // Position popup
         let pos = $(this).offset();
+        let slide;
         if ($(this).is('.messageWrapper .avatar')) {
-          pos.left += s+m;
+          pos.left += s+m+sm;
           pos.top = Math.min(pos.top, H-(h+m*1.5));
+          slide = 'Left';
         } else {
           if (pos.top+s+m <= H-(h+m*1.5)) {
-            pos.top += s+m;
+            pos.top += s+m+sm;
+            slide = 'Down';
           } else {
-            pos.top -= m+h;
+            pos.top -= m+h+sm;
+            slide = 'Up';
           }
           pos.left = Math.min(pos.left-(w-S)/2, W-(w+m*1.5));
           pos.left = Math.max(pos.left, m*1.5);
@@ -619,6 +628,7 @@
         console.log(pos);
         $popup.css(pos);
         $popup.css('display', '');
+        setTimeout(() => $popup.addClass('slide'+slide), 1);
         popupClicked = popupActive = true;
       }
       
@@ -932,7 +942,11 @@
       });
 
 
-      $window.on('resize', scrollToBottom);
+      $window.on('resize', () => {
+        scrollToBottom();
+        $('.popup').css('display', 'none');
+        popupActive = false;
+      });
 
       $window.on('keydown', autoFocus);
       $('.login.page').on('click', autoFocus);
