@@ -66,13 +66,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-      }
-      .loginBox {
-        display: block;
-        margin: 0 auto;
-        text-align: center;
-        word-break: break-word;
-        font-size: 48px;
+        flex-direction: column;
       }
       .chat.page {
         background: #e0e4e5;
@@ -379,9 +373,12 @@
         width: 100%;
         display: flex;
       }
+      
+      /* Spinner */
+      .spinner,.spinner-container{pointer-events:none;position:absolute;top:50%;left:50%}.spinner{width:64px;margin-left:-32px;z-index:18}.spinner-container{width:100%;padding-bottom:100%;margin-top:-50%;margin-left:-50%;animation:1.568s linear infinite spinner-linspin}.spinner-left,.spinner-right{top:0;bottom:0;overflow:hidden;position:absolute}.spinner-rotator{position:absolute;width:100%;height:100%;animation:5332ms cubic-bezier(.4,0,.2,1) infinite both spinner-easespin}.spinner-left{right:49%;left:0}.spinner-right{left:49%;right:0}.spinner-circle{box-sizing:border-box;position:absolute;width:200%;height:100%;border-style:solid;border-color:#4f5150 #4f5150 transparent;border-radius:50%;border-width:6px}.spinner-left .spinner-circle{left:0;right:-100%;border-right-color:transparent;animation:1333ms cubic-bezier(.4,0,.2,1) infinite both spinner-left-spin}.spinner-right .spinner-circle{left:-100%;right:0;border-left-color:transparent;animation:1333ms cubic-bezier(.4,0,.2,1) infinite both spinner-right-spin}@-webkit-keyframes spinner-linspin{to{-webkit-transform:rotate(360deg)}}@keyframes spinner-linspin{to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes spinner-easespin{12.5%{-webkit-transform:rotate(135deg)}25%{-webkit-transform:rotate(270deg)}37.5%{-webkit-transform:rotate(405deg)}50%{-webkit-transform:rotate(540deg)}62.5%{-webkit-transform:rotate(675deg)}75%{-webkit-transform:rotate(810deg)}87.5%{-webkit-transform:rotate(945deg)}to{-webkit-transform:rotate(1080deg)}}@keyframes spinner-easespin{12.5%{-webkit-transform:rotate(135deg);transform:rotate(135deg)}25%{-webkit-transform:rotate(270deg);transform:rotate(270deg)}37.5%{-webkit-transform:rotate(405deg);transform:rotate(405deg)}50%{-webkit-transform:rotate(540deg);transform:rotate(540deg)}62.5%{-webkit-transform:rotate(675deg);transform:rotate(675deg)}75%{-webkit-transform:rotate(810deg);transform:rotate(810deg)}87.5%{-webkit-transform:rotate(945deg);transform:rotate(945deg)}to{-webkit-transform:rotate(1080deg);transform:rotate(1080deg)}}@-webkit-keyframes spinner-left-spin{0%{-webkit-transform:rotate(130deg)}50%{-webkit-transform:rotate(-5deg)}to{-webkit-transform:rotate(130deg)}}@keyframes spinner-left-spin{0%{-webkit-transform:rotate(130deg);transform:rotate(130deg)}50%{-webkit-transform:rotate(-5deg);transform:rotate(-5deg)}to{-webkit-transform:rotate(130deg);transform:rotate(130deg)}}@-webkit-keyframes spinner-right-spin{0%{-webkit-transform:rotate(-130deg)}50%{-webkit-transform:rotate(5deg)}to{-webkit-transform:rotate(-130deg)}}@keyframes spinner-right-spin{0%{-webkit-transform:rotate(-130deg);transform:rotate(-130deg)}50%{-webkit-transform:rotate(5deg);transform:rotate(5deg)}to{-webkit-transform:rotate(-130deg);transform:rotate(-130deg)}}
     </style>
   </head>
-  <body>
+  <body style="background:#e0e4e5">
     <div class="pages">
       <div class="login page">
         <h1 style="display:flex; justify-content:space-between; align-items:center;">
@@ -390,33 +387,25 @@
           <img width="36" height="36" style="visibility:hidden;">
         </h1>
         <div class="loginBoxWrapper">
-          <div class="loginBox">
-            <div style="margin: 16px 0; font-size: 24px">What's your nickname? (doesn't matter btw)</div>
-            <div class="nicknameInput nickname" data-placeholder="Type here" style="font-size:48px" spellcheck="false" onkeypress="return (this.innerText.length < 24)" contenteditable></div>
-          </div>
+          <div class="spinner" style="/* display: none; */"><div class="spinner-container"><div class="spinner-rotator"><div class="spinner-left"><div class="spinner-circle"></div></div><div class="spinner-right"><div class="spinner-circle"></div></div></div></div></div>
         </div>
+        <div style="font-family:Whitney-Semibold">&#8203;</div>
       </div>
       <div class="chat page" style="display:none">
         <h1 style="display:flex; justify-content:space-between; align-items:center;">
           <svg height="20" viewBox="0 0 572 74.801" xmlns="http://www.w3.org/2000/svg"><g stroke-linecap="round" fill-rule="evenodd" font-size="9pt" stroke="#4f5150" stroke-width="0" fill="#4f5150" style="stroke:#4f5150;stroke-width:0;fill:#4f5150"><path d="M 117.8 73.2 L 117.8 24.2 L 130.1 24.2 L 130.1 30.6 L 130.9 30.6 A 17.122 17.122 0 0 1 136.905 24.939 A 20.024 20.024 0 0 1 137.15 24.8 A 17.576 17.576 0 0 1 145.452 22.605 A 20.69 20.69 0 0 1 145.9 22.6 A 19.975 19.975 0 0 1 150.229 23.046 A 14.403 14.403 0 0 1 155.3 25.2 A 16.074 16.074 0 0 1 158.634 28.201 A 13.547 13.547 0 0 1 160.7 31.6 A 18.927 18.927 0 0 1 164.874 26.916 A 23.715 23.715 0 0 1 167.2 25.25 Q 171.4 22.6 177.4 22.6 A 23.537 23.537 0 0 1 181.108 22.878 Q 183.2 23.212 184.959 23.947 A 14.468 14.468 0 0 1 185.2 24.05 A 14.918 14.918 0 0 1 189.427 26.8 A 13.907 13.907 0 0 1 190.65 28.1 A 16.771 16.771 0 0 1 193.198 32.38 A 20.619 20.619 0 0 1 193.9 34.35 A 25.926 25.926 0 0 1 194.893 39.676 A 31.38 31.38 0 0 1 195 42.3 L 195 73.2 L 181.9 73.2 L 181.9 44.7 A 17.809 17.809 0 0 0 181.549 40.988 Q 180.381 35.536 175.337 34.811 A 11.519 11.519 0 0 0 173.7 34.7 A 9.991 9.991 0 0 0 171.107 35.025 A 8.33 8.33 0 0 0 169.1 35.85 Q 167.1 37 165.75 38.95 A 13.817 13.817 0 0 0 164.358 41.53 A 17.902 17.902 0 0 0 163.65 43.6 Q 162.9 46.3 162.9 49.4 L 162.9 73.2 L 149.8 73.2 L 149.8 44.7 A 16.922 16.922 0 0 0 149.419 40.934 Q 148.226 35.729 143.295 34.87 A 12.215 12.215 0 0 0 141.2 34.7 A 9.225 9.225 0 0 0 138.781 35.006 A 7.682 7.682 0 0 0 136.8 35.85 A 10.11 10.11 0 0 0 133.641 38.89 A 11.606 11.606 0 0 0 133.6 38.95 A 13.636 13.636 0 0 0 132.283 41.493 A 17.855 17.855 0 0 0 131.6 43.6 A 22.086 22.086 0 0 0 130.949 47.782 A 26.111 26.111 0 0 0 130.9 49.4 L 130.9 73.2 L 117.8 73.2 Z M 0 73.2 L 0 1.6 L 13.5 1.6 L 13.5 32.3 L 14.3 32.3 L 40.5 1.6 L 56.8 1.6 L 56.8 2.4 L 30.9 32 L 59.5 72.4 L 59.5 73.2 L 43 73.2 L 21.7 42.7 L 13.5 52.2 L 13.5 73.2 L 0 73.2 Z M 412.3 52.6 L 421.9 61.7 Q 416.6 68.1 409.4 71.45 Q 402.2 74.8 393.3 74.8 A 38.762 38.762 0 0 1 382.003 73.186 A 35.528 35.528 0 0 1 378.45 71.9 Q 371.6 69 366.6 64 Q 361.6 59 358.7 52.15 A 37.249 37.249 0 0 1 355.806 38.139 A 42.646 42.646 0 0 1 355.8 37.4 A 37.931 37.931 0 0 1 357.865 24.817 A 35.812 35.812 0 0 1 358.7 22.65 Q 361.6 15.8 366.6 10.8 Q 371.6 5.8 378.45 2.9 A 37.189 37.189 0 0 1 391.564 0.035 A 43.135 43.135 0 0 1 393.3 0 A 42.023 42.023 0 0 1 400.912 0.66 A 31.891 31.891 0 0 1 408.45 3 A 35.066 35.066 0 0 1 419.619 11.172 A 40.227 40.227 0 0 1 420.1 11.7 L 410.6 20.9 Q 407.4 17.2 403.25 15 A 18.443 18.443 0 0 0 397.775 13.164 A 25.196 25.196 0 0 0 393.4 12.8 A 25.309 25.309 0 0 0 384.552 14.339 A 24.232 24.232 0 0 0 384 14.55 Q 379.6 16.3 376.35 19.5 A 22.967 22.967 0 0 0 371.712 26.1 A 26.784 26.784 0 0 0 371.2 27.25 Q 369.3 31.8 369.3 37.4 A 28.551 28.551 0 0 0 369.901 43.368 A 23.614 23.614 0 0 0 371.2 47.55 A 24.156 24.156 0 0 0 374.629 53.394 A 21.895 21.895 0 0 0 376.35 55.3 Q 379.6 58.5 384 60.25 A 25.16 25.16 0 0 0 393.244 62 A 28.495 28.495 0 0 0 393.4 62 A 25.045 25.045 0 0 0 399.311 61.329 A 20.452 20.452 0 0 0 404.05 59.55 A 25.47 25.47 0 0 0 410.913 54.216 A 30.247 30.247 0 0 0 412.3 52.6 Z M 430.1 73.2 L 430.1 1.6 L 443.2 1.6 L 443.2 21.7 L 442.4 30.6 L 443.2 30.6 A 15.62 15.62 0 0 1 447.61 25.895 A 19.288 19.288 0 0 1 449.25 24.85 Q 453.2 22.6 458.1 22.6 Q 467.6 22.6 472.15 28.2 A 19.03 19.03 0 0 1 475.632 35.066 Q 476.429 37.853 476.631 41.177 A 38.269 38.269 0 0 1 476.7 43.5 L 476.7 73.2 L 463.6 73.2 L 463.6 45.1 Q 463.6 41.644 462.498 39.313 A 7.988 7.988 0 0 0 461.2 37.35 A 7.855 7.855 0 0 0 456.776 34.912 A 11.671 11.671 0 0 0 454.5 34.7 A 10.83 10.83 0 0 0 451.801 35.025 A 9.022 9.022 0 0 0 449.7 35.85 Q 447.6 37 446.15 39 A 14.02 14.02 0 0 0 444.376 42.347 A 16.83 16.83 0 0 0 443.95 43.65 A 20.153 20.153 0 0 0 443.226 48.188 A 23.243 23.243 0 0 0 443.2 49.3 L 443.2 73.2 L 430.1 73.2 Z M 284.7 73.2 L 284.7 1.6 L 297.8 1.6 L 297.8 40.6 L 298.4 40.6 L 314.8 24.2 L 331 24.2 L 331 25 L 312.8 42.7 L 332.5 72.4 L 332.5 73.2 L 317 73.2 L 303.6 51.7 L 297.8 57.4 L 297.8 73.2 L 284.7 73.2 Z M 94.5 73.2 L 94.5 68 L 93.7 68 Q 91.4 70.8 88.15 72.8 A 12.581 12.581 0 0 1 84.568 74.269 Q 82.964 74.668 81.084 74.767 A 24.253 24.253 0 0 1 79.8 74.8 A 20.53 20.53 0 0 1 73.601 73.877 A 19.254 19.254 0 0 1 72.65 73.55 A 19.036 19.036 0 0 1 67.945 71.025 A 17.472 17.472 0 0 1 66.8 70.1 Q 64.3 67.9 62.9 64.8 A 15.977 15.977 0 0 1 61.534 59.142 A 18.852 18.852 0 0 1 61.5 58 A 16.556 16.556 0 0 1 62.001 53.857 A 14.067 14.067 0 0 1 63 51.15 Q 64.5 48.1 67.2 45.9 Q 69.9 43.7 73.55 42.55 A 25.019 25.019 0 0 1 79.068 41.497 A 30.174 30.174 0 0 1 81.5 41.4 Q 84.873 41.4 87.406 41.771 A 22.074 22.074 0 0 1 89.4 42.15 Q 91.642 42.693 93.308 43.261 A 24.609 24.609 0 0 1 94.5 43.7 L 94.5 42.2 A 7.91 7.91 0 0 0 91.954 36.24 A 10.156 10.156 0 0 0 91.4 35.75 A 11.1 11.1 0 0 0 85.774 33.341 A 14.88 14.88 0 0 0 83.7 33.2 A 14.104 14.104 0 0 0 73.102 37.879 A 19.652 19.652 0 0 0 72.2 38.9 L 62.7 32.4 A 25.211 25.211 0 0 1 81.115 22.718 A 34.773 34.773 0 0 1 84 22.6 A 38.956 38.956 0 0 1 90.598 23.123 Q 94.197 23.743 97.055 25.097 A 18.182 18.182 0 0 1 101.4 27.95 Q 106.952 32.901 107.367 42.26 A 34.793 34.793 0 0 1 107.4 43.8 L 107.4 73.2 L 94.5 73.2 Z M 261.4 73.2 L 261.4 68 L 260.6 68 Q 258.3 70.8 255.05 72.8 A 12.581 12.581 0 0 1 251.468 74.269 Q 249.864 74.668 247.984 74.767 A 24.253 24.253 0 0 1 246.7 74.8 A 20.53 20.53 0 0 1 240.501 73.877 A 19.254 19.254 0 0 1 239.55 73.55 A 19.036 19.036 0 0 1 234.845 71.025 A 17.472 17.472 0 0 1 233.7 70.1 Q 231.2 67.9 229.8 64.8 A 15.977 15.977 0 0 1 228.434 59.142 A 18.852 18.852 0 0 1 228.4 58 A 16.556 16.556 0 0 1 228.901 53.857 A 14.067 14.067 0 0 1 229.9 51.15 Q 231.4 48.1 234.1 45.9 Q 236.8 43.7 240.45 42.55 A 25.019 25.019 0 0 1 245.968 41.497 A 30.174 30.174 0 0 1 248.4 41.4 Q 251.773 41.4 254.306 41.771 A 22.074 22.074 0 0 1 256.3 42.15 Q 258.542 42.693 260.208 43.261 A 24.609 24.609 0 0 1 261.4 43.7 L 261.4 42.2 A 7.91 7.91 0 0 0 258.854 36.24 A 10.156 10.156 0 0 0 258.3 35.75 A 11.1 11.1 0 0 0 252.674 33.341 A 14.88 14.88 0 0 0 250.6 33.2 A 14.104 14.104 0 0 0 240.002 37.879 A 19.652 19.652 0 0 0 239.1 38.9 L 229.6 32.4 A 25.211 25.211 0 0 1 248.015 22.718 A 34.773 34.773 0 0 1 250.9 22.6 A 38.956 38.956 0 0 1 257.498 23.123 Q 261.097 23.743 263.955 25.097 A 18.182 18.182 0 0 1 268.3 27.95 Q 273.852 32.901 274.267 42.26 A 34.793 34.793 0 0 1 274.3 43.8 L 274.3 73.2 L 261.4 73.2 Z M 517.2 73.2 L 517.2 68 L 516.4 68 Q 514.1 70.8 510.85 72.8 A 12.581 12.581 0 0 1 507.268 74.269 Q 505.664 74.668 503.784 74.767 A 24.253 24.253 0 0 1 502.5 74.8 A 20.53 20.53 0 0 1 496.301 73.877 A 19.254 19.254 0 0 1 495.35 73.55 A 19.036 19.036 0 0 1 490.645 71.025 A 17.472 17.472 0 0 1 489.5 70.1 Q 487 67.9 485.6 64.8 A 15.977 15.977 0 0 1 484.234 59.142 A 18.852 18.852 0 0 1 484.2 58 A 16.556 16.556 0 0 1 484.701 53.857 A 14.067 14.067 0 0 1 485.7 51.15 Q 487.2 48.1 489.9 45.9 Q 492.6 43.7 496.25 42.55 A 25.019 25.019 0 0 1 501.768 41.497 A 30.174 30.174 0 0 1 504.2 41.4 Q 507.573 41.4 510.106 41.771 A 22.074 22.074 0 0 1 512.1 42.15 Q 514.342 42.693 516.008 43.261 A 24.609 24.609 0 0 1 517.2 43.7 L 517.2 42.2 A 7.91 7.91 0 0 0 514.654 36.24 A 10.156 10.156 0 0 0 514.1 35.75 A 11.1 11.1 0 0 0 508.474 33.341 A 14.88 14.88 0 0 0 506.4 33.2 A 14.104 14.104 0 0 0 495.802 37.879 A 19.652 19.652 0 0 0 494.9 38.9 L 485.4 32.4 A 25.211 25.211 0 0 1 503.815 22.718 A 34.773 34.773 0 0 1 506.7 22.6 A 38.956 38.956 0 0 1 513.298 23.123 Q 516.897 23.743 519.755 25.097 A 18.182 18.182 0 0 1 524.1 27.95 Q 529.652 32.901 530.067 42.26 A 34.793 34.793 0 0 1 530.1 43.8 L 530.1 73.2 L 517.2 73.2 Z M 544.9 56.9 L 544.9 35.4 L 536.3 35.4 L 536.3 24.2 L 544.9 24.2 L 544.9 9.2 L 558 9.2 L 558 24.2 L 570 24.2 L 570 35.4 L 558 35.4 L 558 54.4 Q 558 56.1 558.35 57.55 A 5.178 5.178 0 0 0 559.228 59.455 A 4.991 4.991 0 0 0 559.7 60 A 4.543 4.543 0 0 0 562.227 61.452 A 6.906 6.906 0 0 0 563.7 61.6 A 13.541 13.541 0 0 0 564.694 61.566 Q 565.713 61.491 566.4 61.25 Q 567.4 60.9 568.3 60.3 L 572 71.8 A 21.469 21.469 0 0 1 567.38 73.38 A 23.841 23.841 0 0 1 567.05 73.45 A 25.832 25.832 0 0 1 563.895 73.895 A 33.27 33.27 0 0 1 561.2 74 A 20.449 20.449 0 0 1 557.506 73.681 A 16.142 16.142 0 0 1 554.55 72.85 A 15.257 15.257 0 0 1 551.382 71.185 A 12.947 12.947 0 0 1 549.6 69.7 Q 545.125 65.416 544.911 57.686 A 28.37 28.37 0 0 1 544.9 56.9 Z M 219.7 73.2 L 206.6 73.2 L 206.6 24.2 L 219.7 24.2 L 219.7 73.2 Z M 94.5 53.3 Q 92.2 52.2 89.75 51.55 A 19.304 19.304 0 0 0 86.512 50.992 A 23.757 23.757 0 0 0 84.4 50.9 Q 79.7 50.9 77.15 52.95 A 7.345 7.345 0 0 0 75.547 54.697 A 5.986 5.986 0 0 0 74.6 58 Q 74.6 60.878 76.854 62.651 A 7.456 7.456 0 0 0 77.05 62.8 A 9.281 9.281 0 0 0 82.65 64.6 A 11.333 11.333 0 0 0 82.7 64.6 A 12.466 12.466 0 0 0 86.086 64.151 A 11.21 11.21 0 0 0 87.5 63.65 Q 89.7 62.7 91.25 61.15 Q 92.8 59.6 93.65 57.55 Q 94.5 55.5 94.5 53.3 Z M 261.4 53.3 Q 259.1 52.2 256.65 51.55 A 19.304 19.304 0 0 0 253.412 50.992 A 23.757 23.757 0 0 0 251.3 50.9 Q 246.6 50.9 244.05 52.95 A 7.345 7.345 0 0 0 242.447 54.697 A 5.986 5.986 0 0 0 241.5 58 Q 241.5 60.878 243.754 62.651 A 7.456 7.456 0 0 0 243.95 62.8 A 9.281 9.281 0 0 0 249.55 64.6 A 11.333 11.333 0 0 0 249.6 64.6 A 12.466 12.466 0 0 0 252.986 64.151 A 11.21 11.21 0 0 0 254.4 63.65 Q 256.6 62.7 258.15 61.15 Q 259.7 59.6 260.55 57.55 Q 261.4 55.5 261.4 53.3 Z M 517.2 53.3 Q 514.9 52.2 512.45 51.55 A 19.304 19.304 0 0 0 509.212 50.992 A 23.757 23.757 0 0 0 507.1 50.9 Q 502.4 50.9 499.85 52.95 A 7.345 7.345 0 0 0 498.247 54.697 A 5.986 5.986 0 0 0 497.3 58 Q 497.3 60.878 499.554 62.651 A 7.456 7.456 0 0 0 499.75 62.8 A 9.281 9.281 0 0 0 505.35 64.6 A 11.333 11.333 0 0 0 505.4 64.6 A 12.466 12.466 0 0 0 508.786 64.151 A 11.21 11.21 0 0 0 510.2 63.65 Q 512.4 62.7 513.95 61.15 Q 515.5 59.6 516.35 57.55 Q 517.2 55.5 517.2 53.3 Z M 213.1 17.1 Q 211.4 17.1 209.85 16.45 Q 208.3 15.8 207.15 14.65 Q 206 13.5 205.35 12 A 7.959 7.959 0 0 1 204.727 9.419 A 9.494 9.494 0 0 1 204.7 8.7 A 8.678 8.678 0 0 1 204.967 6.517 A 7.591 7.591 0 0 1 205.35 5.4 Q 206 3.9 207.15 2.75 Q 208.3 1.6 209.85 0.95 Q 211.4 0.3 213.1 0.3 A 8.266 8.266 0 0 1 219.09 2.741 A 10.274 10.274 0 0 1 219.1 2.75 A 8.005 8.005 0 0 1 221.599 8.537 A 9.699 9.699 0 0 1 221.6 8.7 A 8.005 8.005 0 0 1 219.216 14.535 A 9.701 9.701 0 0 1 219.1 14.65 A 8.266 8.266 0 0 1 213.114 17.1 A 10.15 10.15 0 0 1 213.1 17.1 Z" vector-effect="non-scaling-stroke"/></g></svg>
           <!-- <svg height="20" viewBox="0 0 599.864 79.638" xmlns="http://www.w3.org/2000/svg"><g stroke-linecap="round" fill-rule="evenodd" font-size="9pt" stroke="#4f5150" stroke-width="0.00mm" fill="#4f5150" style="stroke:#4f5150;stroke-width:0.00mm;fill:#4f5150"><g transform="translate(-0.0 0)"><path d="M 0 3.182 L 0 78.182 L 14 78.182 L 14 46.273 L 44.318 78.182 L 63.682 78.182 L 26.773 39.364 L 59.227 3.182 L 42.091 3.182 L 14 34.727 L 14 3.182 L 0 3.182 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-2.5 0)"><path d="M 100.818 71.682 L 100.818 78.182 L 114.091 78.182 L 114.091 31.636 L 100.818 31.636 L 100.818 38.136 A 20.673 20.673 0 0 0 84.273 30.182 C 71.874 30.182 62.701 39.314 61.389 51.757 A 29.611 29.611 0 0 0 61.227 54.864 C 61.227 68.864 70.864 79.636 84.273 79.636 A 20.673 20.673 0 0 0 100.818 71.682 Z M 75.182 54.909 C 75.182 47.136 80.682 41.5 88.182 41.5 A 13.015 13.015 0 0 1 95.851 43.859 C 99.128 46.208 101.136 50.145 101.136 54.909 A 14.304 14.304 0 0 1 99.233 62.231 C 97.021 65.977 93.045 68.318 88.182 68.318 A 12.946 12.946 0 0 1 80.02 65.572 C 77.536 63.593 75.848 60.661 75.341 57.159 A 15.706 15.706 0 0 1 75.182 54.909 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-5.0 0)"><path d="M 127.045 78.182 L 140.318 78.182 L 140.318 51.455 A 13.141 13.141 0 0 1 141.068 46.912 C 142.498 43.02 145.852 40.818 150.091 40.818 C 154.418 40.818 157.417 43.17 158.525 47.033 A 13.058 13.058 0 0 1 159 50.636 L 159 78.182 L 172.273 78.182 L 172.273 51.182 A 12.755 12.755 0 0 1 173.018 46.716 C 174.421 42.952 177.698 40.818 181.955 40.818 A 9.199 9.199 0 0 1 186.575 41.96 C 188.345 42.972 189.644 44.629 190.35 46.81 A 13.459 13.459 0 0 1 190.955 50.955 L 190.955 78.182 L 204.227 78.182 L 204.227 47.318 C 204.227 37.857 198.323 31.533 189.805 30.374 A 21.479 21.479 0 0 0 186.909 30.182 A 18.214 18.214 0 0 0 173.593 35.69 A 29.796 29.796 0 0 0 170.591 39.136 A 14.795 14.795 0 0 0 162.819 31.811 A 20.286 20.286 0 0 0 154.727 30.182 A 16.007 16.007 0 0 0 143.04 34.798 A 23.625 23.625 0 0 0 140.318 37.955 L 140.318 31.636 L 127.045 31.636 L 127.045 78.182 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-7.5 0)"><path d="M 229.545 78.182 L 229.545 31.636 L 216.273 31.636 L 216.273 78.182 L 229.545 78.182 Z M 215 14.045 C 215 18.409 218.545 21.955 222.909 21.955 C 227.273 21.955 230.818 18.409 230.818 14.045 C 230.818 9.682 227.273 6.136 222.909 6.136 C 218.545 6.136 215 9.682 215 14.045 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-10.0 0)"><path d="M 278.5 71.682 L 278.5 78.182 L 291.773 78.182 L 291.773 31.636 L 278.5 31.636 L 278.5 38.136 A 20.673 20.673 0 0 0 261.955 30.182 C 249.556 30.182 240.383 39.314 239.071 51.757 A 29.611 29.611 0 0 0 238.909 54.864 C 238.909 68.864 248.545 79.636 261.955 79.636 A 20.673 20.673 0 0 0 278.5 71.682 Z M 252.864 54.909 C 252.864 47.136 258.364 41.5 265.864 41.5 A 13.015 13.015 0 0 1 273.533 43.859 C 276.81 46.208 278.818 50.145 278.818 54.909 A 14.304 14.304 0 0 1 276.915 62.231 C 274.703 65.977 270.727 68.318 265.864 68.318 A 12.946 12.946 0 0 1 257.702 65.572 C 255.218 63.593 253.53 60.661 253.023 57.159 A 15.706 15.706 0 0 1 252.864 54.909 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-12.5 0)"><path d="M 318.136 78.182 L 318.136 59.455 L 336.682 78.182 L 353.727 78.182 L 330.045 54.364 L 352.682 31.636 L 335.5 31.636 L 318.136 48.818 L 318.136 0 L 304.864 0 L 304.864 78.182 L 318.136 78.182 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-15.0 0)"><path d="M 444.045 72.5 L 437.273 61.045 A 23.937 23.937 0 0 1 429.638 64.689 A 31.254 31.254 0 0 1 421.091 65.864 C 405.273 65.864 395.318 54.955 395.318 40.727 A 25.465 25.465 0 0 1 400.692 24.595 C 404.001 20.474 408.734 17.51 414.591 16.256 A 31.011 31.011 0 0 1 421.091 15.591 A 30.45 30.45 0 0 1 432.105 17.598 A 22.531 22.531 0 0 1 437.273 20.409 L 444.045 8.955 A 36.156 36.156 0 0 0 435.217 4.408 C 430.953 2.877 426.158 1.94 421.18 1.829 A 44.717 44.717 0 0 0 420.182 1.818 A 41.301 41.301 0 0 0 396.948 8.663 A 38.166 38.166 0 0 0 380.136 40.727 A 38.332 38.332 0 0 0 412.574 78.993 A 44.648 44.648 0 0 0 420.182 79.636 A 44.916 44.916 0 0 0 434.474 77.305 C 438.089 76.083 441.347 74.436 444.045 72.5 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-17.5 0)"><path d="M 452.5 0 L 452.5 78.182 L 465.773 78.182 L 465.773 50.409 C 465.773 44.909 469.682 40.591 476.136 40.591 C 480.928 40.591 484.294 42.986 485.59 47.259 A 14.913 14.913 0 0 1 486.182 51.591 L 486.182 78.182 L 499.455 78.182 L 499.455 48.773 C 499.455 37.636 492.045 30.182 481.364 30.182 A 22.067 22.067 0 0 0 473.172 31.723 C 470.218 32.902 467.703 34.691 465.817 36.858 A 17.114 17.114 0 0 0 465.773 36.909 L 465.773 0 L 452.5 0 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-20.0 0)"><path d="M 547.545 71.682 L 547.545 78.182 L 560.818 78.182 L 560.818 31.636 L 547.545 31.636 L 547.545 38.136 A 20.673 20.673 0 0 0 531 30.182 C 518.602 30.182 509.429 39.314 508.116 51.757 A 29.611 29.611 0 0 0 507.955 54.864 C 507.955 68.864 517.591 79.636 531 79.636 A 20.673 20.673 0 0 0 547.545 71.682 Z M 521.909 54.909 C 521.909 47.136 527.409 41.5 534.909 41.5 A 13.015 13.015 0 0 1 542.578 43.859 C 545.855 46.208 547.864 50.145 547.864 54.909 A 14.304 14.304 0 0 1 545.96 62.231 C 543.748 65.977 539.772 68.318 534.909 68.318 A 12.946 12.946 0 0 1 526.748 65.572 C 524.263 63.593 522.575 60.661 522.069 57.159 A 15.706 15.706 0 0 1 521.909 54.909 Z" vector-effect="non-scaling-stroke"/></g><g transform="translate(-22.5 0)"><path d="M 567.955 31.636 L 567.955 41.727 L 574.045 41.727 L 574.045 63.136 A 23.505 23.505 0 0 0 574.952 69.895 C 576.68 75.645 580.82 79.091 586.854 79.577 A 18.81 18.81 0 0 0 588.364 79.636 A 22.009 22.009 0 0 0 591.426 79.414 C 593.698 79.093 595.97 78.438 597.908 77.532 A 16.017 16.017 0 0 0 599.864 76.455 L 594.955 66.818 A 6.333 6.333 0 0 1 592.139 67.746 A 6.685 6.685 0 0 1 591.545 67.773 A 4.245 4.245 0 0 1 589.522 67.315 C 588.07 66.54 587.318 64.795 587.318 62.182 L 587.318 41.727 L 597.682 41.727 L 597.682 31.636 L 587.318 31.636 L 587.318 14.227 L 574.045 14.227 L 574.045 31.636 L 567.955 31.636 Z" vector-effect="non-scaling-stroke"/></g></g></svg> -->
           <div style="display:flex; align-items:center; justify-content:flex-end;">
-            <div class="avatarGutter" style="display:flex; align-items:center; justify-content:flex-end; margin-left:28px">
-              <div class="popupWrapper"><img class="avatar" referrerpolicy="no-referrer" tabindex="1"></div>
-              <div class="popupWrapper"><img class="avatar" referrerpolicy="no-referrer" tabindex="1"></div>
-              <div class="popupWrapper"><img class="avatar" referrerpolicy="no-referrer" tabindex="1"></div>
-            </div>
-            <!-- <img class="editNicknameButton" width="24" height="24" src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggc3R5bGU9ImZpbGw6I2UwZTRlNSIgZD0iTTIwLjcxLDcuMDRDMjEuMSw2LjY1IDIxLjEsNiAyMC43MSw1LjYzTDE4LjM3LDMuMjlDMTgsMi45IDE3LjM1LDIuOSAxNi45NiwzLjI5TDE1LjEyLDUuMTJMMTguODcsOC44N00zLDE3LjI1VjIxSDYuNzVMMTcuODEsOS45M0wxNC4wNiw2LjE4TDMsMTcuMjVaIi8+PC9zdmc+"> -->
-            <!-- <img class="editColorButton" width="24" height="24" src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggc3R5bGU9ImZpbGw6I2UwZTRlNSIgZD0iTTE3LjUsMTJBMS41LDEuNSAwIDAsMSAxNiwxMC41QTEuNSwxLjUgMCAwLDEgMTcuNSw5QTEuNSwxLjUgMCAwLDEgMTksMTAuNUExLjUsMS41IDAgMCwxIDE3LjUsMTJNMTQuNSw4QTEuNSwxLjUgMCAwLDEgMTMsNi41QTEuNSwxLjUgMCAwLDEgMTQuNSw1QTEuNSwxLjUgMCAwLDEgMTYsNi41QTEuNSwxLjUgMCAwLDEgMTQuNSw4TTkuNSw4QTEuNSwxLjUgMCAwLDEgOCw2LjVBMS41LDEuNSAwIDAsMSA5LjUsNUExLjUsMS41IDAgMCwxIDExLDYuNUExLjUsMS41IDAgMCwxIDkuNSw4TTYuNSwxMkExLjUsMS41IDAgMCwxIDUsMTAuNUExLjUsMS41IDAgMCwxIDYuNSw5QTEuNSwxLjUgMCAwLDEgOCwxMC41QTEuNSwxLjUgMCAwLDEgNi41LDEyTTEyLDNBOSw5IDAgMCwwIDMsMTJBOSw5IDAgMCwwIDEyLDIxQTEuNSwxLjUgMCAwLDAgMTMuNSwxOS41QzEzLjUsMTkuMTEgMTMuMzUsMTguNzYgMTMuMTEsMTguNUMxMi44OCwxOC4yMyAxMi43MywxNy44OCAxMi43MywxNy41QTEuNSwxLjUgMCAwLDEgMTQuMjMsMTZIMTZBNSw1IDAgMCwwIDIxLDExQzIxLDYuNTggMTYuOTcsMyAxMiwzWiIvPjwvc3ZnPg=="> -->
+            <div class="avatarGutter" style="display:flex; align-items:center; justify-content:flex-end; margin-left:28px"></div>
             <div class="myAvatarWrapper" style="margin-left:16px;">
               <div class="popupWrapper">
-                <img id="myAvatar" class="avatar" referrerpolicy="no-referrer" tabindex="1">
-                <div class="popup">
+                <img class="avatar" referrerpolicy="no-referrer" tabindex="1">
+                <!-- <div class="popup">
                   <img class="avatarLarge" referrerpolicy="no-referrer" tabindex="1">
                   <div class="popupName">Joseph Jackson</div>
                   <div class="popupId">bloemkerha&#8203;@mukilteo.wednet.edu</div>
                   <button class="light" style="margin-top:16px;" onclick="window.signOut()">Sign out</button>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -480,56 +469,21 @@
 
       //#region JQuery Vars
       const $window = $(window);
-      const $nicknameInput = $('.nicknameInput');
       const $files = $('.files');
       const $messageInput = $('.messageInput');
       const $fileInput = $('#fileInput');
       const $messages = $('.messages');
       const $typing = $('.typing');
-      var $currentInput = $nicknameInput.focus();
       //#endregion JQuery Vars
+
+      $('.login.page').hide();
+      $('.chat.page').show();
 
 
       $messageInput.clear = () => {
         $messageInput.val('');
         refreshMessageInputHeight();
       };
-      const randomHue = seed => {
-        var hash = 7;
-        for (let i = 0; i < seed.length; ++i)
-          hash = (seed.charCodeAt(i)+(hash<<5)-(hash>>2))%47160;
-        return hash%360;
-      }
-      const refreshnicknameInputColor = () => {
-        const hue = randomHue($nicknameInput.text().trim().replace('\n', '')+(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15))));
-        $nicknameInput.attr('style', `color:hsl(${hue}, 100%, 40%); background:hsla(${hue}, 100%, 40%, 0.133); --placeholder-color:hsla(${hue}, 100%, 40%, 0.3); font-weight: 500`);
-        if ($nicknameInput.text().includes('\n')) {
-          $nicknameInput.text() = $nicknameInput.text().replace('\n', '');
-          submitNickname();
-        }
-      }
-      refreshnicknameInputColor();
-      $nicknameInput.on('input', refreshnicknameInputColor);
-      $nicknameInput.on('keydown', function (e) {
-        console.log(e);
-        if (e.which == 13) {
-          e.preventDefault();
-          console.log('submit');
-          submitNickname();
-        }
-      });
-      $nicknameInput.on('paste', e => {
-        e.preventDefault();
-        const text = (e.originalEvent || e).clipboardData.getData('text/plain').replace('\n', '');
-        document.execCommand('insertText', false, text.substring(0, 24-$nicknameInput.text().length));
-        refreshnicknameInputColor();
-      });
-      const submitNickname = () => {
-        nickname = $nicknameInput.text().trim().replace('\n', '');
-        if (!$nicknameInput.prop('contenteditable') || nickname.length < 2 || nickname.length > 24) return;
-        $nicknameInput.prop('contenteditable', false);
-        setupSocket();
-      }
       const getDaysLeftOfSchool = () => {
         const daysLeftOfSchool = [0,1,2,3,4,7,8,9,10,11,14,15,16,17,21,22,23,24,25,28,29,30,31,32,35,36,37,38,39,42,43,44,45,46];
         const lastDayOfSchool = new Date("06/17/2022 14:");  // 6/17 2pm (because most school days end at 2)
@@ -552,18 +506,8 @@
           $avatars.append(getAvatar({user: user}));
         });
         $('.avatarGutter').html($avatars.children());
-        $('.myAvatarWrapper').html(getAvatar({user: users[sid]}));
+        // $('.myAvatarWrapper').html(getAvatar({user: users[sid]}));
       }
-      // const refreshMessageInputHeight = () => {
-      //   const prevHeight = $messageInput.outerHeight();
-      //   $messageInput.css('height', 'auto');
-      //   $messageInput.css('overflow', $messageInput[0].scrollHeight < 291 ? 'hidden' : '');
-      //   $(':root')[0].style.setProperty('--message-input-height', Math.min($messageInput[0].scrollHeight, 291)+'px');
-      //   $messageInput.css('height', 'var(--message-input-height)');
-      //   if ($messageInput[0].scrollHeight != prevHeight) {
-      //     scrollToBottom();
-      //   }
-      // }
       const refreshMessageInputHeight = () => {
         const $messageInputWrapper = $('.messageInputWrapper');
         const prevHeight = $messageInputWrapper.outerHeight();
@@ -748,9 +692,7 @@
       var disconnected = false;
       var lastUid;
 
-      var users = {undefined: {name: window.user.name, email: window.user.email, uid: window.user.uid, picture: window.user.photoURL}};   // (Obj) Data of users
-      users[sid].avatar = t$avatar({user: user});
-      updateUserList();
+      var users = {};   // (Obj) Data of users
 
       var sync = {};
 
@@ -891,19 +833,14 @@
 
 
       const autoFocus = e => {
-        if ($(document.activeElement).is('input.file')) return;
-        if (!(e.ctrlKey || e.metaKey || e.altKey)) {
-          $currentInput.focus();
-        }
         if (e.which == 13 && !e.shiftKey) {
           e.preventDefault();
-          if (nickname) {
-            sendMessage();
-            typing = false;
-            socket.emit('stop typing');
-          } else {
-            nickname = 'ANONYMOUS TEST';
-          }
+          sendMessage();
+          typing = false;
+          socket.emit('stop typing');
+          $messageInput.focus();
+        } else if (!(e.ctrlKey || e.metaKey || e.altKey) && !$(document.activeElement).is('input.file')) {
+          $messageInput.focus();
         }
       }
 
@@ -926,15 +863,9 @@
             auth: {
               token: window.user.accessToken,
             },
-            query: {
-              nickname: localStorage.nickname || ' ',
-              seed: localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)),
-            },
             // query: `nickname=${encodeURIComponent(nickname)}&seed=${encodeURIComponent(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)))}&token=${window.user.accessToken}`
           }
         );
-        $('.login.page').hide();
-        $('.chat.page').show();
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
         $(window).on('focus', () => {
@@ -959,11 +890,12 @@
         });
 
         socket.on('connect', () => {
-          console.log('connected');
+          console.log('connected', new Date()-window.t1);
+          $messageInput.prop('disabled', false).focus();
         });
 
         socket.on('login', (data) => {
-          console.log('login')
+          console.log('login', new Date()-window.t1)
           sid = data.sid;
           users = data.users;
           sync = data.sync;
@@ -974,7 +906,6 @@
             log(t$broadcast({message: 'joined', user: users[sid]}));
             disconnected = false;
           } else {
-            $currentInput = $messageInput.prop('disabled', false).focus();
             log(t$broadcast({message: 'joined', user: users[sid]}));
             log(t$broadcast({message: 'Welcome to the chat!\nType /help for a list of commands'}));
             log(t$broadcast({message: getDaysLeftOfSchool()}));
@@ -1044,6 +975,7 @@
 
       }
 
+      setupSocket();
 
       };
     </script>

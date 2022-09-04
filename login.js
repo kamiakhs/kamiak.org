@@ -1,3 +1,4 @@
+window.t1 = new Date();
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithRedirect, onIdTokenChanged } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-auth.js";
 
@@ -21,11 +22,9 @@ onAuthStateChanged(auth, user => {
   window.user = user;
   if (user) {
     // if (!user.email.endsWith('@mukilteo.wednet.edu')) window.signOut();
-    document.querySelector('body').style.background = 'blue';
-    console.log('Signed into Google')
-    $('#myAvatar').addClass(user.uid);
+    console.log('Signed into Google', new Date()-window.t1);
+    $('.avatar').attr('src', user.photoURL).addClass(user.uid);
     main();
-    // $('.avatar, .avatarLarge').attr('src', window.user.photoURL);
   } else {
     signInWithRedirect(auth, provider);
   }
