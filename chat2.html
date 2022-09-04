@@ -82,14 +82,14 @@
         padding: 22px 0 30px 0;
         margin: 0;
         /* height: calc(calc(100vh - calc(2 * var(--heading-padding))) - 114px); */
-        height: calc(calc(calc(100vh - calc(2 * var(--heading-padding))) - var(--message-input-height)) - 80px);
+        height: calc(calc(calc(100vh - calc(2 * var(--heading-padding))) - var(--message-input-height)) - 52px);
         overflow-y: scroll;
       }
       .messageWrapper, .broadcastWrapper {
         padding: 1px var(--side-padding);
         display: flex;
       }
-      .message, .nick {
+      .message {
         font-size: 16px;
         line-height: 1.375rem;
         /* min-height: 1.375rem; */
@@ -151,6 +151,11 @@
         font-family: "Whitney-Semibold";
         color: #3e403f;
         min-height: 1.375rem;
+        line-height: 1.375rem;
+        font-size: inherit;
+      }
+      .broadcast .nick, .typing .nick {
+        color: #6d6d6e;
       }
       .broadcast {
         font-size: 14px;
@@ -169,18 +174,6 @@
       }
       .messageWrapper:hover, .broadcastWrapper:hover {
         background: #d5d9da60;
-      }
-      .nickname {
-        display: inline-block;
-        width: fit-content;
-        margin: 0 0.1em;
-        padding: 0 0.25em;
-        border-radius: 0.25em;
-        min-width: 1.35em;
-        text-align: center;
-        line-height: 1.32em;
-        outline: none;
-        /* transition: color 0.2s ease, background 0.2s ease, outline-color 0.2s ease; */
       }
       [contenteditable]:empty:before{
         content: attr(data-placeholder);
@@ -272,13 +265,12 @@
         display: none;
       }
       .typing {
-        display: block;
-        position: absolute;
-        margin: -3.5px var(--side-padding) 0px;
-        min-height: calc(21px + 2px);
-        line-height: calc(21px + 2px);
+        margin: -7px var(--side-padding) 0 var(--side-padding);
+        min-height: 22px;
+        line-height: 22px;
         font-size: 14px;
         color: #7a7b7c;
+        white-space: nowrap;
         z-index: 1;
       }
       .avatar, .avatarLarge {
@@ -709,14 +701,6 @@
         ;
         return $('<div>').append(res);
       }
-      const t$nickname = user =>
-      $('<div class="nickname">')
-        .text(sync[user.uid].nickname)
-        .css({
-          background: user.color+'22',
-          color: user.color
-        })
-      ;
       const t$nickname2 = args =>
       $('<span class="nick">')
         .addClass(args.user.uid)
@@ -733,7 +717,7 @@
             )
           )
           .append(
-            args.user ? $(`<li class="broadcast">`).text(' '+args.message).prepend(t$nickname(args.user)) : $(`<li class="broadcast">`).text(args.message)
+            args.user ? $(`<li class="broadcast">`).text(' '+args.message).prepend(t$nickname2(args)) : $(`<li class="broadcast">`).text(args.message)
           )
         ;
         lastUid = null;
@@ -842,6 +826,7 @@
                   socket.emit('upload progress', {file: files[i], progress: 100-progress.percent+'%'});
                 },
                 onfinish: (data) => {
+                  console.log('fileid', data.metadata.fileid);
                   files[i].fileid = data.metadata.fileid;
                   socket.emit('update file', {file: files[i]});
                 },
@@ -877,24 +862,24 @@
           case 1:
             $typing
               .text(' is typing...')
-              .prepend(t$nickname(users[tua[0]]))
+              .prepend(t$nickname2({user: users[tua[0]]}))
             ;
             break;
           case 2:
             $typing
               .text(' and ')
-              .prepend(t$nickname(users[tua[0]]))
-              .append(t$nickname(users[tua[1]]))
+              .prepend(t$nickname2({user: users[tua[0]]}))
+              .append(t$nickname2({user: users[tua[1]]}))
               .append(' are typing...')
             ;
             break;
           case 3:
             $typing
               .text(' ')
-              .prepend(t$nickname(users[tua[0]]))
-              .append(t$nickname(users[tua[1]]))
+              .prepend(t$nickname2({user: users[tua[0]]}))
+              .append(t$nickname2({user: users[tua[1]]}))
               .append(' and ')
-              .append(t$nickname(users[tua[1]]))
+              .append(t$nickname2({user: users[tua[1]]}))
               .append(' are typing...')
             ;
             break;
