@@ -988,7 +988,7 @@
         });
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
-        $(window).on('focus', () => {
+        $(window).on('visibilitychange focus', () => {
           if (socket.connected) return;
           window.user.getIdToken().then(() => socket.close().open());
         });
