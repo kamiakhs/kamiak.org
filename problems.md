@@ -1,9 +1,9 @@
 ---
 layout: default
-title: beginner coding problems
+title: Begniner Coding Problems
 ---
 
-# beginner coding problems
+# Begniner Coding Problems
 I tried to cover as much as I could, but I skipped Binary Tree in intermediate because I thought the other algorithms were more important. These are interview problems, so they should be quite challenging. [Solutions](/solutions)
 
 ## Beginner

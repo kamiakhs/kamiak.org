@@ -1,13 +1,13 @@
 ---
 layout: default
-title: home
+title: Home
 nav_order: 1
 ---
 
-# home
+# Home
 - [Battleship](/battleship)
 - [Kamiak Chat (BETA)](/chat)
-- [Homework Tips](/hw)
+- [Homework Tips](/homework-tips)
 - [Book PDFs (R&J, Kite Runner, etc.)](/books)
 - [Email (admin@kamiak.org)](https://mail.google.com/mail/?view=cm&fs=1&to=admin@kamiak.org)
 
