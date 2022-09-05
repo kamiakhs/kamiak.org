@@ -1083,13 +1083,13 @@
 
         socket.on('add uid', (data) => {
           console.log('add uid');
-          sync[data.uid] = data.info
-          sync[data.uid]._image = t$image(data.info.picture)
+          sync[data.uid] = data.info;
+          sync[data.uid]._image = t$image(data.info.picture);
         });
 
         socket.on('remove uid', (data) => {
           console.log('remove uid');
-          delete sync[data.uid]
+          // delete sync[data.uid];
         });
 
       }
