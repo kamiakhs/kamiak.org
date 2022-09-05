@@ -964,8 +964,11 @@
         newMessages = 0;
         document.title = `Kamiak Chat`;
       });
-
+    
+      let windowWidth = $(window).width();
       $window.on('resize', () => {
+        if ($(window).width() == windowWidth) return;
+        windowWidth = $(window).width();
         scrollToBottom();
         $('.popup').css('display', 'none');
         popupActive = false;
