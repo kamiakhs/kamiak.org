@@ -601,8 +601,13 @@
         });
       }
       const displayProfilePopup = function () {
-        // Create profile
+        // Remove previous profile
         $popup.css('display', 'none').removeClass('slideLeft').removeClass('slideRight').removeClass('slideUp').removeClass('slideDown');
+        if (popupActive && this == popupElement) {
+          popupElement = null;
+          return;
+        }
+        // Create profile
         let uid = this.classList[1];
         let _ = sync[uid];
         $popup.find('.avatarLarge').replaceWith(_._image.addClass('avatarLarge'));
@@ -642,6 +647,7 @@
         $popup.css('display', '');
         setTimeout(() => $popup.addClass('slide'+slide), 1);
         popupClicked = popupActive = true;
+        popupElement = this;
       }
       
 
@@ -938,7 +944,7 @@
       }
 
       
-      let popupClicked = false, popupActive = false;
+      let popupClicked = false, popupActive = false, popupElement = null;
       $('.myAvatarWrapper .avatar').on('click', displayProfilePopup);
       $popup.on('mousedown', () => {
         popupClicked = true;
