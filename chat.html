@@ -454,14 +454,14 @@
       };
       const app = initializeApp(firebaseConfig);
       const provider = new GoogleAuthProvider();
-      // provider.setCustomParameters({hd: 'mukilteo.wednet.edu'});
+      provider.setCustomParameters({hd: 'mukilteo.wednet.edu'});
       const auth = getAuth(app);
       window.auth = auth;
 
       onAuthStateChanged(auth, user => {
         window.user = user;
         if (user) {
-          // if (!user.email.endsWith('@mukilteo.wednet.edu')) window.signOut();
+          if (!user.email.endsWith('@mukilteo.wednet.edu')) window.signOut();
           console.log('Signed into Google', new Date()-window.t1);
           $('.avatar').attr('src', user.photoURL).addClass(user.uid);
           main();
