@@ -1,3 +1,10 @@
 remote_theme: just-the-docs/just-the-docs
 title: kamiak.org
 # description: Hello world!
+nav_external_links:
+  - title: Battleship
+    url: /battleship
+    hide_icon: false
+  - title: Kamiak Chat (BETA)
+    url: /chat
+    hide_icon: false
