@@ -984,7 +984,6 @@
         window.socket = socket = io('wss://kamiak.herokuapp.com', {
           path: '/chat/socket.io',
           auth: {token: window.user.accessToken},
-          transports: ['websocket'],
         });
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
