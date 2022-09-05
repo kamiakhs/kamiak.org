@@ -706,6 +706,10 @@
           )
         ;
         lastUid = args.user.uid;
+        if (document.hidden) {
+          newMessages += 1;
+          document.title = `(${newMessages}) Kamiak Chat`;
+        }
         return res;
       }
       const t$attachment = args => {
@@ -790,6 +794,8 @@
       let socket;
 
       let fileList = [];
+
+      let newMessages = 0;
 
 
       const viewingNewMessages = () => ($messages[0].scrollHeight-$messages.scrollTop() <= 2*$messages.outerHeight());
@@ -950,6 +956,12 @@
         }
       });
 
+
+      $(document).on('visibilitychange', () => {
+        if (document.hidden) return;
+        newMessages = 0;
+        document.title = `Kamiak Chat`;
+      });
 
       $window.on('resize', () => {
         scrollToBottom();
