@@ -1,5 +1,5 @@
 ---
-title: Books
+nav_exclude: true
 ---
 
 # Books
