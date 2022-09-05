@@ -1,4 +1,10 @@
-# Homepage
+---
+layout: default
+title: home
+nav_order: 1
+---
+
+# home
 - [Battleship](/battleship)
 - [Kamiak Chat (BETA)](/chat)
 - [Homework Tips](/hw)

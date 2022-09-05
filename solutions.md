@@ -1,4 +1,10 @@
-# Solutions
+---
+layout: default
+title: sample solutions
+nav_exclude: true
+---
+
+# sample solutions
 Sample solutions for [these problems](/problems) below.
 
 ## Beginner
