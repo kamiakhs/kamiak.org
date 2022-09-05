@@ -649,6 +649,10 @@
         popupClicked = popupActive = true;
         popupElement = this;
       }
+      const incrementNotificationCounter = () => {
+        if (!document.hidden) return;
+        document.title = `(${newMessages += 1}) Kamiak Chat`;
+      }
       
 
 
@@ -706,10 +710,7 @@
           )
         ;
         lastUid = args.user.uid;
-        if (document.hidden) {
-          newMessages += 1;
-          document.title = `(${newMessages}) Kamiak Chat`;
-        }
+        incrementNotificationCounter();
         return res;
       }
       const t$attachment = args => {
@@ -759,6 +760,7 @@
           )
         ;
         lastUid = null;
+        incrementNotificationCounter();
         return res;
       }
       const t$file = window.t$file = args => 
