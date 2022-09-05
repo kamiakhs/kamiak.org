@@ -4,7 +4,13 @@ title: kamiak.org
 nav_external_links:
   - title: Battleship
     url: /battleship
-    hide_icon: false
+    nav_order: 2
+    hide_icon: true
   - title: Kamiak Chat (BETA)
     url: /chat
-    hide_icon: false
+    nav_order: 3
+    hide_icon: true
+  - title: Beginner Coding Problems
+    url: /problems
+    nav_order: 5
+    hide_icon: true

@@ -1,6 +1,5 @@
 ---
-layout: default
-title: Begniner Coding Problems
+nav_exclude: true
 ---
 
 # Begniner Coding Problems
