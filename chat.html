@@ -682,15 +682,6 @@
         if (args.files) {
           window.files = args.files;
           args.files.forEach((file) => messageBody.append(t$attachment({file: file})));
-          // if (args.user.sid == sid) {
-          //   args.files.forEach((file) => messageBody.append(t$attachment({blob: file})));
-          // } else {
-          //   args.files.forEach((file) => {
-          //     let blob = new Blob([file.buffer]);
-          //     blob.name = file.name;
-          //     messageBody.append(t$attachment({blob: blob}));
-          //   });
-          // }
         }
         
         let res = args.user.uid != lastUid ? 
@@ -989,17 +980,9 @@
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
         $(window).on('focus', () => {
-          if (socket.disconnected) window.user.getIdToken().then(() => socket.close().open());
+          if (socket.connected) return;
+          window.user.getIdToken().then(() => socket.close().open());
         });
-        // socket.io.on('reconnect_failed', async () => {
-        //   window.user.getIdToken().then(() => socket.close().open());
-        // });
-        // let worker = new Worker('on_wakeup.js');
-        // worker.onmessage = (ev) => {
-        //   if (socket.disconnected) {
-        //     socket.open();
-        //   }
-        // }
 
         $('.fileInput').on('click', () => $fileInput.click());
         $('#fileInput').on('change', function () {
@@ -1035,13 +1018,12 @@
 
         socket.on('disconnect', () => {
           console.log('disconnected');
-          if (!disconnected) {
-            disconnected = true;
-            log(t$broadcast({message: 'left', user: users[sid]}));
-            log(t$broadcast({message: 'Connection lost. Trying to reconnect...'}));
-            typingUsers.clear();
-            updateTypingUsers();
-          }
+          if (disconnected) return;
+          disconnected = true;
+          log(t$broadcast({message: 'left', user: users[sid]}));
+          log(t$broadcast({message: 'Connection lost. Trying to reconnect...'}));
+          typingUsers.clear();
+          updateTypingUsers();
         });
 
         socket.on('add user', (data) => {
