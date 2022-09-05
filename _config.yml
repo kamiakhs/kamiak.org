@@ -10,6 +10,10 @@ nav_external_links:
     url: /chat
     nav_order: 3
     hide_icon: true
+  - title: Books
+    url: /books
+    nav_order: 4
+    hide_icon: true
   - title: Beginner Coding Problems
     url: /problems
     nav_order: 5
