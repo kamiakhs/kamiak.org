@@ -607,6 +607,7 @@
         $popup.find('.popupName').text(_.name);
         $popup.find('.popupId').text(_.email);
         $popup.css('display', '').find('.popupId').css('height', 'auto').css('height', $popup.find('.popupId')[0].scrollHeight+'px').end().css('display', 'none');
+        $popup.find('.popupId')[0].selectionStart = $popup.find('.popupId')[0].selectionEnd;  // Remove selection on email
         $popup.find('button').css('display', uid == users[sid].uid ? '' : 'none');
 
         // Get dimensions
