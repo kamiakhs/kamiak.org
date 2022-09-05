@@ -331,7 +331,14 @@
         color: #4f5150;
         margin-top: 6px;
         white-space: normal;
-        /* font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace; */
+        border: none;
+        outline: none;
+        resize: none;
+        background: none;
+        text-align: center;
+        width: 100%;
+        overflow: hidden;
+        padding: 0;
       }
       button {
         font-size: 14px;
@@ -344,7 +351,7 @@
       .popupButton {
         color: #d5d9da;
         background: #1d1d1de8;
-        margin-top: 12px;
+        margin-top: 8px;
       }
       .popupButton:hover, .popupButton:active {
         background: #1d1d1d;
@@ -396,7 +403,7 @@
         <div class="popup" style="display:none;">
           <img class="avatarLarge" referrerpolicy="no-referrer" tabindex="1">
           <div class="popupName"></div>
-          <div class="popupId"></div>
+          <textarea class="popupId" onclick="this.select()" rows="1" readonly></textarea>
           <button class="popupButton" onclick="window.signOut()">Sign out</button>
         </div>
         <h1 style="display:flex; justify-content:space-between; align-items:center;">
@@ -599,6 +606,7 @@
         _._image = t$image(_.picture);
         $popup.find('.popupName').text(_.name);
         $popup.find('.popupId').text(_.email);
+        $popup.css('display', '').find('.popupId').css('height', 'auto').css('height', $popup.find('.popupId')[0].scrollHeight+'px').end().css('display', 'none');
         $popup.find('button').css('display', uid == users[sid].uid ? '' : 'none');
 
         // Get dimensions
@@ -742,7 +750,7 @@
             )
           )
           .append(
-            args.user ? $(`<li class="broadcast">`).text(' '+args.message).prepend(t$nickname2(args)) : $(`<li class="broadcast">`).text(args.message)
+            args.user ? $(`<li class="broadcast">`).text(' '+args.message).prepend(t$nickname2(args)) : args.user2 ? $(`<li class="broadcast">`).text(args.message+' ').append(t$nickname2({user: args.user2})) : $(`<li class="broadcast">`).text(args.message)
           )
         ;
         lastUid = null;
@@ -794,22 +802,22 @@
 
       const sendMessage = () => {
         const message = $messageInput.val().trim();
-        if (message.startsWith('/nick ')) {
+        if (message.startsWith('/rename ')) {
           // Change nickname
-          const nickname = message.substr(6).trim().replace(/\s+/g, ' ');
+          const nickname = message.substr(8).trim().replace(/\s+/g, ' ');
           if (nickname.length < 2 || nickname.length > 24) {
             alert('Nickname length must be between 2 and 24 characters');
           } else {
             $messageInput.clear();
             sync[users[sid].uid].nickname = nickname;
-            log(t$broadcast({message: 'Your changed your nickname to '+nickname}));
+            log(t$broadcast({message: 'Your changed your nickname to', user2: users[sid]}));
             socket.emit('set nickname', {nickname: nickname});
           }
         }
         else if (message == '/help') {
           // Help
           $messageInput.clear();
-          log(t$broadcast({message: 'Commands:    /help    /nick <nickname>    /ping    /reconnect'}));
+          log(t$broadcast({message: 'Commands:    /help    /rename <nickname>    /ping    /reconnect'}));
         }
         else if (message == '/ping') {
           // Ping
@@ -928,7 +936,7 @@
       
       let popupClicked = false, popupActive = false;
       $('.myAvatarWrapper .avatar').on('click', displayProfilePopup);
-      $popup.on('click', () => {
+      $popup.on('mousedown', () => {
         popupClicked = true;
       });
       $window.on('click', () => {
