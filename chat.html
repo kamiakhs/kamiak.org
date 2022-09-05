@@ -967,16 +967,11 @@
 
       const setupSocket = () => {
 
-        window.socket = socket = io(
-          'wss://kamiak.herokuapp.com',
-          {
-            path: '/chat/socket.io',
-            auth: {
-              token: window.user.accessToken,
-            },
-            // query: `nickname=${encodeURIComponent(nickname)}&seed=${encodeURIComponent(localStorage.seed || (localStorage.seed = btoa(Math.random().toString()).substring(10, 15)))}&token=${window.user.accessToken}`
-          }
-        );
+        window.socket = socket = io('wss://kamiak.herokuapp.com', {
+          path: '/chat/socket.io',
+          auth: {token: window.user.accessToken},
+          transports: ['websocket'],
+        });
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
         $(window).on('focus', () => {
