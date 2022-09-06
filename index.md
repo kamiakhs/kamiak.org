@@ -1,8 +1,8 @@
 # Home
 - [Battleship](/battleship)
 - [Kamiak Chat (BETA)](/chat)
-- [Homework Tips](/homework-tips)
 - [Online Books](https://books.kamiak.org/)
+- [Homework Tips](/homework-tips)
 - [Email (admin@kamiak.org)](https://mail.google.com/mail/?view=cm&fs=1&to=admin@kamiak.org)
 
 <!---
