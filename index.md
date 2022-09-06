@@ -5,6 +5,10 @@
 - [Homework Tips](/homework-tips)
 - [Email (admin@kamiak.org)](https://mail.google.com/mail/?view=cm&fs=1&to=admin@kamiak.org)
 
+
+<style>
+  a { color:#5937fe!important; }
+</style>
 <!---
 <style>
   html { height:100%; }

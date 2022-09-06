@@ -6,6 +6,9 @@
     <meta name="description" content="A very basic chatroom">
     <meta name="google" content="notranslate">
     <meta name="theme-color" content="#e0e4e5">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="whitney.css">
     <style>
       * {
@@ -55,13 +58,15 @@
         background: #e0e4e5;
       }
       .beta {
+        display: flex;
+        align-items: center;
         font-size: 16px;
         color: #e0e4e5;
         background: #7b67db;
-        padding: 2px 5.5px 2px 6px;
+        padding: 6px 5.5px 6px 6px;
         border-radius: 3px;
         user-select: none;
-        font-family: "Whitney-Semibold";
+        font-family: "Times New Roman";
         margin-left: 8px;
       }
       .page {
@@ -252,6 +257,7 @@
       }
       .messageInput::placeholder {
         color: #7a7b7c;
+        user-select: none;
       }
       .messageInputWrapper .iconButton {
         color: #1d1d1de8;

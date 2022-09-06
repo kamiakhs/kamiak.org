@@ -4,3 +4,8 @@
 4. These rules can be applied to other areas and should **only** be disregarded in the pursuit of sleep, women, and the like.
 
 *Approved by: Levi A. Develice*
+
+
+<style>
+  a { color:#5937fe!important; }
+</style>
