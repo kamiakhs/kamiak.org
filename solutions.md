@@ -1,7 +1,3 @@
----
-nav_exclude: true
----
-
 # Sample Solutions
 Sample solutions for [these problems](/problems) below.
 

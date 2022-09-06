@@ -1,11 +1,9 @@
----
-layout: default
-title: Home
-nav_order: 1
----
-
 # Home
-[Email (admin@kamiak.org)](https://mail.google.com/mail/?view=cm&fs=1&to=admin@kamiak.org)
+- [Battleship](/battleship)
+- [Kamiak Chat (BETA)](/chat)
+- [Homework Tips](/homework-tips)
+- [Online Books](https://books.kamiak.org/)
+- [Email (admin@kamiak.org)](https://mail.google.com/mail/?view=cm&fs=1&to=admin@kamiak.org)
 
 <!---
 <style>
