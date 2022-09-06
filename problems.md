@@ -1,4 +1,6 @@
 ---
+title: Beginner Coding Problems
+nav_order: 6
 nav_exclude: true
 ---
 
