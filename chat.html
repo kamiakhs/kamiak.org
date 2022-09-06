@@ -640,25 +640,25 @@
         let W = $window.width(), H = $window.height();
         let w = $popup.outerWidth(), h = $popup.outerHeight();
         let s = $(this).outerHeight(), S = $(this).outerWidth();  // Avatar size
-        let m = 8, sm = 10;  // m: margin between popup and avatar, sm: slide margin
+        let m = 8, sm = 10, sp = 18;  // m: margin between popup and avatar, sm: slide margin, sp: side padding
 
         // Position popup
         let pos = $(this).offset();
         let slide;
         if ($(this).is('.messageWrapper .avatar')) {
           pos.left += s+m+sm;
-          pos.top = Math.min(pos.top, H-(h+m*1.5));
+          pos.top = Math.min(pos.top, H-(h+sp));
           slide = 'Left';
         } else {
-          if (pos.top+s+m <= H-(h+m*1.5)) {
+          if (pos.top+s+m <= H-(h+sp)) {
             pos.top += s+m+sm;
             slide = 'Down';
           } else {
             pos.top -= m+h+sm;
             slide = 'Up';
           }
-          pos.left = Math.min(pos.left-(w-S)/2, W-(w+m*1.5));
-          pos.left = Math.max(pos.left, m*1.5);
+          pos.left = Math.min(pos.left-(w-S)/2, W-(w+sp));
+          pos.left = Math.max(pos.left, sp);
         }
         console.log(pos);
         $popup.css(pos);
