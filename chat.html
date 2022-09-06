@@ -870,7 +870,7 @@
           }
           $message = t$message({message: message, user: users[sid], files: files});
           log($message, true);
-          fileList2 = fileList;
+          let fileList2 = fileList;
           socket.emit('send message', {message: message, files: files}, (data) => {
             $attachments = $message.find('.attachment');
             console.log($attachments);
@@ -1015,8 +1015,17 @@
 
         $('.fileInput').on('click', () => $fileInput.click());
         $('#fileInput').on('change', function () {
-          window.fileList = fileList = fileList.concat(Array.from(this.files));
+          fileList = fileList.concat(Array.from(this.files));
           $(this).val('')
+          updateFiles();
+          refreshMessageInputHeight();
+        });
+        $('body').on('dragover dragenter drop', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+        $('body').on('drop', (e) => {
+          fileList = fileList.concat(Array.from(e.originalEvent.dataTransfer.files));
           updateFiles();
           refreshMessageInputHeight();
         });
