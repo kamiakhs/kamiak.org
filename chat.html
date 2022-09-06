@@ -336,8 +336,8 @@
       }
       .slideLeft { transform: translate3d(-10px, 0, 0); }
       .slideRight { transform: translate3d(10px, 0, 0); }
-      .slideUp { transform: translate3d(0, 10px, 0); }
-      .slideDown { transform: translate3d(0, -10px, 0); }
+      .slideUp { transform: translate3d(0, -10px, 0); }
+      .slideDown { transform: translate3d(0, 10px, 0); }
       .popupName {
         font-family: "Whitney-Semibold";
         /* white-space: nowrap; */
@@ -650,11 +650,11 @@
           pos.top = Math.min(pos.top, H-(h+sp));
           slide = 'Left';
         } else {
-          if (pos.top+s+m <= H-(h+sp)) {
-            pos.top += s+m+sm;
+          if (pos.top-(m+h) >= sp) {
+            pos.top -= m+h+sm;
             slide = 'Down';
           } else {
-            pos.top -= m+h+sm;
+            pos.top += s+m+sm;
             slide = 'Up';
           }
           pos.left = Math.min(pos.left-(w-S)/2, W-(w+sp));
