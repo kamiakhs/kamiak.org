@@ -1,5 +1,4 @@
 ---
-title: Beginner Coding Problems
 nav_order: 6
 ---
 
