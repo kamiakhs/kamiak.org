@@ -1,5 +1,5 @@
 ---
-nav_order: 5
+nav_exclude: true
 ---
 
 # Tips for Effectively Managing Homework - The Levi Principle
