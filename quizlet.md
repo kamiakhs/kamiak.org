@@ -8,9 +8,9 @@ Below is a list of Quizlet links.
 |**2**|[[ひらがな]](https://quizlet.com/3499661) [[2-1]](https://quizlet.com/523454592) [[2-2]](https://quizlet.com/620207520) [[2-3]](https://quizlet.com/622270581) [[2-4]](https://quizlet.com/622585720) [[2-5]](https://quizlet.com/623626037) [[2-6a]](https://quizlet.com/64570673) [[2-6b]](https://quizlet.com/64570580)|
 |**3**|[[カタカナ]](https://quizlet.com/46960257) [[3-漢字]](https://quizlet.com/48090085) [[3-1]](https://quizlet.com/540005770) [[3-2]](https://quizlet.com/72922509) [[3-3]](https://quizlet.com/541306688) [[3-4]](https://quizlet.com/541653834) [[3-5]](https://quizlet.com/543964079)|
 |**4**|[[4-漢字]](https://quizlet.com/549067095) [[4-1]](https://quizlet.com/550533996) [[4-2]](https://quizlet.com/552348869) [[4-3]](https://quizlet.com/505644436) [[4-4]](https://quizlet.com/556420378) [[4-5]](https://quizlet.com/508961182)|
-|**5**|Text|
-|**6**|Text|
-|**7**|Text|
+|**5**|[[5-漢字]](https://quizlet.com/560950876) [[5-1]](https://quizlet.com/560989728) [[5-2]](https://quizlet.com/649544704) [[5-3]](https://quizlet.com/560993790) [[5-4]](https://quizlet.com/577072008) [[5-5]](https://quizlet.com/577073466)|
+|**6**|[[6-漢字]](https://quizlet.com/580758106) [[6-1]](https://quizlet.com/580842201) [[6-2]](https://quizlet.com/581086610) [[6-3]](https://quizlet.com/582143130) [[6-4]](https://quizlet.com/582765041) [[6-5]](https://quizlet.com/586114855)|
+|**7**|[[7-漢字]](https://quizlet.com/587417192) [[7-1]](https://quizlet.com/588419056) [[7-2]](https://quizlet.com/588512183) [[7-3]](https://quizlet.com/588794005) [[7-4]](https://quizlet.com/588796012) [[7-5]](https://quizlet.com/588798510)|
 |**8**|Text|
 |**9**|Text|
 |**10**|Text|
