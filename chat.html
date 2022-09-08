@@ -472,7 +472,7 @@
       };
       const app = initializeApp(firebaseConfig);
       const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({hd: 'mukilteo.wednet.edu'});
+      provider.setCustomParameters({hd: 'mukilteo.wednet.edu', prompt: 'select_account'});
       const auth = getAuth(app);
       window.auth = auth;
 
