@@ -3,6 +3,7 @@
 - [Kamiak Chat (BETA)](/chat)
 - [Online Books](https://books.kamiak.org/)
 - [Homework Tips](/homework-tips)
+- [クイズレット](/quizlet)
 - [Email (admin@kamiak.org)](https://mail.google.com/mail/?view=cm&fs=1&to=admin@kamiak.org)
 
 
