@@ -1,6 +1,6 @@
 # Japanese Quizlets
 
-Below is a list of Quizlet links.
+Below is a table of Quizlet links. Only Japanese 1 is included as of now. I also recommend trying out this <a href="https://quizlet.com/644886598" target="_blank">1000 Most Common Kana</a> Quizlet deck I made and this <a href="https://drive.google.com/file/d/10tTxP6zrWt7w2BHS_XGniLwfsrZK73NQ/view?usp=sharing" target="_blank">Japanese Core 6000</a> Anki deck.
 
 |**Unit**|AIJ 1|
 |-:|:-|
@@ -12,7 +12,7 @@ Below is a list of Quizlet links.
 |**6**|[[6-漢字]](https://quizlet.com/580758106) [[6-1]](https://quizlet.com/580842201) [[6-2]](https://quizlet.com/581086610) [[6-3]](https://quizlet.com/582143130) [[6-4]](https://quizlet.com/582765041) [[6-5]](https://quizlet.com/586114855)|
 |**7**|[[7-漢字]](https://quizlet.com/587417192) [[7-1]](https://quizlet.com/588419056) [[7-2]](https://quizlet.com/588512183) [[7-3]](https://quizlet.com/588794005) [[7-4]](https://quizlet.com/588796012) [[7-5]](https://quizlet.com/588798510)|
 |**8**|[[8-漢字]](https://quizlet.com/630412130) [[8-1]](https://quizlet.com/630921692) [[8-2]](https://quizlet.com/631028786) [[8-3]](https://quizlet.com/631035937) [[8-4]](https://quizlet.com/631523288) [[8-5]](https://quizlet.com/631524639)|
-|**9**|[[Conj.]](https://quizlet.com/597973383)[[9-漢字]](https://quizlet.com/593296135) [[9-1]](https://quizlet.com/593980967) [[9-2]](https://quizlet.com/593984457) [[9-3]](https://quizlet.com/593985658) [[9-4]](https://quizlet.com/593986610) [[9-5]](https://quizlet.com/593987467)|
+|**9**|[[Conj.]](https://quizlet.com/597973383) [[9-漢字]](https://quizlet.com/593296135) [[9-1]](https://quizlet.com/593980967) [[9-2]](https://quizlet.com/593984457) [[9-3]](https://quizlet.com/593985658) [[9-4]](https://quizlet.com/593986610) [[9-5]](https://quizlet.com/593987467)|
 |**10**|[[10-漢字]](https://quizlet.com/647918943) [[10-1]](https://quizlet.com/647990242) [[10-2]](https://quizlet.com/647991025) [[10-3]](https://quizlet.com/647991586) [[10-4]](https://quizlet.com/647992101) [[10-5]](https://quizlet.com/647992670)|
 |**11**|[[11-漢字]](https://quizlet.com/597773274) [[11-1]](https://quizlet.com/597774351) [[11-2]](https://quizlet.com/597775689) [[11-3]](https://quizlet.com/597776661) [[11-4]](https://quizlet.com/597777556) [[11-5]](https://quizlet.com/597778040)|
 
