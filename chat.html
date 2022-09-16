@@ -533,7 +533,7 @@
         url: 'https://kamiak.herokuapp.com/temp.js',
         dataType: 'jsonp',
         error: (_) => {
-          if (_.status == 201) return;
+          if (_.status == 200) return;
           SOCKET_IO_URI = 'wss://chat.kamiak.org';
         }
       });
