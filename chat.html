@@ -1008,7 +1008,7 @@
           auth: {token: window.user.accessToken},
         });
 
-        socket.io.on('connect_failed', () => socket.io.uri = 'wss://chat.kamiak.org');
+        socket.io.on('error', () => socket.io.uri = 'wss://chat.kamiak.org');
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
         $(window).on('visibilitychange focus', () => {
