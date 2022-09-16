@@ -1004,13 +1004,15 @@
 
       const setupSocket = () => {
 
-        window.socket = socket = io(localStorage.herokuBlocked ? 'wss://code.kamiak.org' : 'wss://kamiak.herokuapp.com', {
+        window.socket = socket = io(localStorage.herokuBlocked ? 'wss://chat.kamiak.org' : 'wss://kamiak.herokuapp.com', {
           path: '/chat/socket.io',
           auth: {token: window.user.accessToken},
         });
-
+        
+        let hasConnected = false;
         socket.io.on('error', () => {
-          socket.io.uri = 'wss://code.kamiak.org';
+          if (hasConnected) return;
+          socket.io.uri = 'wss://chat.kamiak.org';
           localStorage.herokuBlocked = true;
         });
 
@@ -1040,6 +1042,7 @@
         socket.on('connect', () => {
           console.log('connected', new Date()-window.t1);
           $messageInput.prop('disabled', false).focus();
+          hasConnected = true;
         });
 
         socket.on('login', (data) => {
