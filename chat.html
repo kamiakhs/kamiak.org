@@ -527,6 +527,17 @@
     <script>
       /// <reference path="./jquery.min.js" />
       /// <reference path="./socket.io.min.js" />
+      
+      let SOCKET_IO_URI = 'wss://kamiak.herokuapp.com';
+      $.get({
+        url: 'https://kamiak.herokuapp.com/temp.js',
+        dataType: 'jsonp',
+        error: (_) => {
+          if (_.status == 201) return;
+          SOCKET_IO_URI = 'wss://chat.kamiak.org';
+        }
+      });
+
       const main = () => {
       
 
@@ -1003,7 +1014,7 @@
 
       const setupSocket = () => {
 
-        window.socket = socket = io('wss://chat.kamiak.org', {
+        window.socket = socket = io(SOCKET_IO_URI, {
           path: '/chat/socket.io',
           auth: {token: window.user.accessToken},
         });
