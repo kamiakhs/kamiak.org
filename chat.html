@@ -1008,6 +1008,8 @@
           auth: {token: window.user.accessToken},
         });
 
+        socket.io.on('reconnect_failed', () => socket.io.uri = 'wss://chat.kamiak.org');
+
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
         $(window).on('visibilitychange focus', () => {
           if (socket.connected) return;
