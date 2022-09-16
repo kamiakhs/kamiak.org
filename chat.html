@@ -1003,12 +1003,10 @@
 
       const setupSocket = () => {
 
-        window.socket = socket = io('wss://kamiak.herokuapp.com', {
+        window.socket = socket = io('wss://chat.kamiak.org', {
           path: '/chat/socket.io',
           auth: {token: window.user.accessToken},
         });
-
-        socket.io.on('error', () => socket.io.uri = 'wss://chat.kamiak.org');
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
         $(window).on('visibilitychange focus', () => {
