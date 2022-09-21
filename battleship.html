@@ -707,7 +707,6 @@
         ;
 
         const socket = io('wss://kamiak.herokuapp.com', {path: '/battleship/socket.io'});
-        var hasConnected = false;
         
         const board = new Array(10).fill(0).map(() => new Array(10).fill(0));
         const lengths = [2, 3, 3, 4, 5];
@@ -725,14 +724,12 @@
         var pageX, pageY;
 
 
-        socket.io.on('connect_error', () => {
-          console.log('CONNECT ERROR');
+        socket.io.on('reconnect_error', () => {
           socket.io.uri = 'wss://chat.kamiak.org';
         });
 
         socket.on('connect', () => {
           console.log('connected');
-          hasConnected = true;
         });
 
         socket.on('disconnect', () => {
@@ -742,10 +739,6 @@
             blockAimer = true;
             $('#banner').text("You have disconnected.").addClass('lose');
             $('#rematch-button').css('display', 'block');
-          }
-          if (!hasConnected) {
-            console.log('disconnect before connect');
-            socket.io.uri = 'wss://chat.kamiak.org';
           }
         });
 
