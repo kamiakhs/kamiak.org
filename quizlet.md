@@ -1,6 +1,6 @@
 # 日本語のクイズレット
 
-Below is a table of Quizlet links. As of now, only Japanese I is fully covered. I also recommend trying out this <a href="https://quizlet.com/644886598" target="_blank">1000 Most Common Kana</a> Quizlet deck I made and this <a href="https://drive.google.com/file/d/10tTxP6zrWt7w2BHS_XGniLwfsrZK73NQ/view?usp=sharing" target="_blank">Japanese Core 6000</a> Anki deck.
+Below is a table of Quizlet links. As of now, only Japanese I is fully covered. I also recommend trying out this <a href="https://quizlet.com/644886598" target="_blank">1000 Most Common Kana</a> Quizlet deck I scraped and this <a href="https://drive.google.com/file/d/10tTxP6zrWt7w2BHS_XGniLwfsrZK73NQ/view?usp=sharing" target="_blank">Japanese Core 6000</a> Anki deck.
 
 |**Unit**|AIJ 1|AIJ 2|
 |-:|:-|:-|
