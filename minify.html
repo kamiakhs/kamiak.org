@@ -65,7 +65,7 @@
                 let res = '';
                 for (let i = 0; i < str.length; i++) {
                     let v = str.charCodeAt(i);
-                    res += String.fromCharCode(~~(v/128));
+                    res += ~~(v/128) != 0 ? String.fromCharCode(~~(v/128)) : ' ';
                     res += String.fromCharCode(v%128);
                 }
                 if (res.charAt(res.length-1) == ' ') res = res.substring(0, res.length-1);
