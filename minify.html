@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Text Minifier</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            :root {
+                color-scheme: dark;
+            }
+            *:not(body) {
+                box-sizing: border-box;
+                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', monospace;
+                font-size: 14px;
+                font-weight: normal;
+                margin: 0;
+            }
+            body {
+                background: black;
+                color: white;
+            }
+            textarea::before {
+                content: "Read this: ";
+                visibility: visible;
+            }
+            textarea {
+                background: black;
+                color: white;
+                border: none;
+                outline: none;
+                resize: none;
+                padding: 0;
+            }
+            div:has(#utf-8)::before {
+                content: "[ Plain ]";
+            }
+            div:has(#utf-16)::before {
+                content: "[ Encoded ]";
+            }
+            .col {
+                display: flex;
+                flex-direction: column;
+            }
+        </style>
+    </head>
+    <body class="col">
+        <h1>Utf-8 Minifier [Version 0.0]</h1>
+        <p>Minify basic English characters to half the length.</p>
+        <p>This tool can be used to send longer messages in Discord without Nitro because it's totally not easier just to send two messages.</p>
+        <br>
+        <div class="col">
+            <textarea id="utf-8" rows="12"></textarea>
+        </div>
+        <br>
+        <div class="col">
+            <textarea id="utf-16" rows="12"></textarea>
+        </div>
+        <script>
+            const encode = str => {
+                if (str.length%2 != 0) str += '\x00';
+                let res = "";
+                for (let i = 0; i < str.length; i += 2) {
+                    let v = str.charCodeAt(i);
+                    v = v*128+str.charCodeAt(i+1);
+                    res += String.fromCharCode(v);
+                }
+                return res;
+            }
+            const decode = str => {
+                let res = "";
+                for (let i = 0; i < str.length; i++) {
+                    let v = str.charCodeAt(i);
+                    res += String.fromCharCode(~~(v/128));
+                    res += String.fromCharCode(v%128);
+                }
+                if (res.charAt(res.length-1) == '\x00') res = res.substring(0, res.length-1);
+                return res;
+            }
+            const $ = _ => document.querySelector(_);
+            const utf8 = $('#utf-8');
+            const utf16 = $('#utf-16');
+            utf8.oninput = () => utf16.value = encode(utf8.value);
+            utf16.oninput = () => utf8.value = decode(utf16.value);
+        </script>
+    </body>
+</html>

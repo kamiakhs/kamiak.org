@@ -4,6 +4,7 @@
 - [Online Books](https://books.kamiak.org/)
 - [Homework Tips](/homework-tips)
 - [クイズレット](/quizlet)
+- [Random Projects](/random)
 - [Email (admin@kamiak.org)](https://mail.google.com/mail/?view=cm&fs=1&to=admin@kamiak.org)
 
 
