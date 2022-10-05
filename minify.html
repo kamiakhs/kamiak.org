@@ -56,7 +56,7 @@
         </div>
         <script>
             const encode = str => {
-                if (str.length%2 != 0) str += '\x00';
+                if (str.length%2 != 0) str += ' ';
                 let res = "";
                 for (let i = 0; i < str.length; i += 2) {
                     let v = str.charCodeAt(i);
@@ -72,7 +72,7 @@
                     res += String.fromCharCode(~~(v/128));
                     res += String.fromCharCode(v%128);
                 }
-                if (res.charAt(res.length-1) == '\x00') res = res.substring(0, res.length-1);
+                if (res.charAt(res.length-1) == ' ') res = res.substring(0, res.length-1);
                 return res;
             }
             const $ = _ => document.querySelector(_);
