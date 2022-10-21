@@ -6,6 +6,11 @@ description: Quizlet links for easier access.
 
 Below is a table of Quizlet links. As of now, only Japanese I is fully covered. I also recommend trying out this <a href="https://quizlet.com/644886598" target="_blank">1000 Most Common Kana</a> Quizlet deck I scraped and this <a href="https://drive.google.com/file/d/10tTxP6zrWt7w2BHS_XGniLwfsrZK73NQ/view?usp=sharing" target="_blank">Japanese Core 6000</a> Anki deck.
 
+|Class|Units|
+|-|-|
+|Japanese 1|1.1 - 1.11|
+|Japanese 2|1.12 - 2.\*|
+
 |**Unit**|AIJ 1|
 |-:|:-|:-|
 |**1**|[[1-1]](https://quizlet.com/524958231) [[1-2]](https://quizlet.com/525637810) [[1-3]](https://quizlet.com/526733992) [[1-4]](https://quizlet.com/523447193) [[1-5]](https://quizlet.com/523454592)|
