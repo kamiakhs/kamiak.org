@@ -61,13 +61,16 @@
             .col {
                 flex-direction: column;
             }
-            .center {
+            .wrap {
+                flex-wrap: wrap;
+            }
+            .justify-center {
                 justify-content: center;
             }
-            .space-between {
+            .justify-between {
                 justify-content: space-between;
             }
-            .start {
+            .align-start {
                 align-items: start;
             }
             .accent {
@@ -102,12 +105,9 @@
             .commands {
                 width: 100%;
                 user-select: none;
-                /* cursor: pointer; */
+                gap: 12px;
             }
-            .commands > :not(:first-child) {
-                margin-top: 8px;
-            }
-            .command {
+           .command {
                 width: 100%;
                 padding: 12px 16px;
                 background: var(--pre-bg);
@@ -147,11 +147,9 @@
                 width: 100%;
                 margin-top: 12px;
                 padding-top: 12px;
+                gap: 8px;
             }
-            .command > :last-child > :not(:first-child) {
-                padding-top: 8px;
-            }
-            .text-lg {
+           .text-lg {
                 font-size: 1.125rem;
                 line-height: 1.75rem;
             }
@@ -231,7 +229,7 @@
             .delay-9 { animation-delay: .9s; }
         </style>
     </head>
-    <body class="col start">
+    <body class="col align-start">
         <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
             <symbol id="github" viewBox="0 0 16 16">
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
@@ -239,7 +237,7 @@
         </svg>
         <div class="container">
             <h1>
-                <div class="row space-between fade-in">
+                <div class="row justify-between fade-in">
                     <span>Sniper Bot</span>
                     <a href="https://github.com/jwseph/sniper-bot" rel="noreferrer">
                         <svg class="link-icon" style="margin-right:.25rem;"><use xlink:href="#github"></use></svg>
@@ -248,19 +246,25 @@
             </h1>
             <p class="fade-in delay-1">A sleek, revolutionary new multipurpose Discord bot featuring various unique utility commands.</p>
             <p class="fade-in delay-2">For students, by students.</p>
-            <p class="fade-in delay-2">
-                Currently serving <strong>61 servers.</strong>
-                <a href="https://discord.com/oauth2/authorize?client_id=899339547568132196&permissions=117768&scope=bot" style="text-align:right; float:right;">
+            <p class="row justify-between wrap fade-in delay-2" style="gap:1em;">
+                <span>Currently serving <strong>61 servers.</strong></span>
+                <a href="https://discord.com/oauth2/authorize?client_id=899339547568132196&permissions=117768&scope=bot">
                     -> Invite Sniper Bot to your server!
                 </a>
             </p>
-            <div id="commands" style="height:16px;"></div>
+            <!-- <p class="row justify-between wrap fade-in delay-2" style="gap:1em;">
+                <div>Currently serving <strong>61 servers.</strong></div>
+                <a href="https://discord.com/oauth2/authorize?client_id=899339547568132196&permissions=117768&scope=bot">
+                    -> Invite Sniper Bot to your server!
+                </a>
+            </p> -->
+           <div id="commands" style="height:16px;"></div>
             <h2 class="fade-in delay-3">Commands <a class="fragment" href="#commands">#</a></h2>
-            <div class="commands col start fade-in delay-4">
-                <div class="command col start">
+            <div class="commands col align-start fade-in delay-4">
+                <div class="command col align-start">
                     <div class="command-name text-lg text-light">pls dox</div>
                     <div class="text-sm text-gray">Finds someone's school picture, school, and student id</div>
-                    <div>
+                    <div class="col align-start">
                         <div>
                             <div class="text-sm text-gray">
                                 pls dox <code>name</code><br>
@@ -278,10 +282,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="command col start">
+                <div class="command col align-start">
                     <div class="command-name text-lg text-light">snipe</div>
                     <div class="text-sm text-gray">Brings back the most recently deleted message</div>
-                    <div>
+                    <div class="col align-start">
                         <div>
                             <div class="text-sm text-gray">
                                 snipe<br>
@@ -298,10 +302,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="command col start">
+                <div class="command col align-start">
                     <div class="command-name text-lg text-light">kanye</div>
                     <div class="text-sm text-gray">Provides a random Kanye West quote</div>
-                    <div>
+                    <div class="col align-start">
                         <div>
                             <div class="text-sm text-gray">
                                 kanye<br>
@@ -317,10 +321,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="command col start">
+                <div class="command col align-start">
                     <div class="command-name text-lg text-light">waifu</div>
                     <div class="text-sm text-gray">Gets a random drawing of an anime girl</div>
-                    <div>
+                    <div class="col align-start">
                         <div>
                             <div class="text-sm text-gray">
                                 pls w<br>
@@ -338,10 +342,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="command col start">
+                <div class="command col align-start">
                     <div class="command-name text-lg text-light">pls uwuify</div>
                     <div class="text-sm text-gray">Uwuifies *wuns away* text to make it bettew</div>
-                    <div>
+                    <div class="col align-start">
                         <div>
                             <div class="text-sm text-gray">
                                 pls uwu <code>text</code><br>
@@ -357,10 +361,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="command col start">
+                <div class="command col align-start">
                     <div class="command-name text-lg text-light">pls remind</div>
                     <div class="text-sm text-gray">Reminds you after a specified duration of time</div>
-                    <div>
+                    <div class="col align-start">
                         <div>
                             <div class="text-sm text-gray">
                                 pls remind <code>seconds</code>s <code>message</code><br>
