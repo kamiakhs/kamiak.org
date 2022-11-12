@@ -116,6 +116,20 @@
                 .command:hover {
                     transform: scale(1.1);
                 }
+                .command:hover .command-name:after {
+                    color: var(--base05);
+                    text-align: right;
+                    float: right;
+                    padding-top: 4px;
+                    animation: pulsate 2s ease-in-out;
+                    animation-iteration-count: infinite;
+                }
+                .command:not(.selected):hover .command-name:after {
+                    content: "Click to expand!";
+                }
+                .command.selected:hover .command-name:after {
+                    content: "Click to collapse!";
+                }
             }
             .command.selected {
                 border: 1.5px solid var(--base03);
@@ -136,7 +150,7 @@
                 font-size: 1.125rem;
                 line-height: 1.75rem;
             }
-            .text-sm {
+            .text-sm, .command-name:after {
                 font-size: .875rem;
                 line-height: 1.25rem;
             }
@@ -145,6 +159,23 @@
             }
             .text-gray {
                 color: var(--base05);
+            }
+            strong {
+                font-weight: 500;
+            }
+            @keyframes pulsate {
+                0% { 
+                    opacity: .1;
+                }
+                50% { 
+                    opacity: .3;
+                }
+                100% { 
+                    opacity: .1;
+                }
+            }
+            .command-name {
+                width: 100%;
             }
             a {
                 color: var(--link-color);
@@ -212,8 +243,9 @@
             </h1>
             <p class="fade-in delay-1">A sleek, revolutionary new multipurpose Discord bot featuring various unique utility commands.</p>
             <p class="fade-in delay-1">For students, by students.</p>
-            <p class="fade-in delay-2" style="text-align:right;">
-                <a href="https://discord.com/oauth2/authorize?client_id=899339547568132196&permissions=117768&scope=bot">
+            <p class="fade-in delay-2">
+                Currently serving <strong>61 servers.</strong>
+                <a href="https://discord.com/oauth2/authorize?client_id=899339547568132196&permissions=117768&scope=bot" style="text-align:right; float:right;">
                     -> Invite Sniper Bot to your server!
                 </a>
             </p>
@@ -221,7 +253,7 @@
             <h2 class="fade-in delay-3">Commands <a class="fragment" href="#commands">#</a></h2>
             <div class="commands col start fade-in delay-4">
                 <div class="command col start">
-                    <div class="text-lg text-light">pls dox</div>
+                    <div class="command-name text-lg text-light">pls dox</div>
                     <div class="text-sm text-gray">Finds someone's school picture, school, and student id</div>
                     <div>
                         <div>
@@ -242,7 +274,7 @@
                     </div>
                 </div>
                 <div class="command col start">
-                    <div class="text-lg text-light">snipe</div>
+                    <div class="command-name text-lg text-light">snipe</div>
                     <div class="text-sm text-gray">Brings back the most recently deleted message</div>
                     <div>
                         <div>
@@ -262,7 +294,7 @@
                     </div>
                 </div>
                 <div class="command col start">
-                    <div class="text-lg text-light">kanye</div>
+                    <div class="command-name text-lg text-light">kanye</div>
                     <div class="text-sm text-gray">Provides a random Kanye West quote</div>
                     <div>
                         <div>
@@ -281,7 +313,7 @@
                     </div>
                 </div>
                 <div class="command col start">
-                    <div class="text-lg text-light">waifu</div>
+                    <div class="command-name text-lg text-light">waifu</div>
                     <div class="text-sm text-gray">Gets a random drawing of an anime girl</div>
                     <div>
                         <div>
@@ -302,7 +334,7 @@
                     </div>
                 </div>
                 <div class="command col start">
-                    <div class="text-lg text-light">pls uwuify</div>
+                    <div class="command-name text-lg text-light">pls uwuify</div>
                     <div class="text-sm text-gray">Uwuifies *wuns away* text to make it bettew</div>
                     <div>
                         <div>
@@ -321,7 +353,7 @@
                     </div>
                 </div>
                 <div class="command col start">
-                    <div class="text-lg text-light">pls remind</div>
+                    <div class="command-name text-lg text-light">pls remind</div>
                     <div class="text-sm text-gray">Reminds you after a specified duartion of time</div>
                     <div>
                         <div>
