@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Color Picker</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta content="Color Picker" property="og:title">
+        <meta content="See if you can pick the correct color that matches the given hex code!" property="og:description">
+        <meta content="https://kamiak.org/color-picker" property="og:url">
+        <meta content="#202225" data-react-helmet="true" name="theme-color">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+        <style>
+            :root {
+                --base00: #282c34;
+                --base01: #353b45;
+                --base02: #3e4451;
+                --base03: #545862;
+                /* --base04: #565c64; */
+                --base04: #838994;
+                --base05: #abb2bf;
+                --base06: #b6bdca;
+                --body-bg: #282c34;
+                --body-color: #abb2bf;
+                --secondary-color: rgba(255,255,255,.5);
+                --link-color: rgba(255,255,255,.75);
+                --link-color-hover: #fff;
+                --link-border-color: rgba(255,255,255,.25);
+                --link-border-color-hover: rgba(255,255,255,.5);
+                --heading-color: #dee2e6;
+                --kbd-color: rgba(255,255,255,.5);
+                --kbd-bg: rgba(255,255,255,.1);
+                --hr-color: rgba(255,255,255,.1);
+                --pre-bg: rgba(0,0,0,.1);
+                --code-color: #e5c07b;
+                --code-snippet-border: rgba(255,255,255,.1);
+                --blockquote-border: rgba(255,255,255,.1);
+                color-scheme: dark;
+            }
+            * {
+                box-sizing: border-box;
+                font-family: Inter;
+            }
+            body {
+                background: var(--body-bg);
+                color: var(--body-color);
+                margin: 0;
+                padding: 48px 24px;
+            }
+            .container {
+                max-width: 672px;
+                margin: 0 auto;
+            }
+            .row, .col, .align-center {
+                display: flex;
+                align-items: center;
+            }
+            .col {
+                flex-direction: column;
+            }
+            .wrap {
+                flex-wrap: wrap;
+            }
+            .justify-center {
+                justify-content: center;
+            }
+            .justify-between {
+                justify-content: space-between;
+            }
+            .align-start {
+                align-items: start;
+            }
+            h1, h2 {
+                letter-spacing: -.04em;
+                color: var(--heading-color);
+            }
+            h1 {
+                font-weight: 800;
+                font-size: 72px;
+                margin-block-start: .33em;
+                margin-block-end: .33em;
+            }
+            h2 {
+                font-weight: 700;
+                font-size: 40px;
+                margin-block-start: .5em;
+                margin-block-end: .5em;
+            }
+            .colors {
+                width: 100%;
+                user-select: none;
+                gap: 20px;
+            }
+           .color {
+                width: 100%;
+                aspect-ratio: 1;
+                padding: 12px 16px;
+                color: transparent;
+                background: currentColor;
+                border-radius: .375rem;
+                transform: scale(1);
+                transition: .5s ease;
+                transition-property: color, background, transform, box-shadow;
+            }
+            @media (hover: hover) and (pointer: fine) {
+                .color:not([style*="color: transparent;"]):hover {
+                    transform: scale(1.1);
+                    box-shadow: 0 2px 24px currentColor;
+                    z-index: 2147483647 !important;
+                    cursor: pointer;
+                }
+            }
+            strong {
+                font-weight: 500;
+            }
+            a {
+                color: var(--link-color);
+                line-height: inherit;
+                font-weight: 500;
+                text-decoration: underline;
+                text-underline-offset: .25rem;
+                text-decoration-color: var(--link-border-color);
+                transition: .2s ease-in-out;
+            }
+            a:hover {
+                color: var(--link-color-hover);
+                text-decoration-color: var(--link-border-color-hover);
+            }
+            .link-icon {
+                width: 1em;
+                height: 1em;
+                vertical-align: -.125em;
+                fill: currentColor;
+                color: var(--secondary-color);
+                transition: .2s ease-in-out;
+            }
+            .link-icon:hover {
+                color: var(--link-color);
+            }
+            @keyframes fadein {
+                0% {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .fade-in {
+                animation: fadein 1s;
+                animation-fill-mode: both;
+            }
+            .delay-1 { animation-delay: .1s; }
+            .delay-2 { animation-delay: .2s; }
+            .delay-3 { animation-delay: .3s; }
+            .delay-4 { animation-delay: .4s; }
+            .delay-5 { animation-delay: .5s; }
+            .delay-6 { animation-delay: .6s; }
+            .delay-7 { animation-delay: .7s; }
+            .delay-8 { animation-delay: .8s; }
+            .delay-9 { animation-delay: .9s; }
+        </style>
+    </head>
+    <body class="col align-start">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+            <symbol id="github" viewBox="0 0 16 16">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+            </symbol>
+        </svg>
+        <div class="container">
+            <h1>
+                <div class="row justify-between fade-in">
+                    <span>Color Picker</span>
+                    <a href="https://github.com/kamiakhs/kamiak.org/blob/main/color-picker.html" rel="noreferrer">
+                        <svg class="link-icon" style="margin-right:.25rem;"><use xlink:href="#github"></use></svg>
+                    </a>
+                </div>
+            </h1>
+            <p class="fade-in delay-1">
+                See if you can pick the correct color that matches the given hex code! Once you have guessed correctly, click on any color to play again.
+            </p>
+            <p class="fade-in delay-2"><a target="_blank" href="https://stackoverflow.com/a/22239907">What are hex codes?</a></p>
+            <div id="commands" style="height:16px;"></div>
+            <h2 class="row justify-between wrap fade-in delay-3">
+                <span id="color"></span>
+                <span id="message"></span>
+            </h2>
+            <div class="col" style="gap:20px;">
+                <div class="colors row align-start fade-in delay-4">
+                    <div class="color justify-center align-center"></div>
+                    <div class="color justify-center align-center"></div>
+                    <div class="color justify-center align-center"></div>
+                </div>
+                <div class="colors row align-start fade-in delay-4">
+                    <div class="color justify-center align-center"></div>
+                    <div class="color justify-center align-center"></div>
+                    <div class="color justify-center align-center"></div>
+                </div>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            let zi = 1;
+            let color;
+            let gameOver;
+            const randomColor = () => '#'+(Math.random()*0xffffff|0).toString(16).padStart(6, '0');
+            const startGame = () => {
+                $('#message').text('Pick a color!');
+                let colors = [];
+                let $colors = document.querySelectorAll('.color');
+                for (let i = 0; i < 6; i++) {
+                    colors[i] = randomColor();
+                    $($colors[i]).css('color', colors[i]).data('color', colors[i]);
+                }
+                color = colors[Math.random()*6|0];
+                $('#color').text(`Color: ${color}`);
+                gameOver = false;
+            }
+            $('.color').on('click', function () {
+                if (gameOver) {
+                    startGame();
+                    return;
+                }
+                if ($(this).data('color') != color) {
+                    console.log(this.style.color);
+                    console.log(color);
+                    this.style.color = 'transparent';
+                    $('#message').text('Try again');
+                    return;
+                }
+                $('#message').html('Correct!');
+                $('.color').css('color', color);
+                gameOver = true;
+            });
+            $('.color').on('transitionend', function () {
+                $(this).css('z-index', zi++);
+            })
+            startGame();
+        </script>
+    </body>
+</html>
