@@ -28,7 +28,5 @@ Below is a table of Quizlet links. As of now, only Japanese I is fully covered. 
 
 
 <script>
-  document.querySelectorAll('table a').forEach((_) => {
-    _.target = '_blank';
-  });
+  document.querySelectorAll('table a').forEach(_ => _.target = '_blank');
 </script>
