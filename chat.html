@@ -1004,7 +1004,7 @@
 
       const setupSocket = () => {
 
-        window.socket = socket = io(localStorage.herokuBlocked ? 'wss://io.kamiak.org' : 'wss://kamiak.herokuapp.com', {
+        window.socket = socket = io(localStorage.flyBlocked ? 'wss://io.kamiak.org' : 'wss://kamiak-io.fly.dev', {
           path: '/chat/socket.io',
           auth: {token: window.user.accessToken},
         });
@@ -1012,8 +1012,8 @@
         let hasConnected = false;
         socket.io.on('error', () => {
           if (hasConnected) return;
-          socket.io.uri = 'wss://io.kamiak.org';
-          localStorage.herokuBlocked = true;
+          socket.io.uri = 'wss://kamiak-io.fly.dev';
+          localStorage.flyBlocked = true;
         });
 
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
