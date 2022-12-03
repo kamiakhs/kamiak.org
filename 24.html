@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>24</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
+    <script>
+        // const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io'});
+        const socket = io('ws://localhost:8000', {path: '/24/socket.io'});
+        
+        socket.io.on('reconnect_error', () => {
+          socket.io.uri = 'wss://io.kamiak.org';
+        });
+
+        socket.on('connect', () => {
+          console.log('connected');
+        });
+
+        socket.on('disconnect', () => {
+          console.log('disconnected');
+        });
+
+        console.log(location.hash.substr(1));
+    </script>
+  </body>
+</html>
