@@ -1,33 +1,235 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
   <head>
     <title>24</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel='preconnect' href='https://fonts.googleapis.com'>
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap' rel='stylesheet'>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Montserrat;
+            outline-color: #fdcc67;
+        }
+        *:not(h1) {
+            font-weight: 600;
+        }
+        .row, .col { display: flex; }
+        .row { flex-direction: row; }
+        .col { flex-direction: column; }
+        .mainStart { justify-content: start; }
+        .mainCenter { justify-content: center; }
+        .mainEnd { justify-content: end; }
+        .spaceBetween { justify-content: end; }
+        .crossStart { align-items: start; }
+        .crossCenter { align-items: center; }
+        .crossEnd { align-items: end; }
+        body {
+            margin: 0;
+            font-size: 16px;
+            --stripe: #6c7fff;
+            --bg: #6479ff;
+            background: linear-gradient(135deg, var(--bg) 25%, transparent 25%) -50px 0,
+                linear-gradient(225deg, var(--bg) 25%, transparent 25%) -50px 0,
+                linear-gradient(315deg, var(--bg) 25%, transparent 25%),
+                linear-gradient(45deg, var(--bg) 25%, transparent 25%);
+            background-size: 100px 100px;
+            background-color: var(--stripe);
+        }
+        body:after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: radial-gradient(circle, transparent 50%, #5367e6 150%);
+            z-index: -1;
+        }
+        body, html, .page {
+            height: 100%;
+        }
+        #joinLobbyInput {
+            width: 100%;
+            text-align: center;
+            background: transparent;
+            border: 2px solid #dbe0ff;
+            border-radius: 4px;
+            padding: 0.7rem 1rem;
+            font-size: inherit;
+            transition: border 150ms ease-in-out;
+        }
+        #joinLobbyInput:focus {
+            border: 2px solid #8e9efe;
+            outline: none;
+        }
+        #joinLobbyInput::placeholder {
+            color: #b5c0ff;
+        }
+        .centeredStrip {
+            max-width: 384px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .centeredStrip::before, .centeredStrip::after {
+            content: '. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . . . . . . . . . . .';
+            visibility: hidden;
+        }
+        h1 {
+            color: white;
+            font-size: 64px;
+            margin: 0;
+            text-align: center;
+            text-shadow: 0 0 10px rgb(0 0 0 / 20%);
+        }
+        .formBox {
+            gap: 12px;
+            padding: 16px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+            background: white;
+        }
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            font-size: inherit;
+            padding: 0.7rem 1rem;
+            color: #d4e6ff;
+            color: white;
+            background: #8e9efe;
+        }
+        button:hover {
+            background: #ffde9c;
+            background: #fdcc67;
+        }
+    </style>
   </head>
   <body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js"></script>
+    <div id='loadingPage' class='page'>
+      Connecting to server...
+    </div>
+    <div id='homePage' class='page col mainCenter crossCenter' style='display: none;'>
+        <div class='centeredStrip'>
+            <h1 style='padding-bottom:16px;'>24!</h1>
+            <div class='formBox col mainStart crossCenter'>
+                <input id='joinLobbyInput' placeholder='Game ID' autocomplete='off'>
+                <button id='joinLobby'>Join game</button>
+                <div class='row mainCenter crossCenter' style='width:100%; gap:4px; color:#dbe0ff; font-size:12px;'>
+                    <div style='border-bottom:2px solid currentColor; flex-grow:1;'></div>
+                    <div>OR</div>
+                    <div style='border-bottom:2px solid currentColor; flex-grow:1;'></div>
+                </div>
+                <button id='createLobby'>Create game</button>
+            </div>
+        </div>
+    </div>
+    <div id='lobbyPage' class='page' style='display: none;'>
+        <h1>Waiting for players to join</h1>
+        <p>Your game id is <span class='lobbyId'></span></p>
+        <div class='requiresHost'>
+            <p>You are the host</p>
+            <button id='startLobby'>Start game</button>
+        </div>
+        <a class='leaveLobby'>Leave</a>
+    </div>
+    <div id='solvePage' class='page' style='display: none;'>
+        <h1>Solve Page</h1>
+        <p>Game ID: <span class='lobbyId'></span></p>
+        <div class='requiresHost'>
+            <p>You are the host</p>
+            <button id='startLobby'>Skip</button>
+        </div>
+        <a class='leaveLobby'>Leave</a>
+    </div>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js'></script>
     <script>
-        // const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io'});
-        const socket = io('ws://localhost:8000', {path: '/24/socket.io'});
-        
-        socket.io.on('reconnect_error', () => {
-          socket.io.uri = 'wss://io.kamiak.org';
+        console.log(location.hash.substr(1));
+
+        let lobby;
+
+        function switchToPage(pageName) {
+            $('.page').hide();
+            $(`#${pageName}Page`).show();
+        }
+        switchToPage('loading');
+
+        function updateLobby(newLobby) {
+            lobby = newLobby;
+            if (!lobby && socket.disconnected) {
+                switchToPage('loading');
+                return;
+            }
+            if (!lobby && socket.connected) {
+                switchToPage('home');
+                return;
+            }
+            $('.requiresHost').css('display', isLobbyHost() ? '' : 'none');
+            $('.lobbyId').text(lobby.lobby_id);
+            if (!lobby.started) {
+                switchToPage('lobby');
+                return;
+            }
+            if (!('solutions' in lobby)) {
+                switchToPage('solve');
+                return;
+            }
+        }
+
+        function isLobbyHost() {
+            if (!lobby) return false;
+            return socket.id == lobby.users[0];
+        }
+
+        $('#createLobby').on('click', () => {
+            socket.emit('create_lobby', () => {
+                console.log(lobby);
+                $('#joinLobbyInput').val('');
+            });
         });
 
+        $('#joinLobby').on('click', () => {
+            let inputLobbyId = $('#joinLobbyInput').val().trim().toLowerCase();
+            if (!inputLobbyId) return;
+            socket.emit('join_lobby', {lobby_id: inputLobbyId}, () => {
+                if (lobby) {
+                    $('#joinLobbyInput').val('');
+                    return;
+                }
+            });
+        });
+
+        $('.leaveLobby').on('click', () => {
+            socket.emit('leave_lobby', {lobby_id: lobby.lobby_id});
+            updateLobby();
+        });
+
+        $('#startLobby').on('click', () => {
+            socket.emit('start_lobby', {lobby_id: lobby.lobby_id});
+        });
+       
+
+        // const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io'});
+        const socket = io('ws://localhost:8000', {path: '/24/socket.io'});
+        socket.io.on('reconnect_error', () => socket.io.uri = 'wss://io.kamiak.org');
+        updateLobby();
+
         socket.on('connect', () => {
-          console.log('connected');
+            console.log('connected');
+            updateLobby();
         });
 
         socket.on('disconnect', () => {
-          console.log('disconnected');
+            console.log('disconnected');
+            updateLobby();
         });
 
-        console.log(location.hash.substr(1));
+        socket.on('update_lobby', (data) => {
+            updateLobby(data.lobby);
+        });
+        
     </script>
   </body>
 </html>
