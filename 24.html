@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
-    <title>24</title>
+    <title>24!</title>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel='preconnect' href='https://fonts.googleapis.com'>
@@ -146,7 +146,10 @@
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
     <script src='https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js'></script>
     <script>
-        console.log(location.hash.substr(1));
+        // const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
+        // const socket = io('ws://localhost:8000', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
+        const socket = io(location.origin+':8000', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
+        socket.io.on('reconnect_error', () => socket.io.uri = 'wss://io.kamiak.org');
 
         let lobby;
 
@@ -157,7 +160,7 @@
         switchToPage('loading');
 
         function updateLobby(newLobby) {
-            lobby = newLobby;
+            if (newLobby !== undefined) lobby = newLobby;
             if (!lobby && socket.disconnected) {
                 switchToPage('loading');
                 return;
@@ -177,6 +180,7 @@
                 return;
             }
         }
+        updateLobby(null);
 
         function isLobbyHost() {
             if (!lobby) return false;
@@ -191,19 +195,20 @@
         });
 
         $('#joinLobby').on('click', () => {
-            let inputLobbyId = $('#joinLobbyInput').val().trim().toLowerCase();
+            inputLobbyId = $('#joinLobbyInput').val().trim().toLowerCase();
             if (!inputLobbyId) return;
             socket.emit('join_lobby', {lobby_id: inputLobbyId}, () => {
                 if (lobby) {
                     $('#joinLobbyInput').val('');
                     return;
                 }
+                // Game ID not found
             });
         });
 
         $('.leaveLobby').on('click', () => {
             socket.emit('leave_lobby', {lobby_id: lobby.lobby_id});
-            updateLobby();
+            updateLobby(null);
         });
 
         $('#startLobby').on('click', () => {
@@ -211,19 +216,17 @@
         });
        
 
-        // const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io'});
-        const socket = io('ws://localhost:8000', {path: '/24/socket.io'});
-        socket.io.on('reconnect_error', () => socket.io.uri = 'wss://io.kamiak.org');
-        updateLobby();
-
         socket.on('connect', () => {
             console.log('connected');
             updateLobby();
+            if (window.history.replaceState) {
+                window.history.replaceState({}, null, location.origin+location.pathname);
+            }
         });
 
         socket.on('disconnect', () => {
             console.log('disconnected');
-            updateLobby();
+            updateLobby(null);
         });
 
         socket.on('update_lobby', (data) => {
