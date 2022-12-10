@@ -146,6 +146,57 @@
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
     <script src='https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js'></script>
     <script>
+        class Fraction {
+            constructor(n, d = 1) {
+                if (d == 0) throw 'Denominator cannot be zero';
+                if (d < 0) {
+                    n = -n;
+                    d = -d;
+                }
+                this.n = n;
+                this.d = d;
+                this.simplify();
+            }
+            simplify() {
+                let f = Fraction.gcd(this.n, this.d);
+                this.n /= f;
+                this.d /= f;
+            }
+            static gcd(a, b) {
+                a = Math.abs(a), b = Math.abs(b);
+                if (b == 0) return a;
+                return Fraction.gcd(b, a%b);
+            }
+            merge(other, op) {
+                switch (op) {
+                    case '+': return this.add(other);
+                    case '-': return this.sub(other);
+                    case '*': return this.mul(other);
+                    case '/': return this.div(other);
+                }
+                throw 'Invalid operator in combine';
+            }
+            toString() {
+                if (this.d == 1) return `${this.n}`;
+                return `${this.n}/${this.d}`;
+            }
+            mul(other) {
+                return new Fraction(this.n*other.n, this.d*other.d);
+            }
+            div(other) {
+                return new Fraction(this.n*other.d, this.d*other.n);
+            }
+            add(other) {
+                return new Fraction(this.n*other.d+other.n*this.d, this.d*other.d);
+            }
+            sub(other) {
+                return new Fraction(this.n*other.d-other.n*this.d, this.d*other.d);
+            }
+            equals(other) {
+                return this.n == other.n && this.d == other.d;
+            }
+        }
+
         // const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
         // const socket = io('ws://localhost:8000', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
         const socket = io(location.origin+':8000', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
