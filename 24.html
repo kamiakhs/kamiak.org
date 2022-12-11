@@ -30,21 +30,8 @@
         body {
             margin: 0;
             font-size: 16px;
-            --stripe: #6c7fff;
-            --bg: #6479ff;
-            background: linear-gradient(135deg, var(--bg) 25%, transparent 25%) -50px 0,
-                linear-gradient(225deg, var(--bg) 25%, transparent 25%) -50px 0,
-                linear-gradient(315deg, var(--bg) 25%, transparent 25%),
-                linear-gradient(45deg, var(--bg) 25%, transparent 25%);
-            background-size: 100px 100px;
-            background-color: var(--stripe);
-        }
-        body:after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: radial-gradient(circle, transparent 50%, #5367e6 150%);
-            z-index: -1;
+            background: black;
+            color: white;
         }
         body, html, .page {
             height: 100%;
@@ -80,7 +67,7 @@
             font-size: 64px;
             margin: 0;
             text-align: center;
-            text-shadow: 0 0 10px rgb(0 0 0 / 20%);
+            text-shadow: 0 1px 16px rgb(255 255 255 / 20%);
         }
         .formBox {
             gap: 12px;
@@ -103,6 +90,26 @@
         button:hover {
             background: #ffde9c;
             background: #fdcc67;
+        }
+        .box, .operator {
+            aspect-ratio: 1;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 2px;
+        }
+        .box {
+            font-size: 48px;
+            color: lime;
+            border: 2px solid lime;
+            box-shadow: 0 0 10px rgb(0 255 0 / 20%), inset 0 0 10px rgb(0 255 0 / 20%);
+        }
+        .operator {
+            font-size: 48px;
+            color: red;
+            border: 2px solid red;
+            box-shadow: 0 0 10px rgb(255 0 0 / 20%), inset 0 0 10px rgb(255 0 0 / 20%);
         }
     </style>
   </head>
@@ -134,14 +141,26 @@
         </div>
         <a class='leaveLobby'>Leave</a>
     </div>
-    <div id='solvePage' class='page' style='display: none;'>
-        <h1>Solve Page</h1>
-        <p>Game ID: <span class='lobbyId'></span></p>
-        <div class='requiresHost'>
-            <p>You are the host</p>
-            <button id='startLobby'>Skip</button>
+    <div id='solvePage' class='page col crossCenter' style='display: none;'>
+        <div class='centeredStrip'>
+            <h1>Solve Page</h1>
+            <p>Game ID: <span class='lobbyId'></span></p>
+            <div class='requiresHost'>
+                <p>You are the host</p>
+                <button id='startLobby'>Skip</button>
+            </div>
+            <div class='col' style='gap:4px;'>
+                <div class='row' style='gap:4px;'><div class='box'></div><div class='box'></div></div>
+                <div class='row' style='gap:4px;'><div class='box'></div><div class='box'></div></div>
+                <div class='row' style='gap:4px;'>
+                    <div class='operator'>+</div>
+                    <div class='operator'>-</div>
+                    <div class='operator'>×</div>
+                    <div class='operator'>/</div>
+                </div>
+            </div>
+            <a class='leaveLobby'>Leave</a>
         </div>
-        <a class='leaveLobby'>Leave</a>
     </div>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
     <script src='https://cdn.jsdelivr.net/gh/socketio/socket.io@4.4.1/client-dist/socket.io.min.js'></script>
@@ -171,30 +190,18 @@
                 switch (op) {
                     case '+': return this.add(other);
                     case '-': return this.sub(other);
-                    case '*': return this.mul(other);
+                    case '×': return this.mul(other);
                     case '/': return this.div(other);
                 }
                 throw 'Invalid operator in combine';
             }
-            toString() {
-                if (this.d == 1) return `${this.n}`;
-                return `${this.n}/${this.d}`;
-            }
-            mul(other) {
-                return new Fraction(this.n*other.n, this.d*other.d);
-            }
-            div(other) {
-                return new Fraction(this.n*other.d, this.d*other.n);
-            }
-            add(other) {
-                return new Fraction(this.n*other.d+other.n*this.d, this.d*other.d);
-            }
-            sub(other) {
-                return new Fraction(this.n*other.d-other.n*this.d, this.d*other.d);
-            }
-            equals(other) {
-                return this.n == other.n && this.d == other.d;
-            }
+            toString = () => this.d == 1 ? `${this.n}` : `${this.n}/${this.d}`;
+            mul = other => new Fraction(this.n*other.n, this.d*other.d);
+            div = other => new Fraction(this.n*other.d, this.d*other.n);
+            add = other => new Fraction(this.n*other.d+other.n*this.d, this.d*other.d);
+            sub = other => new Fraction(this.n*other.d-other.n*this.d, this.d*other.d);
+            equals = other => this.n == other.n && this.d == other.d;
+            equals24 = () => this.equals(new Fraction(24));
         }
 
         // const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
@@ -203,6 +210,7 @@
         socket.io.on('reconnect_error', () => socket.io.uri = 'wss://io.kamiak.org');
 
         let lobby;
+        let numberHash = -1;
 
         function switchToPage(pageName) {
             $('.page').hide();
@@ -236,6 +244,24 @@
         function isLobbyHost() {
             if (!lobby) return false;
             return socket.id == lobby.users[0];
+        }
+
+        // function hashNumbers(numbers) {
+        //     console.log(numbers);
+        //     let hash = 0;
+        //     for (let i = 0; i < numbers.length; ++i) {
+        //         hash = hash*13+numbers[i]-1;
+        //     }
+        //     return hash;
+        // }
+
+        function refreshNumbers() {
+            // console.log(hashNumbers(lobby.numbers));
+            // if (numberHash == hashNumbers(lobby.numbers)) return;
+            // numberHash = hashNumbers(lobby.numbers);
+            $('.box').each(function (i) {
+                $(this).text(numbers[i]);
+            });
         }
 
         $('#createLobby').on('click', () => {
@@ -282,6 +308,7 @@
 
         socket.on('update_lobby', (data) => {
             updateLobby(data.lobby);
+            if (lobby.numbers) refreshNumbers();
         });
         
     </script>
