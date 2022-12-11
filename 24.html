@@ -9,9 +9,12 @@
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap' rel='stylesheet'>
     <style>
+        :root {
+            color-scheme: dark;
+        }
         * {
             box-sizing: border-box;
-            font-family: Montserrat;
+            font-family: Montserrat, 'Times New Roman';
             outline-color: #fdcc67;
         }
         *:not(h1) {
@@ -67,13 +70,13 @@
             font-size: 64px;
             margin: 0;
             text-align: center;
-            text-shadow: 0 1px 16px rgb(255 255 255 / 20%);
+            text-shadow: 0 1px 16px rgb(255 255 255 / 40%);
         }
         .formBox {
             gap: 12px;
             padding: 16px;
             border-radius: 4px;
-            box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+            box-shadow: 0 0 10px rgb(0 0 0 / 40%);
             background: white;
         }
         button {
@@ -83,33 +86,61 @@
             width: 100%;
             font-size: inherit;
             padding: 0.7rem 1rem;
-            color: #d4e6ff;
-            color: white;
-            background: #8e9efe;
+            background: transparent;
+            -webkit-tap-highlight-color: transparent;
+            color: #0030cc;
+            border: 3px solid #0030cc;
+            box-shadow: 0 0 10px rgb(0 0 204 / 40%), inset 0 0 10px rgb(0 0 204 / 40%);
+            text-shadow: 0 0 10px rgb(0 0 204 / 40%);
         }
-        button:hover {
-            background: #ffde9c;
-            background: #fdcc67;
+        button:not(.box):not(.operator):hover {
+            background: #0000cc40;
+            box-shadow: 0 0 14px rgb(0 0 204 / 40%), inset 0 0 10px rgb(0 0 204 / 40%);
+        }
+        .gameContainer {
+            display: grid;
+            grid: repeat(5, 1fr) / repeat(5, 1fr);
+            gap: 4px;
+            aspect-ratio: 1;
         }
         .box, .operator {
-            aspect-ratio: 1;
-            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 2px;
+            user-select: none;
+            background: none;
+            cursor: pointer;
+            font-size: 60px;
+            padding: 0;
+            min-width: 0;
+            min-height: 0;
+            font-weight: 500;
         }
         .box {
-            font-size: 48px;
-            color: lime;
-            border: 2px solid lime;
-            box-shadow: 0 0 10px rgb(0 255 0 / 20%), inset 0 0 10px rgb(0 255 0 / 20%);
+            color: #58cc00;
+            border: 3px solid #58cc00;
+            box-shadow: 0 0 10px rgb(0 204 0 / 40%), inset 0 0 10px rgb(0 204 0 / 40%);
+            text-shadow: 0 0 10px rgb(0 204 0 / 40%);
+        }
+        .box:hover {
+            background: transparent;
+        }
+        .box.selected {
+            background: #00cc0040;
+            box-shadow: 0 0 14px rgb(0 204 0 / 40%), inset 0 0 10px rgb(0 204 0 / 40%);
         }
         .operator {
-            font-size: 48px;
-            color: red;
-            border: 2px solid red;
-            box-shadow: 0 0 10px rgb(255 0 0 / 20%), inset 0 0 10px rgb(255 0 0 / 20%);
+            color: #cc4100;
+            border: 3px solid #cc4100;
+            box-shadow: 0 0 10px rgb(204 0 0 / 40%), inset 0 0 10px rgb(204 0 0 / 40%);
+            text-shadow: 0 0 10px rgb(204 0 0 / 40%);
+        }
+        .operator:hover {
+            background: transparent;
+        }
+        .operator.selected {
+            background: #cc000040;
+            box-shadow: 0 0 14px rgb(204 0 0 / 40%), inset 0 0 10px rgb(204 0 0 / 40%);
         }
     </style>
   </head>
@@ -143,21 +174,22 @@
     </div>
     <div id='solvePage' class='page col crossCenter' style='display: none;'>
         <div class='centeredStrip'>
-            <h1>Solve Page</h1>
+            <h1>Solve</h1>
             <p>Game ID: <span class='lobbyId'></span></p>
             <div class='requiresHost'>
                 <p>You are the host</p>
-                <button id='startLobby'>Skip</button>
+                <button id='skipLobby'>Skip</button>
             </div>
-            <div class='col' style='gap:4px;'>
-                <div class='row' style='gap:4px;'><div class='box'></div><div class='box'></div></div>
-                <div class='row' style='gap:4px;'><div class='box'></div><div class='box'></div></div>
-                <div class='row' style='gap:4px;'>
-                    <div class='operator'>+</div>
-                    <div class='operator'>-</div>
-                    <div class='operator'>×</div>
-                    <div class='operator'>/</div>
-                </div>
+            <div class='gameContainer'>
+                <button class='box' style='grid-area:1/1/3/3;'></button>
+                <button class='box' style='grid-area:1/3/3/5;'></button>
+                <button class='box' style='grid-area:3/1/5/3;'></button>
+                <button class='box' style='grid-area:3/3/5/5;'></button>
+                <button class='operator' style='grid-area:1/5/3/6'>+</button>
+                <button class='operator' style='grid-area:3/5/5/6'>-</button>
+                <button class='operator' style='grid-area:5/1/6/3'>×</button>
+                <button class='operator' style='grid-area:5/3/6/5'>÷</button>
+                <button class='operator undoOperator' style='grid-area:5/5/6/6'>&#60;</button>
             </div>
             <a class='leaveLobby'>Leave</a>
         </div>
@@ -190,7 +222,7 @@
                 switch (op) {
                     case '+': return this.add(other);
                     case '-': return this.sub(other);
-                    case '×': return this.mul(other);
+                    case '*': return this.mul(other);
                     case '/': return this.div(other);
                 }
                 throw 'Invalid operator in combine';
@@ -204,13 +236,17 @@
             equals24 = () => this.equals(new Fraction(24));
         }
 
-        // const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
+        const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
         // const socket = io('ws://localhost:8000', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
-        const socket = io(location.origin+':8000', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
+        // const socket = io(location.origin+':8000', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
         socket.io.on('reconnect_error', () => socket.io.uri = 'wss://io.kamiak.org');
 
         let lobby;
         let numberHash = -1;
+
+        let currentOperator;
+        let memory = [];
+        let removed = [];
 
         function switchToPage(pageName) {
             $('.page').hide();
@@ -246,22 +282,32 @@
             return socket.id == lobby.users[0];
         }
 
-        // function hashNumbers(numbers) {
-        //     console.log(numbers);
-        //     let hash = 0;
-        //     for (let i = 0; i < numbers.length; ++i) {
-        //         hash = hash*13+numbers[i]-1;
-        //     }
-        //     return hash;
-        // }
+        function hashNumbers(numbers) {
+            console.log(numbers);
+            let hash = 0;
+            for (let i = 0; i < numbers.length; ++i) {
+                hash = hash*13+numbers[i]-1;
+            }
+            return hash;
+        }
 
         function refreshNumbers() {
-            // console.log(hashNumbers(lobby.numbers));
-            // if (numberHash == hashNumbers(lobby.numbers)) return;
-            // numberHash = hashNumbers(lobby.numbers);
+            console.log(numberHash, hashNumbers(lobby.numbers));
+            if (numberHash == hashNumbers(lobby.numbers)) return;
+            numberHash = hashNumbers(lobby.numbers);
+            currentOperator = null;
+            memory = [];
+            removed = [];
             $('.box').each(function (i) {
-                $(this).text(numbers[i]);
+                let num = lobby.numbers[i]
+                $(this).text(num);
+                $(this).data({
+                    steps: ''+num,
+                    value: new Fraction(num),
+                });
             });
+            $('.box').css('visibility', '');
+            $('.selected').removeClass('selected');
         }
 
         $('#createLobby').on('click', () => {
@@ -290,6 +336,66 @@
 
         $('#startLobby').on('click', () => {
             socket.emit('start_lobby', {lobby_id: lobby.lobby_id});
+        });
+
+        $('#skipLobby').on('click', () => {
+            socket.emit('next_lobby_round', {lobby_id: lobby.lobby_id});
+        });
+
+
+        $('.box').on('click', function () {
+            if (currentOperator && $('.box.selected').length && !$(this).is('.selected')) {
+                let memoryState = [];
+                $('.box').each(function (i) {
+                    memoryState[i] = {...$(this).data()};
+                });
+                memory.push(memoryState);
+                let $other = $('.box.selected');
+                removed.push($other);
+                $(this).data({
+                    steps: `(${$other.data('steps')} ${currentOperator} ${$(this).data('steps')})`,
+                    value: $other.data('value').merge($(this).data('value'), currentOperator),
+                });
+                $(this).text($(this).data('value'));
+                currentOperator = null;
+                $other.removeClass('selected').css('visibility', 'hidden');
+                $(this).addClass('selected');
+                $('.operator.selected').removeClass('selected');
+                if (!(memory.length == 3 && $(this).data('value').equals24())) return;
+                console.log('24!');
+                socket.emit('submit_solution', {
+                    lobby_id: lobby.lobby_id,
+                    solution: $(this).data('steps'),
+                });
+                lobby.numbers = lobby.next_numbers;
+                refreshNumbers();
+                return;
+            }
+            $('.box').removeClass('selected');
+            $(this).addClass('selected');
+        });
+
+        $('.operator').on('click', function () {
+            if ($(this).is('.undoOperator')) {
+                if (currentOperator) {
+                    $('.operator').removeClass('selected');
+                    currentOperator = null;
+                    return;
+                }
+                if (!memory.length) return;
+                let memoryState = memory.pop();
+                $('.box').each(function (i) {
+                    $(this).data(memoryState[i]);
+                    $(this).text($(this).data('value'));
+                });
+                $('.box.selected').removeClass('selected');
+                removed.pop().addClass('selected').css('visibility', '');
+                return;
+            }
+            // if (!$('.box.selected').length) return;
+            $('.operator').removeClass('selected');
+            $(this).addClass('selected');
+            currentOperator = $(this).text().replaceAll('×', '*').replaceAll('÷', '/');
         });
        
 
