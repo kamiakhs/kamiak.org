@@ -262,6 +262,9 @@
             }
             if (!lobby && socket.connected) {
                 switchToPage('home');
+                if (window.history.replaceState && !lobby) {
+                    window.history.replaceState({}, null, location.origin+location.pathname);
+                }
                 return;
             }
             $('.requiresHost').css('display', isLobbyHost() ? '' : 'none');
@@ -341,7 +344,12 @@
         $('#skipLobby').on('click', () => {
             socket.emit('next_lobby_round', {lobby_id: lobby.lobby_id});
         });
+        
 
+        $(window).on('hashchange', () => {
+            socket.emit('join_lobby', {lobby_id: location.hash.substr(1)});
+            updateLobby();
+        });
 
         $('.box').on('click', function () {
             if (currentOperator && $('.box.selected').length && !$(this).is('.selected')) {
@@ -402,9 +410,6 @@
         socket.on('connect', () => {
             console.log('connected');
             updateLobby();
-            if (window.history.replaceState) {
-                window.history.replaceState({}, null, location.origin+location.pathname);
-            }
         });
 
         socket.on('disconnect', () => {
@@ -415,6 +420,7 @@
         socket.on('update_lobby', (data) => {
             updateLobby(data.lobby);
             if (lobby.numbers) refreshNumbers();
+            location.hash = '#'+lobby.lobby_id;
         });
         
     </script>
