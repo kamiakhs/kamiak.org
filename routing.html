@@ -3,52 +3,123 @@
   <head>
     <title>Place Autocomplete and Directions</title>
     <script src='https://polyfill.io/v3/polyfill.min.js?features=default'></script>
-
-    <link rel='stylesheet' type='text/css' href='./routing.css' />
-
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
-    <script type='module' src='./routing.js'></script>
-
-    <link href='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css' rel='stylesheet'>
-    <script src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js'></script>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+    <link rel='stylesheet' href='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined'>
+    <link rel='stylesheet' href='./routing.css'>
   </head>
   <body>
-    <div style='display: none'>
-      <div id='mode-selector' class='controls'>
-        <input
-          type='radio'
-          name='type'
-          id='changemode-walking'
-          checked='checked'
-        />
-        <label for='changemode-walking'>Walking</label>
-
-        <input type='radio' name='type' id='changemode-transit' />
-        <label for='changemode-transit'>Transit</label>
-
-        <input type='radio' name='type' id='changemode-driving' />
-        <label for='changemode-driving'>Driving</label>
-      </div>
-    </div>
-
     <div id='dragContainer'>
-      <div id='dragLeft'></div>
+      <div id='dragLeft'>
+        <div class='col mainStart crossStart gap' style='padding:24px;'>
+
+          <h1>Create a route</h1>
+
+          <hr>
+
+          <label class='formLabel'>Travel method</label>
+          <div class='mdc-form-field row crossCenter largeGap'>
+            <div class='row crossCenter'>
+              <div class="mdc-radio">
+                <input class="mdc-radio__native-control" type="radio" id="changeModeDriving" name="radios" checked>
+                <div class="mdc-radio__background">
+                  <div class="mdc-radio__outer-circle"></div>
+                  <div class="mdc-radio__inner-circle"></div>
+                </div>
+                <div class="mdc-radio__ripple"></div>
+              </div>
+              <label for="changeModeDriving" class='row crossCenter smallGap'>
+                <i class="material-icons-outlined">directions_car</i>
+              </label>
+            </div>
+            <div class='row crossCenter'>
+              <div class="mdc-radio">
+                <input class="mdc-radio__native-control" type="radio" id="changeModeTransit" name="radios">
+                <div class="mdc-radio__background">
+                  <div class="mdc-radio__outer-circle"></div>
+                  <div class="mdc-radio__inner-circle"></div>
+                </div>
+                <div class="mdc-radio__ripple"></div>
+              </div>
+              <label for="changeModeTransit" class='row crossCenter smallGap'>
+                <i class="material-icons-outlined">directions_transit</i>
+              </label>
+            </div>
+            <div class='row crossCenter'>
+              <div class="mdc-radio">
+                <input class="mdc-radio__native-control" type="radio" id="changeModeBiking" name="radios">
+                <div class="mdc-radio__background">
+                  <div class="mdc-radio__outer-circle"></div>
+                  <div class="mdc-radio__inner-circle"></div>
+                </div>
+                <div class="mdc-radio__ripple"></div>
+              </div>
+              <label for="changeModeBiking" class='row crossCenter smallGap'>
+                <i class="material-icons-outlined">directions_bike</i>
+              </label>
+            </div>
+            <div class='row crossCenter'>
+              <div class="mdc-radio">
+                <input class="mdc-radio__native-control" type="radio" id="changeModeWalking" name="radios">
+                <div class="mdc-radio__background">
+                  <div class="mdc-radio__outer-circle"></div>
+                  <div class="mdc-radio__inner-circle"></div>
+                </div>
+                <div class="mdc-radio__ripple"></div>
+              </div>
+              <label for="changeModeWalking" class='row crossCenter smallGap'>
+                <i class="material-icons-outlined">directions_walk</i>
+              </label>
+            </div>
+          </div>
+          
+          <hr>
+
+          <label class='formLabel'>Origin</label>
+          <div class='row mainStart crossCenter fullWidth'>
+            <i class="material-icons-outlined spaceAroundIcon">place</i>
+            <label class="expand dense mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+              <span class="mdc-notched-outline">
+                <span class="mdc-notched-outline__leading"></span>
+                <span class="mdc-notched-outline__trailing"></span>
+              </span>
+              <input id='originInput' class="mdc-text-field__input" type="text" placeholder='Enter starting location' aria-label="Label">
+            </label>
+          </div>
+
+          <hr>
+          
+          <label class='formLabel'>Destination</label>
+          <div class='row mainStart crossCenter fullWidth'>
+            <i class="material-icons-outlined spaceAroundIcon">place</i>
+            <label class="expand dense mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+              <span class="mdc-notched-outline">
+                <span class="mdc-notched-outline__leading"></span>
+                <span class="mdc-notched-outline__trailing"></span>
+              </span>
+              <input id='destinationInput' class="mdc-text-field__input" type="text" placeholder='Enter ending destination' aria-label="Label">
+            </label>
+          </div>
+
+          <hr>
+
+          <label class='formLabel'>Stops</label>
+          <div id='stops' class='col gap fullWidth'></div>
+          
+          <button class="mdc-button mdc-button--outlined mdc-button--icon-leading" onclick="handler.addWaypoint();">
+            <span class="mdc-button__ripple"></span>
+            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+            <span class="mdc-button__label">Add stop</span>
+          </button>
+        </div>
+      </div>
       <div id='dragBar'></div>
-      <div id='dragRight'>
+      <div id='dragRight' style='background:#e5e3df;'>
         <div id='map'></div>
       </div>
     </div>
-
-    <!-- 
-     The `defer` attribute causes the callback to execute after the full HTML
-     document has been parsed. For non-blocking uses, avoiding race conditions,
-     and consistent behavior across browsers, consider loading using Promises
-     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
-    -->
-    <script
-      src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCJNQ7quFBzi-NJPW5jLAeXnULnYKH4Hag&callback=initMap&libraries=places&v=weekly'
-      defer
-    ></script>
+    <script src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script src='./routing.js'></script>
+    <script defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCJNQ7quFBzi-NJPW5jLAeXnULnYKH4Hag&callback=initMap&libraries=places&v=weekly'></script>
   </body>
 </html>
