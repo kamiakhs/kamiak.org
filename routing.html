@@ -2,45 +2,43 @@
 <html>
   <head>
     <title>Place Autocomplete and Directions</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src='https://polyfill.io/v3/polyfill.min.js?features=default'></script>
 
-    <link rel="stylesheet" type="text/css" href="./routing.css" />
-    <script type="module" src="./routing.js"></script>
+    <link rel='stylesheet' type='text/css' href='./routing.css' />
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script type='module' src='./routing.js'></script>
+
+    <link href='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css' rel='stylesheet'>
+    <script src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js'></script>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
   </head>
   <body>
-    <div style="display: none">
-      <input
-        id="origin-input"
-        class="controls"
-        type="text"
-        placeholder="Enter an origin location"
-      />
-
-      <input
-        id="destination-input"
-        class="controls"
-        type="text"
-        placeholder="Enter a destination location"
-      />
-
-      <div id="mode-selector" class="controls">
+    <div style='display: none'>
+      <div id='mode-selector' class='controls'>
         <input
-          type="radio"
-          name="type"
-          id="changemode-walking"
-          checked="checked"
+          type='radio'
+          name='type'
+          id='changemode-walking'
+          checked='checked'
         />
-        <label for="changemode-walking">Walking</label>
+        <label for='changemode-walking'>Walking</label>
 
-        <input type="radio" name="type" id="changemode-transit" />
-        <label for="changemode-transit">Transit</label>
+        <input type='radio' name='type' id='changemode-transit' />
+        <label for='changemode-transit'>Transit</label>
 
-        <input type="radio" name="type" id="changemode-driving" />
-        <label for="changemode-driving">Driving</label>
+        <input type='radio' name='type' id='changemode-driving' />
+        <label for='changemode-driving'>Driving</label>
       </div>
     </div>
 
-    <div id="map"></div>
+    <div id='dragContainer'>
+      <div id='dragLeft'></div>
+      <div id='dragBar'></div>
+      <div id='dragRight'>
+        <div id='map'></div>
+      </div>
+    </div>
 
     <!-- 
      The `defer` attribute causes the callback to execute after the full HTML
@@ -49,7 +47,7 @@
      with https://www.npmjs.com/package/@googlemaps/js-api-loader.
     -->
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJNQ7quFBzi-NJPW5jLAeXnULnYKH4Hag&callback=initMap&libraries=places&v=weekly"
+      src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCJNQ7quFBzi-NJPW5jLAeXnULnYKH4Hag&callback=initMap&libraries=places&v=weekly'
       defer
     ></script>
   </body>

@@ -1,9 +1,13 @@
+* {
+  box-sizing: border-box;
+}
 /* 
  * Always set the map height explicitly to define the size of the div element
  * that contains the map. 
  */
- #map {
+#map {
   height: 100%;
+  width: 100%;
 }
 
 /* 
@@ -21,14 +25,12 @@ body {
   border: 1px solid transparent;
   border-radius: 2px 0 0 2px;
   box-sizing: border-box;
-  -moz-box-sizing: border-box;
   height: 32px;
   outline: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-#origin-input,
-#destination-input {
+.place-input {
   background-color: #fff;
   font-family: Roboto;
   font-size: 15px;
@@ -39,8 +41,7 @@ body {
   width: 200px;
 }
 
-#origin-input:focus,
-#destination-input:focus {
+.place-input:focus {
   border-color: #4d90fe;
 }
 
@@ -55,4 +56,39 @@ body {
   font-family: Roboto;
   font-size: 13px;
   font-weight: 300;
+}
+
+
+#dragContainer {
+  display: flex;
+  height: 100%;
+}
+
+#dragBar {
+  padding: 4px;
+  cursor: col-resize;
+  background: red;
+  transition-duration: .2s;
+  transition-timing-function: ease-in-out;
+  z-index: 1;
+}
+#dragBar:hover,
+#dragBar:active {
+  background: purple;
+  transition-delay: .2s;
+}
+
+#dragLeft,
+#dragRight {
+  min-width: 25%;
+  height: 100%;
+}
+
+#dragLeft {
+  overflow-y: auto;
+  width: 50%;
+}
+
+#dragRight {
+  flex: 1;
 }
