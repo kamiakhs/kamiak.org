@@ -3,9 +3,10 @@
 // <script
 // src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
+  const map = new google.maps.Map(document.getElementById('map'), {
     mapTypeControl: false,
-    center: { lat: 47.900769, lng: -122.301757 },
+    streetViewControl: false,
+    center: {lat: 47.900769, lng: -122.301757},  // Kamiak
     zoom: 13,
   });
 
@@ -21,15 +22,18 @@ class AutocompleteDirectionsHandler {
   travelMode;
   directionsService;
   directionsRenderer;
+  optimizeWaypoints;
+  avoid;
   constructor(map) {
     this.map = map;
     this.originPlaceId = '';
     this.destinationPlaceId = '';
     this.waypointPlaceIds = [];
-    this.travelMode = google.maps.TravelMode.WALKING;
+    this.travelMode = google.maps.TravelMode.DRIVING;
     this.directionsService = new google.maps.DirectionsService();
-    this.directionsRenderer = new google.maps.DirectionsRenderer();
-    this.directionsRenderer.setMap(map);
+    this.directionsRenderer = new google.maps.DirectionsRenderer({map, panel});
+    this.optimizeWaypoints = true;
+    this.avoid = {ferries: false, highways: false, tolls: true};
     
     let modes = [
       {id: 'changeModeWalking', enum: google.maps.TravelMode.WALKING},
@@ -38,20 +42,40 @@ class AutocompleteDirectionsHandler {
       {id: 'changeModeDriving', enum: google.maps.TravelMode.DRIVING},
     ];
     for (const mode of modes) {
-      const radioButton = document.getElementById(mode.id);
+      let radioButton = document.getElementById(mode.id);
       radioButton.addEventListener("click", () => {
         this.travelMode = mode.enum;
         this.route();
       });
     }
 
-    this.addAutocomplete($('#originInput')[0], (place) => {
+    this.addAutocomplete(originInput, (place) => {
       this.originPlaceId = place.place_id;
     });
 
-    this.addAutocomplete($('#destinationInput')[0], (place) => {
+    this.addAutocomplete(destinationInput, (place) => {
       this.destinationPlaceId = place.place_id;
     });
+
+    let switchControl = new mdc.switchControl.MDCSwitch(optimizationSwitch);
+    optimizationSwitch.addEventListener('click', () => {
+      this.optimizeWaypoints = switchControl.selected;
+      this.route();
+    });
+
+    for (const type of Object.keys(this.avoid)) {
+      let id = 'allow'+type[0].toUpperCase()+type.substring(1);
+      let checkboxNode = document.getElementById(id).parentNode;
+      let formFieldNode = checkboxNode.parentNode.parentNode;
+      let checkbox = new mdc.checkbox.MDCCheckbox(checkboxNode);
+      let formField = new mdc.formField.MDCFormField(formFieldNode);
+      formField.input = checkbox;
+      checkbox.checked = type != 'tolls';
+      checkboxNode.addEventListener('click', () => {
+        this.avoid[type] = !checkbox.checked;
+        this.route();
+      });
+    }
   }
   addWaypoint() {
     this.waypointPlaceIds.push('');
@@ -63,12 +87,16 @@ class AutocompleteDirectionsHandler {
       this.waypointPlaceIds[i] = place.place_id;
     });
     addStop(stop);
+    stops.style.display = '';
   }
   removeWaypoint(stop) {
     console.log(stop);
     let i = getStopIndex(stop);
     removeStop(stop);
     this.waypointPlaceIds.splice(i, 1);
+    if (this.waypointPlaceIds.length == 0) {
+      stops.style.display = 'none';
+    }
     this.route();
   }
   addAutocomplete(input, callback) {
@@ -91,27 +119,25 @@ class AutocompleteDirectionsHandler {
     let waypoints = [];
     for (const waypointPlaceId of this.waypointPlaceIds) {
       if (!waypointPlaceId) return;
-      waypoints.push({location: {placeId: waypointPlaceId}, stopover: true});
+      waypoints.push({location: {placeId: waypointPlaceId}});
     }
     
-    this.directionsService.route(
-      {
-        origin: { placeId: this.originPlaceId },
-        destination: { placeId: this.destinationPlaceId },
-        travelMode: this.travelMode,
-        waypoints: waypoints,
-        optimizeWaypoints: true,
-      },
-      (response, status) => {
-        if (status === "OK") {
-          console.log('OK', response);
-          this.directionsRenderer.setDirections(response);
-        } else {
-          console.log('NOT OK', response);
-          window.alert("Directions request failed due to " + status);
-        }
-      }
-    );
+    this.directionsService.route({
+      origin: { placeId: this.originPlaceId },
+      destination: { placeId: this.destinationPlaceId },
+      travelMode: this.travelMode,
+      waypoints,
+      optimizeWaypoints: this.optimizeWaypoints,
+      avoidFerries: this.avoid.ferries,
+      avoidHighways: this.avoid.highways,
+      avoidTolls: this.avoid.tolls,
+    })
+    .then((result) => {
+      this.directionsRenderer.setDirections(result);
+    })
+    .catch((e) => {
+      window.alert("Directions request failed due to " + e);
+    });
   }
 }
 

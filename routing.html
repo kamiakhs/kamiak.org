@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Place Autocomplete and Directions</title>
+    <title>Create directions</title>
     <script src='https://polyfill.io/v3/polyfill.min.js?features=default'></script>
     <link rel='stylesheet' href='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined'>
@@ -10,107 +10,202 @@
   <body>
     <div id='dragContainer'>
       <div id='dragLeft'>
-        <div class='col mainStart crossStart gap' style='padding:24px;'>
+        <main class='col mainStart crossStart gap' style='padding:24px;'>
 
-          <h1>Create a route</h1>
+          <h1>Create directions</h1>
 
-          <hr>
-
-          <label class='formLabel'>Travel method</label>
-          <div class='mdc-form-field row crossCenter largeGap'>
-            <div class='row crossCenter'>
-              <div class="mdc-radio">
-                <input class="mdc-radio__native-control" type="radio" id="changeModeDriving" name="radios" checked>
-                <div class="mdc-radio__background">
-                  <div class="mdc-radio__outer-circle"></div>
-                  <div class="mdc-radio__inner-circle"></div>
+          <div class='formGroup'>
+            <label class='formLabel'>Travel method</label>
+            <div class='mdc-form-field row crossCenter largeGap'>
+              <div class='row crossCenter'>
+                <div class="mdc-radio">
+                  <input class="mdc-radio__native-control" type="radio" id="changeModeDriving" name="radios" checked>
+                  <div class="mdc-radio__background">
+                    <div class="mdc-radio__outer-circle"></div>
+                    <div class="mdc-radio__inner-circle"></div>
+                  </div>
+                  <div class="mdc-radio__ripple"></div>
                 </div>
-                <div class="mdc-radio__ripple"></div>
+                <label for="changeModeDriving" class='row crossCenter smallGap'>
+                  <i class="material-icons-outlined">directions_car</i>
+                </label>
               </div>
-              <label for="changeModeDriving" class='row crossCenter smallGap'>
-                <i class="material-icons-outlined">directions_car</i>
+              <div class='row crossCenter'>
+                <div class="mdc-radio">
+                  <input class="mdc-radio__native-control" type="radio" id="changeModeTransit" name="radios">
+                  <div class="mdc-radio__background">
+                    <div class="mdc-radio__outer-circle"></div>
+                    <div class="mdc-radio__inner-circle"></div>
+                  </div>
+                  <div class="mdc-radio__ripple"></div>
+                </div>
+                <label for="changeModeTransit" class='row crossCenter smallGap'>
+                  <i class="material-icons-outlined">directions_transit</i>
+                </label>
+              </div>
+              <div class='row crossCenter'>
+                <div class="mdc-radio">
+                  <input class="mdc-radio__native-control" type="radio" id="changeModeBiking" name="radios">
+                  <div class="mdc-radio__background">
+                    <div class="mdc-radio__outer-circle"></div>
+                    <div class="mdc-radio__inner-circle"></div>
+                  </div>
+                  <div class="mdc-radio__ripple"></div>
+                </div>
+                <label for="changeModeBiking" class='row crossCenter smallGap'>
+                  <i class="material-icons-outlined">directions_bike</i>
+                </label>
+              </div>
+              <div class='row crossCenter'>
+                <div class="mdc-radio">
+                  <input class="mdc-radio__native-control" type="radio" id="changeModeWalking" name="radios">
+                  <div class="mdc-radio__background">
+                    <div class="mdc-radio__outer-circle"></div>
+                    <div class="mdc-radio__inner-circle"></div>
+                  </div>
+                  <div class="mdc-radio__ripple"></div>
+                </div>
+                <label for="changeModeWalking" class='row crossCenter smallGap'>
+                  <i class="material-icons-outlined">directions_walk</i>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <div class='formGroup'>
+            <label class='formLabel'>Origin</label>
+            <div class='row mainStart crossCenter fullWidth'>
+              <i class="material-icons-outlined spaceAroundIcon">place</i>
+              <label class="expand dense mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+                <span class="mdc-notched-outline">
+                  <span class="mdc-notched-outline__leading"></span>
+                  <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input id='originInput' class="mdc-text-field__input" type="text" placeholder='Enter starting location' aria-label="Label">
               </label>
             </div>
-            <div class='row crossCenter'>
-              <div class="mdc-radio">
-                <input class="mdc-radio__native-control" type="radio" id="changeModeTransit" name="radios">
-                <div class="mdc-radio__background">
-                  <div class="mdc-radio__outer-circle"></div>
-                  <div class="mdc-radio__inner-circle"></div>
-                </div>
-                <div class="mdc-radio__ripple"></div>
-              </div>
-              <label for="changeModeTransit" class='row crossCenter smallGap'>
-                <i class="material-icons-outlined">directions_transit</i>
-              </label>
-            </div>
-            <div class='row crossCenter'>
-              <div class="mdc-radio">
-                <input class="mdc-radio__native-control" type="radio" id="changeModeBiking" name="radios">
-                <div class="mdc-radio__background">
-                  <div class="mdc-radio__outer-circle"></div>
-                  <div class="mdc-radio__inner-circle"></div>
-                </div>
-                <div class="mdc-radio__ripple"></div>
-              </div>
-              <label for="changeModeBiking" class='row crossCenter smallGap'>
-                <i class="material-icons-outlined">directions_bike</i>
-              </label>
-            </div>
-            <div class='row crossCenter'>
-              <div class="mdc-radio">
-                <input class="mdc-radio__native-control" type="radio" id="changeModeWalking" name="radios">
-                <div class="mdc-radio__background">
-                  <div class="mdc-radio__outer-circle"></div>
-                  <div class="mdc-radio__inner-circle"></div>
-                </div>
-                <div class="mdc-radio__ripple"></div>
-              </div>
-              <label for="changeModeWalking" class='row crossCenter smallGap'>
-                <i class="material-icons-outlined">directions_walk</i>
+          </div>
+
+          <div class='formGroup'>
+            <label class='formLabel'>Destination</label>
+            <div class='row mainStart crossCenter fullWidth'>
+              <i class="material-icons-outlined spaceAroundIcon">place</i>
+              <label class="expand dense mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+                <span class="mdc-notched-outline">
+                  <span class="mdc-notched-outline__leading"></span>
+                  <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input id='destinationInput' class="mdc-text-field__input" type="text" placeholder='Enter ending destination' aria-label="Label">
               </label>
             </div>
           </div>
           
-          <hr>
-
-          <label class='formLabel'>Origin</label>
-          <div class='row mainStart crossCenter fullWidth'>
-            <i class="material-icons-outlined spaceAroundIcon">place</i>
-            <label class="expand dense mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-              <span class="mdc-notched-outline">
-                <span class="mdc-notched-outline__leading"></span>
-                <span class="mdc-notched-outline__trailing"></span>
-              </span>
-              <input id='originInput' class="mdc-text-field__input" type="text" placeholder='Enter starting location' aria-label="Label">
-            </label>
+          <div class='formGroup'>
+            <label class='formLabel'>Stops</label>
+            <div id='stops' class='col gap fullWidth' style='display:none; padding-bottom:8px;'></div>
+            
+            <button class="mdc-button mdc-button--outlined mdc-button--icon-leading" onclick="handler.addWaypoint();">
+              <span class="mdc-button__ripple"></span>
+              <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+              <span class="mdc-button__label">Add stop</span>
+            </button>
           </div>
 
-          <hr>
-          
-          <label class='formLabel'>Destination</label>
-          <div class='row mainStart crossCenter fullWidth'>
-            <i class="material-icons-outlined spaceAroundIcon">place</i>
-            <label class="expand dense mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-              <span class="mdc-notched-outline">
-                <span class="mdc-notched-outline__leading"></span>
-                <span class="mdc-notched-outline__trailing"></span>
-              </span>
-              <input id='destinationInput' class="mdc-text-field__input" type="text" placeholder='Enter ending destination' aria-label="Label">
-            </label>
+          <div class='formGroup'>
+            <label class='formLabel'>Optimizations</label>
+            <div class='mdc-form-field row mainStart crossCenter fullWidth'>
+              <label for="optimizationSwitch" class='expand'>Allow order optimization</label>
+              <button id="optimizationSwitch" class="mdc-switch mdc-switch--selected" type="button" role="switch" aria-checked="true">
+                <div class="mdc-switch__track"></div>
+                <div class="mdc-switch__handle-track">
+                  <div class="mdc-switch__handle">
+                    <div class="mdc-switch__shadow">
+                      <div class="mdc-elevation-overlay"></div>
+                    </div>
+                    <div class="mdc-switch__ripple"></div>
+                    <div class="mdc-switch__icons">
+                      <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
+                        <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" />
+                      </svg>
+                      <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24">
+                        <path d="M20 13H4v-2h16v2z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
 
-          <hr>
+          <div class='formGroup' style='display:none;'>
+            <label class='formLabel'>Other options</label>
+  
+            <div class='mdc-form-field row mainStart crossCenter fullWidth'>
+              <label for="allowFerries" class='expand'>Allow ferries</label>
+              <div class="mdc-touch-target-wrapper">
+                <div class="mdc-checkbox">
+                  <input type="checkbox"
+                          class="mdc-checkbox__native-control"
+                          id="allowFerries"/>
+                  <div class="mdc-checkbox__background">
+                    <svg class="mdc-checkbox__checkmark"
+                          viewBox="0 0 24 24">
+                      <path class="mdc-checkbox__checkmark-path"
+                            fill="none"
+                            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                    </svg>
+                    <div class="mdc-checkbox__mixedmark"></div>
+                  </div>
+                  <div class="mdc-checkbox__ripple"></div>
+                </div>
+              </div>
+            </div>
+            <div class='mdc-form-field row mainStart crossCenter fullWidth'>
+              <label for="allowHighways" class='expand'>Allow major highways</label>
+              <div class="mdc-touch-target-wrapper">
+                <div class="mdc-checkbox">
+                  <input type="checkbox"
+                          class="mdc-checkbox__native-control"
+                          id="allowHighways"/>
+                  <div class="mdc-checkbox__background">
+                    <svg class="mdc-checkbox__checkmark"
+                          viewBox="0 0 24 24">
+                      <path class="mdc-checkbox__checkmark-path"
+                            fill="none"
+                            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                    </svg>
+                    <div class="mdc-checkbox__mixedmark"></div>
+                  </div>
+                  <div class="mdc-checkbox__ripple"></div>
+                </div>
+              </div>
+            </div>
+            <div class='mdc-form-field row mainStart crossCenter fullWidth'>
+              <label for="allowTolls" class='expand'>Allow toll roads</label>
+              <div class="mdc-touch-target-wrapper">
+                <div class="mdc-checkbox">
+                  <input type="checkbox"
+                          class="mdc-checkbox__native-control"
+                          id="allowTolls"/>
+                  <div class="mdc-checkbox__background">
+                    <svg class="mdc-checkbox__checkmark"
+                          viewBox="0 0 24 24">
+                      <path class="mdc-checkbox__checkmark-path"
+                            fill="none"
+                            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                    </svg>
+                    <div class="mdc-checkbox__mixedmark"></div>
+                  </div>
+                  <div class="mdc-checkbox__ripple"></div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <label class='formLabel'>Stops</label>
-          <div id='stops' class='col gap fullWidth'></div>
-          
-          <button class="mdc-button mdc-button--outlined mdc-button--icon-leading" onclick="handler.addWaypoint();">
-            <span class="mdc-button__ripple"></span>
-            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
-            <span class="mdc-button__label">Add stop</span>
-          </button>
-        </div>
+          <h1>Directions</h1>
+
+          <div id='panel'></div>
+        </main>
       </div>
       <div id='dragBar'></div>
       <div id='dragRight' style='background:#e5e3df;'>
