@@ -1,3 +1,5 @@
+const API_KEY = 'AIzaSyCJNQ7quFBzi-NJPW5jLAeXnULnYKH4Hag';
+
 // This example requires the Places library. Include the libraries=places
 // parameter when you first load the API. For example:
 // <script
@@ -22,6 +24,7 @@ class AutocompleteDirectionsHandler {
   travelMode;
   directionsService;
   directionsRenderer;
+  placesService;
   optimizeWaypoints;
   avoid;
   constructor(map) {
@@ -32,6 +35,7 @@ class AutocompleteDirectionsHandler {
     this.travelMode = google.maps.TravelMode.DRIVING;
     this.directionsService = new google.maps.DirectionsService();
     this.directionsRenderer = new google.maps.DirectionsRenderer({map, panel});
+    this.placesService = new google.maps.places.PlacesService(map);
     this.optimizeWaypoints = true;
     this.avoid = {ferries: false, highways: false, tolls: true};
     
@@ -133,6 +137,7 @@ class AutocompleteDirectionsHandler {
       avoidTolls: this.avoid.tolls,
     })
     .then((result) => {
+      directionsHeading.style.display = '';
       this.directionsRenderer.setDirections(result);
     })
     .catch((e) => {
@@ -196,7 +201,27 @@ const makeStop = () => {
 }
 const addStop = (stop) => $('#stops').append(stop);
 const removeStop = (stop) => $(stop).remove();
-const getStopIndex = (stop) => Array.from($('#stops')[0].children).indexOf(stop);
+const getStopIndex = (stop) => Array.from(stops.children).indexOf(stop);
+
+$(uploadStops).on('change', () => {
+  if (!('files' in uploadStops && uploadStops.files.length)) return;
+  let file = uploadStops.files[0];
+  readFile(file)
+  .then((content) => {
+    for (const line of content.split(/\r?\n/g))  {
+      console.log(line.trim());
+    }
+  })
+  .catch((e) => console.error(e));
+});
+const readFile = (file) => {
+  let reader = new FileReader();
+  return new Promise((resolve, reject) => {
+    reader.onload = (event) => resolve(event.target.result);
+    reader.onerror = (error) => reject(error);
+    reader.readAsText(file);
+  });
+}
 
 
 $('.mdc-radio').each(function () { new mdc.radio.MDCRadio(this); });

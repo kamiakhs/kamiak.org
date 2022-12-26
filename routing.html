@@ -5,7 +5,7 @@
     <script src='https://polyfill.io/v3/polyfill.min.js?features=default'></script>
     <link rel='stylesheet' href='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined'>
-    <link rel='stylesheet' href='./routing.css'>
+    <link rel='stylesheet' href='routing.css'>
   </head>
   <body>
     <div id='dragContainer'>
@@ -106,9 +106,16 @@
             
             <button class="mdc-button mdc-button--outlined mdc-button--icon-leading" onclick="handler.addWaypoint();">
               <span class="mdc-button__ripple"></span>
-              <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+              <i class="material-icons-outlined mdc-button__icon" aria-hidden="true">add_box</i>
               <span class="mdc-button__label">Add stop</span>
             </button>
+
+            <button class="mdc-button mdc-button--outlined mdc-button--icon-leading" onclick='uploadStops.click();'>
+              <span class="mdc-button__ripple"></span>
+              <i class="material-icons-outlined mdc-button__icon" aria-hidden="true">upload_file</i>
+              <span class="mdc-button__label">Upload stops</span>
+            </button>
+            <input type='file' id='uploadStops' accept='.txt' hidden>
           </div>
 
           <div class='formGroup'>
@@ -202,10 +209,10 @@
             </div>
           </div>
 
-          <h1>Directions</h1>
+          <h1 id='directionsHeading' style='display:none;'>Directions</h1>
 
-          <div id='panel'></div>
-          
+          <div id='panel' style='width:100%;'></div>
+
         </main>
       </div>
       <div id='dragBar'></div>
@@ -215,7 +222,7 @@
     </div>
     <script src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
-    <script src='./routing.js'></script>
+    <script src='routing.js'></script>
     <script defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCJNQ7quFBzi-NJPW5jLAeXnULnYKH4Hag&callback=initMap&libraries=places&v=weekly'></script>
   </body>
 </html>

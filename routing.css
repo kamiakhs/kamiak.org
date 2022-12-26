@@ -158,3 +158,67 @@ h1 {
   padding: 2px 16px;
   margin: 0 -16px;
 }
+
+/* Google maps directions override */
+.adp-placemark {
+    border-spacing: 8px;
+    border-radius: 4px;
+    border: none !important;
+    background: white !important;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    font-weight: 500 !important;
+    color: var(--mdc-theme-text-primary-on-background);
+    padding: 4px;
+}
+.adp-list {
+    /* border: 1px solid var(--mdc-theme-text-hint-on-light) !important; */
+    border: none !important;
+}
+.adp-step, .adp-substep {
+    /* border-top: 1px solid var(--mdc-theme-text-hint-on-light) !important; */
+    border: none !important;
+}
+.adp .adp-summary, .adp .adp-table, .adp-substep {
+    font-weight: 400;
+}
+.adp .adp-substep b {
+    font-weight: 500;
+}
+.adp .adp-substep {
+    padding: .5em 6px;
+}
+.adp .adp-summary {
+    padding: .4em 8px .5em 8px;
+}
+.adp .adp-directions {
+    width: 100%;
+}
+.adp-legal {
+    display: none;
+}
+.adp-directions td:nth-child(2) {
+    padding-right: 0;
+}
+.adp-directions td:first-child {
+    padding-left: 8px;
+}
+.adp-directions td:last-child {
+    padding-right: 8px;
+}
+.adp .adp-listsel {
+    background: #fafafa;
+}
+
+
+/* Map override */
+.gm-style .gm-style-iw-c {
+    border-radius: 4px !important;
+    padding-top: 16px !important;
+    padding-left: 16px !important;
+}
+.gm-style .gm-style-iw-d {
+    padding-bottom: 4px;
+}
+.gm-style .gm-style-iw-d .view-link {
+    margin-top: 4px;
+}
