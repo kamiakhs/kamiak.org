@@ -1,4 +1,5 @@
 const API_KEY = 'AIzaSyCJNQ7quFBzi-NJPW5jLAeXnULnYKH4Hag';
+let mostRecentAddress;
 
 // This example requires the Places library. Include the libraries=places
 // parameter when you first load the API. For example:
@@ -27,6 +28,7 @@ class AutocompleteDirectionsHandler {
   placesService;
   optimizeWaypoints;
   avoid;
+  waypointOrder;
   constructor(map) {
     this.map = map;
     this.originPlaceId = '';
@@ -38,6 +40,7 @@ class AutocompleteDirectionsHandler {
     this.placesService = new google.maps.places.PlacesService(map);
     this.optimizeWaypoints = true;
     this.avoid = {ferries: false, highways: false, tolls: true};
+    this.waypointOrder = [];
     
     let modes = [
       {id: 'changeModeWalking', enum: google.maps.TravelMode.WALKING},
@@ -108,21 +111,54 @@ class AutocompleteDirectionsHandler {
     autocomplete.bindTo('bounds', map);
     autocomplete.addListener('place_changed', () => {
       let place = autocomplete.getPlace();
+      console.log(place);
       if (!place.place_id) {
-        window.alert("Please select an option from the dropdown list.");
+        window.alert('Please select an option from the dropdown list.');
         return;
       }
-      console.log(autocomplete);
       window.autocomplete = autocomplete;
       callback(place);
       this.route();
     });
   }
+  addWaypointAddress(address) {
+    this.placesService.findPlaceFromQuery({
+      query: address,
+      fields: ['place_id'],
+    }, (results, status) => {
+      if (status != 'OK') {
+        console.log('Not OK ', status);
+        if (status == 'OVER_QUERY_LIMIT') {
+          setTimeout(() => this.addWaypointAddress(address), 100);
+        }
+        return;
+      }
+      console.log(results);
+      if (!results.length) {
+        console.log('No results');
+        return;
+      }
+      this.addWaypoint();
+      let place = results[0];
+      let stop = getLastStop();
+      stop.querySelector('input').value = address;
+      this.waypointPlaceIds.pop();
+      this.waypointPlaceIds.push(place.place_id);
+      console.log(address);
+      if (address == mostRecentAddress) this.route();
+    });
+  }
+  hasPlaceIds() {
+    if (!this.originPlaceId || !this.destinationPlaceId) return false;
+    for (const waypointPlaceId of this.waypointPlaceIds) {
+      if (!waypointPlaceId) return false;
+    }
+    return true;
+  }
   route() {
-    if (!this.originPlaceId || !this.destinationPlaceId) return;
+    if (!this.hasPlaceIds()) return;
     let waypoints = [];
     for (const waypointPlaceId of this.waypointPlaceIds) {
-      if (!waypointPlaceId) return;
       waypoints.push({location: {placeId: waypointPlaceId}});
     }
     
@@ -137,12 +173,57 @@ class AutocompleteDirectionsHandler {
       avoidTolls: this.avoid.tolls,
     })
     .then((result) => {
+      console.log(result);
+      console.log(result.waypoint_order);
       directionsHeading.style.display = '';
       this.directionsRenderer.setDirections(result);
+      let total = this.getTotalData(result);
+      console.log(total);
+      console.log(total.distance/1609, 'mi');
+      console.log(`${total.duration/3600 | 0} hours, ${total.duration/60%60 | 0} minutes, ${total.duration%60 | 0} seconds`)
+      this.waypointOrder = result.routes[0].waypoint_order;
     })
     .catch((e) => {
-      window.alert("Directions request failed due to " + e);
+      window.alert(`Directions request failed due to ${e}`);
     });
+  }
+  getTotalData(result) {
+    let total = {distance: 0, duration: 0};
+    let route = result.routes[0];
+    if (!route) return;
+    for (let i = 0; i < route.legs.length; i++) {
+      total.distance += route.legs[i].distance.value;
+      total.duration += route.legs[i].duration.value;
+    }
+    return total;
+    totalDistance /= 1609;
+    console.log(totalDistance);
+  }
+  getUrl() {
+    if (!this.hasPlaceIds()) return;
+    let url = 'https://www.google.com/maps/dir/?api=1';
+    let stopNodes = stops.children;
+    let params = $.param({
+      origin: removePipes(originInput.value),
+      origin_place_id: this.originPlaceId,
+      destination: removePipes(destinationInput.value),
+      destination_place_id: this.destinationPlaceId,
+      waypoints: this.waypointOrder.map(i => removePipes(stopNodes[i].querySelector('input').value)).join('|'),
+      waypoint_place_ids: this.waypointOrder.map(i => this.waypointPlaceIds[i]).join('|'),
+      travelmode: handler.travelMode.toLowerCase(),
+    });
+    return url+'&'+params;
+  }
+  getUrl2() {
+    if (!this.hasPlaceIds()) return;
+    let url = 'https://www.google.com/maps/dir/';
+    let placeNames = [];
+    placeNames.push(encodeURIComponent(originInput.value));
+    for (const i of this.waypointOrder) {
+      placeNames.push(encodeURIComponent(stops.children[i].querySelector('input').value));
+    }
+    placeNames.push(encodeURIComponent(destinationInput.value));
+    return url+placeNames.join('/');
   }
 }
 
@@ -199,17 +280,28 @@ const makeStop = () => {
   });
   return $stop[0];
 }
-const addStop = (stop) => $('#stops').append(stop);
+const addStop = (stop) => stops.appendChild(stop);
 const removeStop = (stop) => $(stop).remove();
 const getStopIndex = (stop) => Array.from(stops.children).indexOf(stop);
+const getLastStop = () => stops.children[stops.children.length-1];
 
 $(uploadStops).on('change', () => {
   if (!('files' in uploadStops && uploadStops.files.length)) return;
   let file = uploadStops.files[0];
   readFile(file)
-  .then((content) => {
-    for (const line of content.split(/\r?\n/g))  {
+  .then(async (content) => {
+    // let cnt = 0;
+    for (const line of content.split(/\r?\n/g)) {
       console.log(line.trim());
+      if (!line) continue;
+      // if (cnt != 0 && cnt%10 == 0) {
+      //   console.log('SLEEPING');
+      //   await new Promise(r => setTimeout(r, 1000));
+      //   console.log('DONE SLEEPING');
+      // }
+      // cnt++;
+      mostRecentAddress = line.trim();
+      handler.addWaypointAddress(mostRecentAddress);
     }
   })
   .catch((e) => console.error(e));
@@ -222,6 +314,7 @@ const readFile = (file) => {
     reader.readAsText(file);
   });
 }
+const removePipes = (address) => address.replaceAll('|', ' ');
 
 
 $('.mdc-radio').each(function () { new mdc.radio.MDCRadio(this); });
