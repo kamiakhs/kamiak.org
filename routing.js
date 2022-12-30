@@ -196,25 +196,8 @@ class AutocompleteDirectionsHandler {
       total.duration += route.legs[i].duration.value;
     }
     return total;
-    totalDistance /= 1609;
-    console.log(totalDistance);
   }
   getUrl() {
-    if (!this.hasPlaceIds()) return;
-    let url = 'https://www.google.com/maps/dir/?api=1';
-    let stopNodes = stops.children;
-    let params = $.param({
-      origin: removePipes(originInput.value),
-      origin_place_id: this.originPlaceId,
-      destination: removePipes(destinationInput.value),
-      destination_place_id: this.destinationPlaceId,
-      waypoints: this.waypointOrder.map(i => removePipes(stopNodes[i].querySelector('input').value)).join('|'),
-      waypoint_place_ids: this.waypointOrder.map(i => this.waypointPlaceIds[i]).join('|'),
-      travelmode: handler.travelMode.toLowerCase(),
-    });
-    return url+'&'+params;
-  }
-  getUrl2() {
     if (!this.hasPlaceIds()) return;
     let url = 'https://www.google.com/maps/dir/';
     let placeNames = [];
@@ -267,9 +250,9 @@ const makeStop = () => {
         </span>
         <input class="mdc-text-field__input" type="text" placeholder='Enter stop' aria-label="Label">
       </label>
-      <button class="mdc-icon-button material-icons-outlined" onclick="handler.removeWaypoint(this.parentNode);">
+      <button class="mdc-icon-button material-icons-outlined xButton" onclick="handler.removeWaypoint(this.parentNode);">
         <div class="mdc-icon-button__ripple"></div>
-        delete
+        cancel
       </button>
     </div>
   `);
@@ -314,7 +297,6 @@ const readFile = (file) => {
     reader.readAsText(file);
   });
 }
-const removePipes = (address) => address.replaceAll('|', ' ');
 
 
 $('.mdc-radio').each(function () { new mdc.radio.MDCRadio(this); });
