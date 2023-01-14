@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Advance Chess Academy</title>
-        <link rel="icon" href="assets/sniper-icon.png">
+        <link rel="icon" href="chess/icon.png">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -356,8 +356,8 @@
                     $_.append($('<div class="text-sm text-gray">'));
                     if (!chessData.stats.chess_bullet.best) chessData.stats.chess_bullet.best = chessData.stats.chess_bullet.last;
                     $_.children()[2].innerHTML = `
-                        <span class="emoji-bullet">⚡️</span> Current bullet rating: <code>${chessData.stats.chess_bullet.last.rating}</code><br>
-                        <span class="emoji-bullet">⚡️</span> Best bullet rating: <code>${chessData.stats.chess_bullet.best.rating}</code>`;
+                        <span class="emoji-bullet">⏳</span> Current bullet rating: <code>${chessData.stats.chess_bullet.last.rating}</code><br>
+                        <span class="emoji-bullet">⏳</span> Best bullet rating: <code>${chessData.stats.chess_bullet.best.rating}</code>`;
                 }
                 // $el.append($_);
                 $($el.children()[$el.children().length-1]).append($_);
@@ -444,7 +444,7 @@
             });
             const getRating = (data) => data.chessData.stats.chess_rapid.last.rating;
             const getName = (data) => data.nickname.toLowerCase();
-            const sortMethods = {
+            const sortMethods = {  // Keys are material icon names
                 bar_chart: () => people.sort((a, b) => getRating(b) - getRating(a)),
                 sort_by_alpha: () => people.sort((a, b) => getName(a).localeCompare(getName(b))),
                 shuffle: () => {
