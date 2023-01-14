@@ -10,6 +10,29 @@
     <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap' rel='stylesheet'>
     <style>
         :root {
+            --base00: #282c34;
+            --base01: #353b45;
+            --base02: #3e4451;
+            --base03: #545862;
+            /* --base04: #565c64; */
+            --base04: #838994;
+            --base05: #abb2bf;
+            --base06: #b6bdca;
+            --body-bg: #282c34;
+            --body-color: #abb2bf;
+            --secondary-color: rgba(255,255,255,.5);
+            --link-color: rgba(255,255,255,.75);
+            --link-color-hover: #fff;
+            --link-border-color: rgba(255,255,255,.25);
+            --link-border-color-hover: rgba(255,255,255,.5);
+            --heading-color: #dee2e6;
+            --kbd-color: rgba(255,255,255,.5);
+            --kbd-bg: rgba(255,255,255,.1);
+            --hr-color: rgba(255,255,255,.1);
+            --pre-bg: rgba(0,0,0,.1);
+            --code-color: #e5c07b;
+            --code-snippet-border: rgba(255,255,255,.1);
+            --blockquote-border: rgba(255,255,255,.1);
             color-scheme: dark;
         }
         * {
@@ -17,7 +40,7 @@
             font-family: Montserrat, 'Times New Roman';
             outline-color: #fdcc67;
         }
-        *:not(h1) {
+        *:not(h1, h2) {
             font-weight: 600;
         }
         .row, .col { display: flex; }
@@ -39,22 +62,59 @@
         body, html, .page {
             height: 100%;
         }
+        .glow {
+            color: #0063cc;
+            --glow1: rgba(0 0 204 / 40%);
+            --glow2: rgba(0 0 204 / 15%);
+            box-shadow: 0 0 10px var(--glow1), inset 0 0 10px var(--glow1);
+            text-shadow: 0 0 10px var(--glow1);
+            border: 3px solid currentColor;
+        }
+        .glow::selection {
+            color: white;
+            background: var(--glow1);
+        }
+        .blue {
+            color: #0063cc;
+            --glow1: rgba(0 0 204 / 40%);
+            --glow2: rgba(0 0 204 / 15%);
+        }
+        .magenta {
+            color: #cc007a;
+            --glow1: rgba(180 0 204 / 40%);
+            --glow2: rgba(180 0 204 / 15%);
+        }
+        .violet {
+            color: #5c00cc;
+            --glow1: rgba(0 0 204 / 40%);
+            --glow2: rgba(0 0 204 / 15%);
+        }
+        .green {
+            color: #58cc00;
+            --glow1: rgba(0 204 0 / 40%);
+            --glow2: rgba(0 204 0 / 15%);
+        }
+        .orange {
+            color: #cc4100;
+            --glow1: rgba(204 0 0 / 40%);
+            --glow2: rgba(204 0 0 / 15%);
+        }
         #joinLobbyInput {
             width: 100%;
             text-align: center;
             background: transparent;
-            border: 2px solid #dbe0ff;
             border-radius: 4px;
             padding: 0.7rem 1rem;
             font-size: inherit;
             transition: border 150ms ease-in-out;
         }
         #joinLobbyInput:focus {
-            border: 2px solid #8e9efe;
+            box-shadow: 0 0 14px var(--glow1), inset 0 0 10px var(--glow1);
             outline: none;
         }
         #joinLobbyInput::placeholder {
-            color: #b5c0ff;
+            color: currentColor;
+            opacity: 0.5;
         }
         .centeredStrip {
             max-width: 384px;
@@ -66,18 +126,21 @@
             visibility: hidden;
         }
         h1 {
-            color: white;
             font-size: 64px;
             margin: 0;
             text-align: center;
-            text-shadow: 0 1px 16px rgb(255 255 255 / 40%);
+        }
+        h2 {
+            font-size: 48px;
+            margin: 0;
+            text-align: center;
         }
         .formBox {
             gap: 12px;
             padding: 16px;
             border-radius: 4px;
-            box-shadow: 0 0 10px rgb(0 0 0 / 40%);
-            background: white;
+            /* box-shadow: 0 0 10px rgb(0 0 0 / 40%); */
+            /* background: var(--base01); */
         }
         button {
             cursor: pointer;
@@ -88,14 +151,10 @@
             padding: 0.7rem 1rem;
             background: transparent;
             -webkit-tap-highlight-color: transparent;
-            color: #0030cc;
-            border: 3px solid #0030cc;
-            box-shadow: 0 0 10px rgb(0 0 204 / 40%), inset 0 0 10px rgb(0 0 204 / 40%);
-            text-shadow: 0 0 10px rgb(0 0 204 / 40%);
         }
-        button:not(.box):not(.operator):hover {
-            background: #0000cc40;
-            box-shadow: 0 0 14px rgb(0 0 204 / 40%), inset 0 0 10px rgb(0 0 204 / 40%);
+        button.glow:not(.box):not(.operator):hover {
+            background: var(--glow2);
+            box-shadow: 0 0 14px var(--glow1), inset 0 0 10px var(--glow1);
         }
         .gameContainer {
             display: grid;
@@ -116,31 +175,21 @@
             min-height: 0;
             font-weight: 500;
         }
-        .box {
-            color: #58cc00;
-            border: 3px solid #58cc00;
-            box-shadow: 0 0 10px rgb(0 204 0 / 40%), inset 0 0 10px rgb(0 204 0 / 40%);
-            text-shadow: 0 0 10px rgb(0 204 0 / 40%);
-        }
-        .box:hover {
+        .box:hover, .operator:hover {
             background: transparent;
         }
-        .box.selected {
-            background: #00cc0040;
-            box-shadow: 0 0 14px rgb(0 204 0 / 40%), inset 0 0 10px rgb(0 204 0 / 40%);
+        .box.selected, .operator.selected {
+            background: var(--glow2);
+            box-shadow: 0 0 14px var(--glow1), inset 0 0 10px var(--glow1);
         }
-        .operator {
-            color: #cc4100;
-            border: 3px solid #cc4100;
-            box-shadow: 0 0 10px rgb(204 0 0 / 40%), inset 0 0 10px rgb(204 0 0 / 40%);
-            text-shadow: 0 0 10px rgb(204 0 0 / 40%);
+        .requiresHost {
+            width: 100%;
         }
-        .operator:hover {
-            background: transparent;
-        }
-        .operator.selected {
-            background: #cc000040;
-            box-shadow: 0 0 14px rgb(204 0 0 / 40%), inset 0 0 10px rgb(204 0 0 / 40%);
+        .highlight {
+            background: #5c00cc;
+            color: black;
+            border-radius: 4px;
+            padding: 2px 6px;
         }
     </style>
   </head>
@@ -150,48 +199,61 @@
     </div>
     <div id='homePage' class='page col mainCenter crossCenter' style='display: none;'>
         <div class='centeredStrip'>
-            <h1 style='padding-bottom:16px;'>24!</h1>
-            <div class='formBox col mainStart crossCenter'>
-                <input id='joinLobbyInput' placeholder='Game ID' autocomplete='off'>
-                <button id='joinLobby'>Join game</button>
-                <div class='row mainCenter crossCenter' style='width:100%; gap:4px; color:#dbe0ff; font-size:12px;'>
-                    <div style='border-bottom:2px solid currentColor; flex-grow:1;'></div>
+            <h1 class='violet' style='padding-bottom:16px;'>24</h1>
+            <div class='formBox col mainStart crossCenter glow violet'>
+                <input id='joinLobbyInput' class='glow violet' placeholder='Game ID' autocomplete='off'>
+                <button id='joinLobby' class='glow violet'>Join game</button>
+                <div class='row mainCenter crossCenter blue' style='width:100%; gap:4px; font-size:12px; font-weight:700;'>
+                    <div style='border-bottom:3px solid currentColor; flex-grow:1;'></div>
                     <div>OR</div>
-                    <div style='border-bottom:2px solid currentColor; flex-grow:1;'></div>
+                    <div style='border-bottom:3px solid currentColor; flex-grow:1;'></div>
                 </div>
-                <button id='createLobby'>Create game</button>
+                <button id='createLobby' class='glow'>Create game</button>
             </div>
         </div>
     </div>
-    <div id='lobbyPage' class='page' style='display: none;'>
-        <h1>Waiting for players to join</h1>
-        <p>Your game id is <span class='lobbyId'></span></p>
-        <div class='requiresHost'>
-            <p>You are the host</p>
-            <button id='startLobby'>Start game</button>
+    <div id='lobbyPage' class='page col mainCenter crossCenter' style='display: none;'>
+        <div class='centeredStrip'>
+            <div class='formBox col mainStart crossCenter glow violet'>
+                <div style='width:100%;'>
+                    <p>Waiting for players to join</p>
+                    <p>Once players have joined, the host can start the game.</p>
+                    <p>Your game ID is <span class='lobbyId highlight'></span></p>
+                    <p>People in lobby: <span class='userCount highlight'>1</span></p>
+                </div>
+                <button class='copyLink glow violet'>Copy game link</button>
+                <button class='leaveLobby glow violet'>Leave game</button>
+                <div class='requiresHost'>
+                    <p class='blue'>You are the host</p>
+                    <button id='startLobby' class='glow'>Start game</button>
+                </div>
+            </div>
         </div>
-        <a class='leaveLobby'>Leave</a>
     </div>
     <div id='solvePage' class='page col crossCenter' style='display: none;'>
         <div class='centeredStrip'>
-            <h1>Solve</h1>
-            <p>Game ID: <span class='lobbyId'></span></p>
+            <!-- <h1>Solve</h1> -->
+            <h2 class='violet'>Game on!</h2>
+            <p class='violet'>Be the first to make the number 24!</p>
+            <p class='violet'>Game ID: <span class='lobbyId highlight'></span></p>
+            <button class='leaveLobby glow violet' style='margin-bottom:8px;'>Leave game</button>
+            <button id='toggleSolutions' class='glow magenta' style='margin-bottom:8px;'>Show previous numbers' solutions</button>
+            <div id='previousSolutions' class='magenta row' style='display:none; flex-wrap:wrap; gap:16px;'>N/A</div>
             <div class='requiresHost'>
-                <p>You are the host</p>
-                <button id='skipLobby'>Skip</button>
+                <p class='blue'>You are the host</p>
+                <button id='skipLobby' class='glow'>Skip</button>
             </div>
-            <div class='gameContainer'>
-                <button class='box' style='grid-area:1/1/3/3;'></button>
-                <button class='box' style='grid-area:1/3/3/5;'></button>
-                <button class='box' style='grid-area:3/1/5/3;'></button>
-                <button class='box' style='grid-area:3/3/5/5;'></button>
-                <button class='operator' style='grid-area:1/5/3/6'>+</button>
-                <button class='operator' style='grid-area:3/5/5/6'>-</button>
-                <button class='operator' style='grid-area:5/1/6/3'>×</button>
-                <button class='operator' style='grid-area:5/3/6/5'>÷</button>
-                <button class='operator undoOperator' style='grid-area:5/5/6/6'>&#60;</button>
+            <div class='gameContainer' style='margin-top:32px;'>
+                <button class='box glow green' style='grid-area:1/1/3/3;'></button>
+                <button class='box glow green' style='grid-area:1/3/3/5;'></button>
+                <button class='box glow green' style='grid-area:3/1/5/3;'></button>
+                <button class='box glow green' style='grid-area:3/3/5/5;'></button>
+                <button class='operator glow orange' style='grid-area:1/5/3/6'>+</button>
+                <button class='operator glow orange' style='grid-area:3/5/5/6'>-</button>
+                <button class='operator glow orange' style='grid-area:5/1/6/3'>×</button>
+                <button class='operator glow orange' style='grid-area:5/3/6/5'>÷</button>
+                <button class='operator undoOperator glow orange' style='grid-area:5/5/6/6'>&#60;</button>
             </div>
-            <a class='leaveLobby'>Leave</a>
         </div>
     </div>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
@@ -235,6 +297,9 @@
             equals = other => this.n == other.n && this.d == other.d;
             equals24 = () => this.equals(new Fraction(24));
         }
+        $(joinLobbyInput).on('keypress', (e) => {
+            if (e.key == 'Enter') joinLobby.click();
+        });
 
         const socket = io('wss://kamiak-io.fly.dev', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
         // const socket = io('ws://localhost:8000', {path: '/24/socket.io', query: 'id='+location.hash.substr(1)});
@@ -247,6 +312,7 @@
         let currentOperator;
         let memory = [];
         let removed = [];
+        let showSolutions = false;
 
         function switchToPage(pageName) {
             $('.page').hide();
@@ -262,21 +328,30 @@
             }
             if (!lobby && socket.connected) {
                 switchToPage('home');
-                if (window.history.replaceState && !lobby) {
+                if (window.history.replaceState) {
                     window.history.replaceState({}, null, location.origin+location.pathname);
                 }
+                showSolutions = false;
+                previousSolutions.innerText = 'N/A';
+                toggleSolutions.innerText = "Show previous numbers' solutions";
                 return;
             }
             $('.requiresHost').css('display', isLobbyHost() ? '' : 'none');
             $('.lobbyId').text(lobby.lobby_id);
+            $('.userCount').text(lobby.users.length);
             if (!lobby.started) {
                 switchToPage('lobby');
                 return;
             }
-            if (!('solutions' in lobby)) {
-                switchToPage('solve');
-                return;
+            switchToPage('solve');
+            if ('solutions' in lobby) {
+                previousSolutions.innerHTML = '';
+                for (const solution of lobby.solutions) {
+                    let $solution = $('<div>').text(solution);
+                    $(previousSolutions).append($solution);
+                }
             }
+            return;
         }
         updateLobby(null);
 
@@ -418,9 +493,24 @@
         });
 
         socket.on('update_lobby', (data) => {
+            console.log('UPDATE LOBBY', data);
             updateLobby(data.lobby);
             if (lobby.numbers) refreshNumbers();
             location.hash = '#'+lobby.lobby_id;
+        });
+
+        $('.copyLink').on('click', () => {
+            navigator.clipboard.writeText(location.href);
+        });
+        $('#toggleSolutions').on('click', function () {
+            showSolutions = !showSolutions;
+            if (showSolutions) {
+                $('#previousSolutions').show();
+                $(this).text("Hide previous numbers' solutions");
+            } else {
+                $('#previousSolutions').hide();
+                $(this).text("Show previous numbers' solutions");
+            }
         });
         
     </script>
