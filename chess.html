@@ -5,14 +5,10 @@
         <title>Advance Chess Academy</title>
         <link rel="icon" href="assets/sniper-icon.png">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta content="Sniper Bot" property="og:title">
-        <meta content="A sleek, revolutionary new multipurpose Discord bot featuring various unique utility commands. Currently serving 61 servers." property="og:description">
-        <meta content="https://kamiak.org/sniperbot" property="og:url">
-        <meta content="https://kamiak.org/assets/sniper-icon.png" property="og:image">
-        <meta content="#bb0a1e" data-react-helmet="true" name="theme-color">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>
             :root {
                 --base00: #282c34;
@@ -108,11 +104,12 @@
                 border: 1.5px solid transparent;
                 cursor: pointer;
                 transform: scale(1);
-                transition: border .5s ease, transform .5s ease;
+                transition: border .5s ease, transform .5s ease, box-shadow .5s ;
             }
             @media (hover: hover) and (pointer: fine) {
                 .command:hover {
                     transform: scale(1.1);
+                    box-shadow: 0 1px 32px rgb(0,0,0,.03);
                 }
                 .command:hover .command-name:after {
                     color: var(--base05);
@@ -244,6 +241,28 @@
                 margin-right: 4px;
                 justify-content: center;
             }
+            .switch-button {
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: .5em .5em;
+                font-size: 16px;
+                display: flex;
+            }
+            .switch-button:hover, .switch-button.selected {
+                background: var(--pre-bg);
+            }
+            .switch-button.selected {
+                color: var(--link-color);
+            }
+            .switch-button:first-child {
+                border-top-left-radius: 8px;
+                border-bottom-left-radius: 8px;
+            }
+            .switch-button:last-child {
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
         </style>
     </head>
     <body class="col align-start">
@@ -264,7 +283,26 @@
             <p class="fade-in delay-1">You have reached the official webpage for the chess team of <a target='_blank' href='https://advance-academy.com/'>Advance Academy</a> of Harbour Pointe, Mukilteo.</p>
             <p class="fade-in delay-2">This page uses the <a target='_blank' href='https://www.chess.com/news/view/published-data-api'>Chess.com API</a>. The ratings are real-time, and you can update them by reloading the page.</p>
            <div id="commands" style="height:16px;"></div>
-            <h2 class="fade-in delay-3">The boys</h2>
+            <div class="row justify-between fade-in delay-3">
+                <h2>The boys</h2>
+                <div class='row'>
+                    <button class='text-gray switch-button selected'>
+                        <span class="material-icons">
+                            bar_chart
+                        </span>
+                    </button>
+                    <button class='text-gray switch-button'>
+                        <span class="material-icons">
+                            sort_by_alpha
+                        </span>
+                    </button>
+                    <button class='text-gray switch-button'>
+                        <span class="material-icons">
+                            shuffle
+                        </span>
+                    </button>
+                </div>
+            </div>
             <div class="commands col align-start fade-in delay-4">
             </div>
         </div>
@@ -276,70 +314,53 @@
                 return $_;
             });
             makeToggleable($('.command'));
-            const getChessCom = (username, callback) => {
-                let data = {};
-                $.get({
-                    url: `https://api.chess.com/pub/player/${username}`,
-                    success: (_) => {
-                        data.player = _;
-                        if (data.stats) callback(data);
-                    },
-                });
-                $.get({
-                    url: `https://api.chess.com/pub/player/${username}/stats`,
-                    success: (_) => {
-                        data.stats = _;
-                        if (data.player) callback(data);
-                    },
-                });
-            }
+            const getChessCom = async (username, callback) => ({
+                player: await $.get(`https://api.chess.com/pub/player/${username}`),
+                stats: await $.get(`https://api.chess.com/pub/player/${username}/stats`),
+            });
             const getLichess = (username, callback) => $.get({
                 url: `https://lichess.org/api/user/${username}`,
                 success: callback,
             });
-            const addPerson = (data) => {
-                if (!data.username) return;
-                let $el = $(`
+            const addPerson = (person) => {
+                person.$el = $(`
                     <div class="command row" style="gap:16px;">
-                        <img class="photo" src="/chess/photos/${data.image}">
+                        <img class="photo" src="/chess/photos/${person.image}">
                         <div class="col align-start" style="flex:1;">
                             <div class="command-name text-lg text-light">
-                                ${data.nickname}
+                                ${person.nickname}
                             </div>
-                            <div class="text-sm text-gray">${data.name}</div>
+                            <div class="text-sm text-gray">${person.name}</div>
                             <div class="col align-start">
+                                <div class="text-sm text-light">Loading data...</div>
                             </div>
                         </div>
                     </div>
                 `);
-                $el.on('auxclick', (e) => {
-                    window.open(data.chessData.player.url, '_blank').focus();
-                });
-                $('.commands').append(makeToggleable($el));
-                getChessCom(data.username, (chessData) => {
-                    console.log(chessData);
-                    data.chessData = chessData;
-                    let $_ = $(`
-                        <div class="col align-start">
-                            <div class="text-sm text-light"></div>
-                            <div class="text-sm text-gray"></div>
-                        </div>
-                    `);
-                    $_.children()[0].innerHTML = `Username: <code>${chessData.player.url.split('/').pop()}</code> <span class="text-dark">(right-click to open)</span>`;
-                    if (!chessData.stats.chess_rapid.best) chessData.stats.chess_rapid.best = chessData.stats.chess_rapid.last;
-                    $_.children()[1].innerHTML = `
-                        <span class="emoji-bullet">♟️</span> Current rating: <code>${chessData.stats.chess_rapid.last.rating}</code><br>
-                        <span class="emoji-bullet">♟️</span> Best rating: <code>${chessData.stats.chess_rapid.best.rating}</code>`;
-                    if (chessData.stats.chess_bullet) {
-                        $_.append($('<div class="text-sm text-gray">'));
-                        if (!chessData.stats.chess_bullet.best) chessData.stats.chess_bullet.best = chessData.stats.chess_bullet.last;
-                        $_.children()[2].innerHTML = `
-                            <span class="emoji-bullet">⚡️</span> Current bullet rating: <code>${chessData.stats.chess_bullet.last.rating}</code><br>
-                            <span class="emoji-bullet">⚡️</span> Best bullet rating: <code>${chessData.stats.chess_bullet.best.rating}</code>`;
-                    }
-                    // $el.append($_);
-                    $($el.children()[$el.children().length-1]).append($_);
-                })
+                $('.commands').append(makeToggleable(person.$el));
+            }
+            const addPersonData = async (person) => {
+                person.chessData = await getChessCom(person.username);
+                const chessData = person.chessData, $el = person.$el;
+                console.log(chessData);
+                $el.on('auxclick', () => window.open(person.chessData.player.url, '_blank').focus());
+                let boxBody = $el.children()[$el.children().length-1];
+                let $_ = $(boxBody.children[boxBody.children.length-1]);
+                $_.html('<div class="text-sm text-light"></div> <div class="text-sm text-gray"></div>');
+                $_.children()[0].innerHTML = `Username: <code>${chessData.player.url.split('/').pop()}</code> <span class="text-dark">(right-click to open)</span>`;
+                if (!chessData.stats.chess_rapid.best) chessData.stats.chess_rapid.best = chessData.stats.chess_rapid.last;
+                $_.children()[1].innerHTML = `
+                    <span class="emoji-bullet">♟️</span> Current rating: <code>${chessData.stats.chess_rapid.last.rating}</code><br>
+                    <span class="emoji-bullet">♟️</span> Best rating: <code>${chessData.stats.chess_rapid.best.rating}</code>`;
+                if (chessData.stats.chess_bullet) {
+                    $_.append($('<div class="text-sm text-gray">'));
+                    if (!chessData.stats.chess_bullet.best) chessData.stats.chess_bullet.best = chessData.stats.chess_bullet.last;
+                    $_.children()[2].innerHTML = `
+                        <span class="emoji-bullet">⚡️</span> Current bullet rating: <code>${chessData.stats.chess_bullet.last.rating}</code><br>
+                        <span class="emoji-bullet">⚡️</span> Best bullet rating: <code>${chessData.stats.chess_bullet.best.rating}</code>`;
+                }
+                // $el.append($_);
+                $($el.children()[$el.children().length-1]).append($_);
                 // getLichess(data.lichessUsername, (lichessData) => {
                     // console.log(lichessData);
                     // let $_ = $(`
@@ -355,16 +376,22 @@
             }
             let people = [
                 {
-                    name: 'Eric Bae',
-                    nickname: 'Eric',
-                    username: 'archnemesis7',
-                    image: 'IMG_0843.jpg',
-                },
-                {
                     name: 'Brandon Yoon',
                     nickname: 'Brando',
                     username: 'FatesCollide',
                     image: 'IMG_1234.jpg',
+                },
+                {
+                    name: 'Joseph Jackson',
+                    nickname: 'Joseph',
+                    username: 'kmtrash',
+                    image: 'IMG_3340.jpg',
+                },
+                {
+                    name: 'Eric Bae',
+                    nickname: 'Eric',
+                    username: 'archnemesis7',
+                    image: 'IMG_0843.jpg',
                 },
                 {
                     name: 'Richard Durbin',
@@ -379,10 +406,10 @@
                     image: 'IMG_6765.jpg',
                 },
                 {
-                    name: 'Joseph Jackson',
-                    nickname: 'Joseph',
-                    username: 'kmtrash',
-                    image: 'IMG_3340.jpg',
+                    name: 'Andrew Lee',
+                    nickname: 'Andrew',
+                    username: 'Lemoharu',
+                    image: 'IMG_6763.jpg',
                 },
                 {
                     name: 'Austin Park',
@@ -390,26 +417,47 @@
                     username: 'indenterr',
                     image: 'IMG_3314.jpg',
                 },
-                {
-                    name: 'Andrew Lee',
-                    nickname: 'Andrew',
-                    username: 'Lemoharu',
-                    image: 'IMG_6763.jpg',
-                },
-                {
-                    name: 'William Durbin',
-                    nickname: 'Willy',
-                    username: '',
-                    image: 'IMG_3349.jpg',
-                },
-                {
-                    name: 'Derek Zhu',
-                    nickname: 'Derek',
-                    username: '',
-                    image: 'IMG_3334.jpg',
-                },
+                // {
+                //     name: 'William Durbin',
+                //     nickname: 'Willy',
+                //     username: '',
+                //     image: 'IMG_3349.jpg',
+                // },
+                // {
+                //     name: 'Derek Zhu',
+                //     nickname: 'Derek',
+                //     username: '',
+                //     image: 'IMG_3334.jpg',
+                // },
             ];
-            for (const [i, person] of people.entries()) setTimeout(() => addPerson(person), 50*i);
+            for (const person of people) addPerson(person);
+            (async () => {
+                for (const person of people) await addPersonData(person);
+            })();
+
+            // Sorting functionality
+            $('.switch-button').on('click', function() {
+                $('.switch-button').removeClass('selected');
+                $(this).addClass('selected');
+                sortMode = $(this).text().trim();
+                sort(sortMode);
+            });
+            const getRating = (data) => data.chessData.stats.chess_rapid.last.rating;
+            const getName = (data) => data.nickname.toLowerCase();
+            const sortMethods = {
+                bar_chart: () => people.sort((a, b) => getRating(b) - getRating(a)),
+                sort_by_alpha: () => people.sort((a, b) => getName(a).localeCompare(getName(b))),
+                shuffle: () => {
+                    for (let i = people.length-1; i > 0; i--) {
+                        let j = Math.random()*(i+1)|0;
+                        [people[i], people[j]] = [people[j], people[i]];
+                    }
+                }
+            };
+            const sort = (sortMode) => {
+                sortMethods[sortMode]();
+                for (const [i, person] of people.entries()) person.$el.css('order', i);
+            }
         </script>
     </body>
 </html>
