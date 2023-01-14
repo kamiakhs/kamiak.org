@@ -409,7 +409,7 @@
                     image: 'IMG_3334.jpg',
                 },
             ];
-            for (let i in people) setTimeout(() => addPerson(people[i]), 50*i);
+            for (const [i, person] of people.entries()) setTimeout(() => addPerson(person), 50*i);
         </script>
     </body>
 </html>
