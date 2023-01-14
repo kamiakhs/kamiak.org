@@ -108,7 +108,7 @@
                 border: 1.5px solid transparent;
                 cursor: pointer;
                 transform: scale(1);
-                transition: .5s ease;
+                transition: border .5s ease, transform .5s ease;
             }
             @media (hover: hover) and (pointer: fine) {
                 .command:hover {
@@ -119,23 +119,23 @@
                     text-align: right;
                     float: right;
                     padding-top: 4px;
-                    animation: pulsate 2s ease-in-out;
+                    animation: content-switch 4s, pulsate 2s ease-in-out;
                     animation-iteration-count: infinite;
                 }
                 .command:not(.selected):hover .command-name:after {
-                    content: "Click to expand!";
+                    content: "<< Click to expand >>";
                 }
                 .command.selected:hover .command-name:after {
-                    content: "Click to collapse!";
+                    content: ">> Click to collapse <<";
                 }
             }
             .command.selected {
                 border: 1.5px solid var(--base03);
             }
-            .command:not(.selected) > :last-child {
+            .command:not(.selected) > :last-child > :last-child {
                 display: none;
             }
-            .command > :last-child {
+            .command > :last-child > :last-child {
                 border-top: 1.5px solid var(--base01);
                 width: 100%;
                 margin-top: 12px;
@@ -155,6 +155,10 @@
             }
             .text-gray {
                 color: var(--base05);
+            }
+            .text-dark {
+                color: var(--base05);
+                opacity: .3;
             }
             strong {
                 font-weight: 500;
@@ -220,6 +224,26 @@
             .delay-7 { animation-delay: .7s; }
             .delay-8 { animation-delay: .8s; }
             .delay-9 { animation-delay: .9s; }
+            .photo {
+                /* height: 40px; */
+                /* width: 30px; */
+                height: 44px;
+                aspect-ratio: 1;
+                border-radius: 2px;
+            }
+            .command.selected > .photo {
+                height: 200px;
+                aspect-ratio: 3 / 4;
+            }
+            .command.selected {
+                padding: 16px;
+            }
+            .emoji-bullet {
+                display: inline-flex;
+                width: 1em;
+                margin-right: 4px;
+                justify-content: center;
+            }
         </style>
     </head>
     <body class="col align-start">
@@ -229,16 +253,16 @@
             </symbol>
         </svg>
         <div class="container">
-            <h1>
-                <div class="row justify-between fade-in">
-                    <span><span style='text-decoration:strikethrough;'></span> Chess Academy</span>
-                    <a href="https://github.com/jwseph/sniper-bot" rel="noreferrer">
+            <h1 class='fade-in'>
+                <!-- <div class="row justify-between fade-in"> -->
+                    <span><span style='text-decoration:line-through;'>Advanced</span><br>Chess Academy</span>
+                    <!-- <a href="https://github.com/jwseph/sniper-bot" rel="noreferrer">
                         <svg class="link-icon" style="margin-right:.25rem;"><use xlink:href="#github"></use></svg>
-                    </a>
-                </div>
+                    </a> -->
+                <!-- </div> -->
             </h1>
-            <p class="fade-in delay-1">You have reached the official chess webpage for the Advance Academy of Harbour Pointe, Mukilteo</p>
-            <p class="fade-in delay-2">This page uses the Chess.com API.</p>
+            <p class="fade-in delay-1">You have reached the official webpage for the chess team of <a target='_blank' href='https://advance-academy.com/'>Advance Academy</a> of Harbour Pointe, Mukilteo.</p>
+            <p class="fade-in delay-2">This page uses the <a target='_blank' href='https://www.chess.com/news/view/published-data-api'>Chess.com API</a>.</p>
             <!-- <p class="row justify-between wrap fade-in delay-2" style="gap:1em;">
                 <span>Currently serving <strong>61 servers.</strong></span>
                 <a href="https://discord.com/oauth2/authorize?client_id=899339547568132196&permissions=117768&scope=bot">
@@ -246,7 +270,7 @@
                 </a>
             </p> -->
            <div id="commands" style="height:16px;"></div>
-            <h2 class="fade-in delay-3">People</h2>
+            <h2 class="fade-in delay-3">The boys</h2>
             <div class="commands col align-start fade-in delay-4">
             </div>
         </div>
@@ -280,30 +304,47 @@
                 success: callback,
             });
             const addPerson = (data) => {
+                if (!data.username) return;
                 let $el = $(`
-                    <div class="command col align-start">
-                        <div class="command-name text-lg text-light">
-                            ${data.nickname}
-                        </div>
-                        <div class="text-sm text-gray">${data.name}</div>
-                        <div class="col align-start">
+                    <div class="command row" style="gap:16px;">
+                        <img class="photo" src="/chess/photos/${data.image}">
+                        <div class="col align-start" style="flex:1;">
+                            <div class="command-name text-lg text-light">
+                                ${data.nickname}
+                            </div>
+                            <div class="text-sm text-gray">${data.name}</div>
+                            <div class="col align-start">
+                            </div>
                         </div>
                     </div>
-                `)
+                `);
+                $el.on('auxclick', (e) => {
+                    window.open(data.chessData.player.url, '_blank').focus();
+                });
                 $('.commands').append(makeToggleable($el));
                 getChessCom(data.username, (chessData) => {
                     console.log(chessData);
+                    data.chessData = chessData;
                     let $_ = $(`
-                        <div>
+                        <div class="col align-start">
                             <div class="text-sm text-light"></div>
-                            <div class="text-sm text-gray"></div>
                             <div class="text-sm text-gray"></div>
                         </div>
                     `);
-                    $_.children()[0].innerHTML = `Username: <code>${chessData.player.url.split('/').pop()}</code>`;
-                    $_.children()[1].innerHTML = `Current rating: <code>${chessData.stats.chess_rapid.last.rating}</code>`;
-                    $_.children()[2].innerHTML = `Best rating: <code>${chessData.stats.chess_rapid.best.rating}</code>`;
-                    $el.append($_);
+                    $_.children()[0].innerHTML = `Username: <code>${chessData.player.url.split('/').pop()}</code> <span class="text-dark">(right-click to open)</span>`;
+                    if (!chessData.stats.chess_rapid.best) chessData.stats.chess_rapid.best = chessData.stats.chess_rapid.last;
+                    $_.children()[1].innerHTML = `
+                        <span class="emoji-bullet">♟️</span> Current rating: <code>${chessData.stats.chess_rapid.last.rating}</code><br>
+                        <span class="emoji-bullet">♟️</span> Best rating: <code>${chessData.stats.chess_rapid.best.rating}</code>`;
+                    if (chessData.stats.chess_bullet) {
+                        $_.append($('<div class="text-sm text-gray">'));
+                        if (!chessData.stats.chess_bullet.best) chessData.stats.chess_bullet.best = chessData.stats.chess_bullet.last;
+                        $_.children()[2].innerHTML = `
+                            <span class="emoji-bullet">⚡️</span> Current bullet rating: <code>${chessData.stats.chess_bullet.last.rating}</code><br>
+                            <span class="emoji-bullet">⚡️</span> Best bullet rating: <code>${chessData.stats.chess_bullet.best.rating}</code>`;
+                    }
+                    // $el.append($_);
+                    $($el.children()[$el.children().length-1]).append($_);
                 })
                 // getLichess(data.lichessUsername, (lichessData) => {
                     // console.log(lichessData);
@@ -320,34 +361,58 @@
             }
             let people = [
                 {
+                    name: 'Eric Bae',
+                    nickname: 'Eric',
+                    username: 'archnemesis7',
+                    image: 'IMG_0843.jpg',
+                },
+                {
                     name: 'Brandon Yoon',
                     nickname: 'Brando',
                     username: 'FatesCollide',
+                    image: 'IMG_1234.jpg',
                 },
                 {
                     name: 'Richard Durbin',
                     nickname: 'Richy',
                     username: 'T3ster00',
-                },
-                {
-                    name: 'Austin Park',
-                    nickname: 'Austin',
-                    username: 'indenterr',
-                },
-                {
-                    name: 'Joseph Jackson',
-                    nickname: 'Joseph',
-                    username: 'kmtrash',
-                },
-                {
-                    name: 'Andrew Lee',
-                    nickname: 'Andrew',
-                    username: 'Lemoharu',
+                    image: 'IMG_6761.jpg',
                 },
                 {
                     name: 'Dylan Kim',
                     nickname: 'Dylan',
                     username: 'Chuckyduckyperson',
+                    image: 'IMG_6765.jpg',
+                },
+                {
+                    name: 'Joseph Jackson',
+                    nickname: 'Joseph',
+                    username: 'kmtrash',
+                    image: 'IMG_3340.jpg',
+                },
+                {
+                    name: 'Austin Park',
+                    nickname: 'Austin',
+                    username: 'indenterr',
+                    image: 'IMG_3314.jpg',
+                },
+                {
+                    name: 'Andrew Lee',
+                    nickname: 'Andrew',
+                    username: 'Lemoharu',
+                    image: 'IMG_6763.jpg',
+                },
+                {
+                    name: 'William Durbin',
+                    nickname: 'Willy',
+                    username: '',
+                    image: 'IMG_3349.jpg',
+                },
+                {
+                    name: 'Derek Zhu',
+                    nickname: 'Derek',
+                    username: '',
+                    image: 'IMG_3334.jpg',
                 },
             ];
             for (const person of people) addPerson(person);
