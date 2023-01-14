@@ -255,20 +255,14 @@
         <div class="container">
             <h1 class='fade-in'>
                 <!-- <div class="row justify-between fade-in"> -->
-                    <span><span style='text-decoration:line-through;'>Advanced</span><br>Chess Academy</span>
+                    <span><span style='text-decoration:line-through;'>Advance</span><br>Chess Academy</span>
                     <!-- <a href="https://github.com/jwseph/sniper-bot" rel="noreferrer">
                         <svg class="link-icon" style="margin-right:.25rem;"><use xlink:href="#github"></use></svg>
                     </a> -->
                 <!-- </div> -->
             </h1>
             <p class="fade-in delay-1">You have reached the official webpage for the chess team of <a target='_blank' href='https://advance-academy.com/'>Advance Academy</a> of Harbour Pointe, Mukilteo.</p>
-            <p class="fade-in delay-2">This page uses the <a target='_blank' href='https://www.chess.com/news/view/published-data-api'>Chess.com API</a>.</p>
-            <!-- <p class="row justify-between wrap fade-in delay-2" style="gap:1em;">
-                <span>Currently serving <strong>61 servers.</strong></span>
-                <a href="https://discord.com/oauth2/authorize?client_id=899339547568132196&permissions=117768&scope=bot">
-                    -> Invite Sniper Bot to your server!
-                </a>
-            </p> -->
+            <p class="fade-in delay-2">This page uses the <a target='_blank' href='https://www.chess.com/news/view/published-data-api'>Chess.com API</a>. The ratings are real-time, and you can update them by reloading the page.</p>
            <div id="commands" style="height:16px;"></div>
             <h2 class="fade-in delay-3">The boys</h2>
             <div class="commands col align-start fade-in delay-4">
@@ -415,7 +409,7 @@
                     image: 'IMG_3334.jpg',
                 },
             ];
-            for (const person of people) addPerson(person);
+            for (let i in people) setTimeout(() => addPerson(people[i]), 50*i);
         </script>
     </body>
 </html>
