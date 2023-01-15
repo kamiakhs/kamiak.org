@@ -1,7 +1,7 @@
 # Home
 - [Battleship](/battleship)
 - [Kamiak Chat (BETA)](/chat)
-- [Sniper Bot (NEW!)](/sniperbot)
+- [Sniper Bot](/sniperbot)
 - [Online Books](https://books.kamiak.org/)
 - [Homework Tips](/homework-tips)
 - [クイズレット](/quizlet)
