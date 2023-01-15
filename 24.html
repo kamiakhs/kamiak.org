@@ -63,9 +63,6 @@
             height: 100%;
         }
         .glow {
-            color: #0063cc;
-            --glow1: rgba(0 0 204 / 40%);
-            --glow2: rgba(0 0 204 / 15%);
             box-shadow: 0 0 10px var(--glow1), inset 0 0 10px var(--glow1);
             text-shadow: 0 0 10px var(--glow1);
             border: 3px solid currentColor;
@@ -74,30 +71,30 @@
             color: white;
             background: var(--glow1);
         }
-        .blue {
+        .blue, .glow {
             color: #0063cc;
             --glow1: rgba(0 0 204 / 40%);
-            --glow2: rgba(0 0 204 / 15%);
+            --glow2: rgba(0 0 204 / 20%);
         }
         .magenta {
             color: #cc007a;
             --glow1: rgba(180 0 204 / 40%);
-            --glow2: rgba(180 0 204 / 15%);
+            --glow2: rgba(180 0 204 / 20%);
         }
         .violet {
             color: #5c00cc;
-            --glow1: rgba(0 0 204 / 40%);
-            --glow2: rgba(0 0 204 / 15%);
+            --glow1: rgba(31 0 204 / 0.4);
+            --glow2: rgba(31 0 204 / 20%);
         }
         .green {
             color: #58cc00;
             --glow1: rgba(0 204 0 / 40%);
-            --glow2: rgba(0 204 0 / 15%);
+            --glow2: rgba(0 204 0 / 20%);
         }
         .orange {
             color: #cc4100;
             --glow1: rgba(204 0 0 / 40%);
-            --glow2: rgba(204 0 0 / 15%);
+            --glow2: rgba(204 0 0 / 20%);
         }
         #joinLobbyInput {
             width: 100%;
@@ -189,13 +186,15 @@
             background: #5c00cc;
             color: black;
             border-radius: 4px;
-            padding: 2px 6px;
+            padding: .125em .375em;
         }
     </style>
   </head>
   <body>
-    <div id='loadingPage' class='page'>
-      Connecting to server...
+    <div id='loadingPage' class='page col mainCenter crossCenter'>
+      <div class='violet' style='font-size:32px;'>
+        Connecting to server...
+      </div>
     </div>
     <div id='homePage' class='page col mainCenter crossCenter' style='display: none;'>
         <div class='centeredStrip'>
