@@ -388,16 +388,16 @@
                     image: 'IMG_3340.jpg',
                 },
                 {
-                    name: 'Eric Bae',
-                    nickname: 'Eric',
-                    username: 'archnemesis7',
-                    image: 'IMG_0843.jpg',
-                },
-                {
                     name: 'Richard Durbin',
                     nickname: 'Richy',
                     username: 'T3ster00',
                     image: 'IMG_6761.jpg',
+                },
+                {
+                    name: 'Eric Bae',
+                    nickname: 'Eric',
+                    username: 'archnemesis7',
+                    image: 'IMG_0843.jpg',
                 },
                 {
                     name: 'Dylan Kim',
@@ -433,15 +433,17 @@
             for (const person of people) addPerson(person);
             (async () => {
                 for (const person of people) await addPersonData(person);
+                clickSwitch($('.switch-button.selected'));
             })();
 
             // Sorting functionality
-            $('.switch-button').on('click', function() {
+            const clickSwitch = (el) => {
                 $('.switch-button').removeClass('selected');
-                $(this).addClass('selected');
-                sortMode = $(this).text().trim();
+                $(el).addClass('selected');
+                sortMode = $(el).text().trim();
                 sort(sortMode);
-            });
+            }
+            $('.switch-button').on('click', () => clickSwitch(this));
             const getRating = (data) => data.chessData.stats.chess_rapid.last.rating;
             const getName = (data) => data.nickname.toLowerCase();
             const sortMethods = {  // Keys are material icon names
