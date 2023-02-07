@@ -6,7 +6,7 @@
 - Not included yet:
   - DFS by stack (recursion doesn't work for large mazes due to a maximum recursion depth),
   - Prim's algorithm
-- Useful maze picture (Sidewinder is upside down)\
+- Useful maze picture (sidewinder and binary tree need to be rotated 180 degrees)\
   ![Six mazes](https://kamiakhs.github.io/kamiak.org/mazes.png)
 
 ## Binary tree
