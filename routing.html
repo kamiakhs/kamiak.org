@@ -209,7 +209,19 @@
             </div>
           </div>
 
-          <h1 id='directionsHeading' style='display:none;'>Directions</h1>
+          <h1 class='hiddenDirections' style='display:none;'>Directions</h1>
+          <div class='formGroup'>
+            <button class="hiddenDirections mdc-button mdc-button--outlined mdc-button--icon-leading" onclick='navigator.clipboard.writeText(handler.getUrl());'>
+              <span class="mdc-button__ripple"></span>
+              <i class="material-icons-outlined mdc-button__icon" aria-hidden="true">link</i>
+              <span class="mdc-button__label">Copy url</span>
+            </button>
+            <button class="hiddenDirections mdc-button mdc-button--outlined mdc-button--icon-leading" onclick='window.open(handler.getUrl(), "_blank").focus();'>
+              <span class="mdc-button__ripple"></span>
+              <i class="material-icons-outlined mdc-button__icon" aria-hidden="true">launch</i>
+              <span class="mdc-button__label">Open in new tab</span>
+            </button>
+          </div>
 
           <div id='panel' style='width:100%;'></div>
 
