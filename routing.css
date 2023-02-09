@@ -226,8 +226,3 @@ div:not(:hover, :focus-within) > .xButton {
 .gm-style .gm-style-iw-d .view-link {
     margin-top: 4px;
 } */
-
-
-.hiddenDirections {
-  display: none;
-}
