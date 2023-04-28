@@ -9,7 +9,7 @@ Below is a table of Quizlet links. As of now, only Japanese I is fully covered. 
 |Class|AIJ Units|
 |-|-|
 |Japanese 1|1.1 - 1.11|
-|Japanese 2|1.12 - 2.\*, 6.\*|
+|Japanese 2|1.12 - 2.6|
 
 |**Unit**|AIJ 1|AIJ 2|
 |-:|:-|:-|
