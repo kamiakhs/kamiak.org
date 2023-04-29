@@ -4,6 +4,8 @@ IMPORTANT: MAKE SURE TO UPDATE "DATE LAST UPDATED"
 
 -->
 
+# Sniper Bot
+
 ## Privacy Policy
 
 ### Usage of Data
