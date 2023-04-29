@@ -31,7 +31,7 @@ The Bot may store deleted sent messages (which may be seen as sensitive data) te
 A Discord user may request their deleted sent messages to be exempted from caching altogether by contacting the email `joseph1000000007@gmail.com` or the Discord user `joseph#9050`.
 
 ### Removal of Data
-Stored Data cannot be removed. The Bot does not yet store Personal Data, and no Stored Data is attached to any Discord user.
+Stored Data is completely anonymous and cannot be removed. The Bot does not yet store Personal Data, and no Stored Data is attached to any Discord user.
 
 <!---
 
