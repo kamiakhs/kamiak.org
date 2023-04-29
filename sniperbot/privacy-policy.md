@@ -18,10 +18,10 @@ The Bot may store the following information automatically when someone is "doxxe
 No other information outside of the above mentioned one will be stored.
 
 ### Updating Data
-The data may be updated when using specific commands.
-Updating data will require the input of an end user, and data that can be seen as sensitive, such as content of a message, may need to be stored when using certain commands.
+The data may be updated when using the command `pls dox`, synonymous with `plz dox`.
+Updating data will require the input of an end user.
 
-No other actions may update the stored information at any given time.
+No actions other than removal may update the stored information at any given time.
 
 ### Temporarily stored Information
 The Bot may store deleted sent messages (which may be seen as sensitive data) temporarily until a timer completes, or the command `pls snipe` is sent within a Discord Channel. The Bot will drop the cached message regardless of whether said command was executed. Upon execution of said command, the Bot will send the cached message's contents within said Discord Channel.
