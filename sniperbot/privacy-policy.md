@@ -50,6 +50,6 @@ For security reasons will we ask you to provide us with proof of ownership of th
 --->
 
 ### Policy updates
-This Privacy Policy may be updated without prior notice to reflect changes in the information practices mentioned. This Privacy Policy was last updated on `April 28, 2023`
+This Privacy Policy may be updated without prior notice to reflect changes in the information practices mentioned. This Policy was last updated on `April 28, 2023`
 
 
