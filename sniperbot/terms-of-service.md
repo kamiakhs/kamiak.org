@@ -13,7 +13,7 @@ By inviting the Bot and using its features (commands) are you agreeing to the be
 
 You acknowledge that you have the privilege to use the Bot freely on any Discord Server (Server) you share with it, that you can invite it to any Server that you have "Manage Server" rights for and that this privilege might get revoked for you, if you're subject of breaking the terms and/or policy of this Bot, or the [Terms of Service](https://discord.com/terms), [Privacy Policy](https://discord.com/privacy) and/or [Community Guidelines](https://discord.com/guidelines) of [Discord Inc](https://discord.com/).
 
-Through use the Bot may collect specific data as described in its [Policy](https://github.com/kamiakhs/kamiak.org/blob/main/sniperbot/privacy-policy.md).
+Through use the Bot may collect specific data as described in its [Policy](https://kamiak.org/sniperbot/privacy-policy).
 The intended usage of this data is for possible future functionalities of the Bot such as [kakera](https://mudae.fandom.com/wiki/Kakera) values.
 
 ### Intended Age
@@ -30,7 +30,7 @@ He has faith in the end users being truthfull about their information and not mi
 We reserve the right to update these terms at our own discretion, giving you a 1-week<sup>1</sup> (7 days) period to opt out of these terms if you do not agree to the new changes.\
 You may opt out by Removing the Bot from any Server you have the rights for.
 
-1: This 1-week period does not apply to the below Contact information or to the [Privacy Policy](https://github.com/kamiakhs/kamiak.org/blob/main/sniperbot/privacy-policy.md).
+1: This 1-week period does not apply to the below Contact information or to the Privacy Policy.
 
 ### Contact
 People may get in contact through e-mail at [joseph1000000007@gmail.com](mailto:joseph1000000007@gmail.com) or through Discord at `joseph#9050`\
