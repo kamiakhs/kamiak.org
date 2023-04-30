@@ -2,6 +2,7 @@
 - [Battleship](/battleship)
 - [Kamiak Chat (BETA)](/chat)
 - [Sniper Bot](/sniperbot)
+- [Youtube Playlist Player](https://yuu.pages.dev/)
 - [Online Books](https://books.kamiak.org/)
 - [Homework Tips](/homework-tips)
 - [クイズレット](/quizlet)
