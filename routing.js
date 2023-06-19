@@ -170,7 +170,7 @@ class AutocompleteDirectionsHandler {
     .then((result) => {
       console.log(result);
       console.log(result.waypoint_order);
-      directionsHeading.style.display = '';
+      $('.hiddenDirections').css('display', '');
       this.directionsRenderer.setDirections(result);
       let total = this.getTotalData(result);
       console.log(total);

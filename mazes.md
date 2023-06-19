@@ -1,15 +1,24 @@
-# Advanced Topics maze generation pseudocode
+# Advanced Topics mazes pseudocode
 
-## Basic info
+## Maze path algorithms
+
+### Longest path
+```java
+ICell cellA = getFurthestCell(maze[0][0]), cellB = getFurthestCell(cellA);
+```
+
+## Maze generation algorithms
+
+### Basic info
 - If current cell isn't defined, it means the cell at the current row and column
 - Some code conciseness was sacrificed for simplicity's sake
 - Not included yet:
   - DFS by stack (recursion doesn't work for large mazes due to a maximum recursion depth),
   - Prim's algorithm
-- Useful maze picture (sidewinder and binary tree need to be rotated 180 degrees)\
+- Useful maze picture (sidewinder and binary tree are rotated 180 degrees)\
   ![Six mazes](https://kamiakhs.github.io/kamiak.org/mazes.png)
 
-## Binary tree
+### Binary tree
 ```
 for each row (except last) and each column (except last)
 	link current cell with either east cell or south cell
@@ -18,7 +27,7 @@ link all cells in last column
 link all cells in last row
 ```
 
-## Sidewinder
+### Sidewinder
 ```
 for each row (except last)
 	// randomly group cells by choosing whether or not to enable all walls of the row (except first and last wall)
@@ -41,7 +50,7 @@ endfor
 link all cells in last row
 ```
 
-## Aldous-Broder
+### Aldous-Broder
 ```
 set current cell to random cell
 visit current cell  // we will link to unvisited cells, but there is no cell
@@ -57,7 +66,7 @@ while there are cells left
 endwhile
 ```
 
-## DFS by recursion
+### DFS by recursion
 ```
 // start on 0,0 (or random cell; I used 0,0)
 call dfs with cell at 0,0
