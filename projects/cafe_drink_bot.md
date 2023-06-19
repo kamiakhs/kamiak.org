@@ -15,7 +15,7 @@ What size drink can I get for you?
 2. Medium
 3. Large
 > 0
-I'm sorry, I didn't understand your selection. Please enter the corresponding letter for your response.
+I'm sorry, I didn't understand your selection. Please enter the corresponding number for your response.
 > 1
 What type of drink would you like?
 1. Brewed coffee
