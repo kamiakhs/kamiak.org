@@ -23,7 +23,7 @@
         --heading-padding: 10px;
         --message-padding: 8px;
         --avatar-padding: 11px;
-        --message-input-height: 44px;
+        --message-input-height: 45px;
       }
       ::selection { background: #5533ff98; color: #38249e; }
       @media not screen and (max-width: 600px) {
@@ -1004,18 +1004,11 @@
 
       const setupSocket = () => {
 
-        window.socket = socket = io(localStorage.flyBlocked ? 'wss://io.kamiak.org' : 'wss://kamiak-io.fly.dev', {
+        window.socket = socket = io('https://io.kamiak.org', {
           path: '/chat/socket.io',
           auth: {token: window.user.accessToken},
         });
         
-        let hasConnected = false;
-        socket.io.on('error', () => {
-          if (hasConnected) return;
-          socket.io.uri = 'wss://kamiak-io.fly.dev';
-          localStorage.flyBlocked = true;
-        });
-
         window.onIdTokenChanged(user => socket.auth.token = user.accessToken);
         $(window).on('visibilitychange focus', () => {
           if (socket.connected) return;
@@ -1057,9 +1050,10 @@
             log(t$broadcast({message: 'joined', user: users[sid]}));
             disconnected = false;
           } else {
+            log(t$broadcast({message: '[Chat history hidden]'}));
             log(t$broadcast({message: 'joined', user: users[sid]}));
             log(t$broadcast({message: 'Welcome to the chat!\nType /help for a list of commands'}));
-            log(t$broadcast({message: getDaysLeftOfSchool()}));
+            // log(t$broadcast({message: getDaysLeftOfSchool()}));
           }
           updateUserList();
         });
