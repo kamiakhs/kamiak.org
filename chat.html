@@ -490,7 +490,7 @@
       onAuthStateChanged(auth, user => {
         window.user = user;
         if (user) {
-          if (!user.email.endsWith('@mukilteo.wednet.edu')) window.signOut();
+          // if (!user.email.endsWith('@mukilteo.wednet.edu')) window.signOut();
           console.log('Signed into Google', new Date()-window.t1);
           $('.avatar').attr('src', user.photoURL).addClass(user.uid);
           main();
