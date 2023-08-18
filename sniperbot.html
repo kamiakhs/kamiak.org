@@ -14,12 +14,11 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
         <style>
-            :root {
+            /* :root {
                 --base00: #282c34;
                 --base01: #353b45;
                 --base02: #3e4451;
                 --base03: #545862;
-                /* --base04: #565c64; */
                 --base04: #838994;
                 --base05: #abb2bf;
                 --base06: #b6bdca;
@@ -39,6 +38,18 @@
                 --code-snippet-border: rgba(255,255,255,.1);
                 --blockquote-border: rgba(255,255,255,.1);
                 color-scheme: dark;
+            } */
+            :root {
+                --base01: #404040;
+                --base03: #525252;
+                --base04: #737373;
+                --base05: #a3a3a3;
+                --base06: #f5f5f4;
+                --body-bg: #171717;
+                --body-color: var(--base05);
+                --heading-color: #dee2e6;
+                --pre-bg: #262626;
+                color-scheme: dark;
             }
             * {
                 box-sizing: border-box;
@@ -48,11 +59,14 @@
                 background: var(--body-bg);
                 color: var(--body-color);
                 margin: 0;
-                padding: 48px 24px;
+                padding: 56px 24px;
             }
             .container {
                 max-width: 672px;
-                margin: 0 auto;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 64px;
             }
             .row, .col, .center {
                 display: flex;
@@ -70,49 +84,70 @@
             .justify-between {
                 justify-content: space-between;
             }
+            .justify-around {
+                justify-content: space-around;
+            }
             .align-start {
                 align-items: start;
             }
             h1, h2 {
-                letter-spacing: -.04em;
                 color: var(--heading-color);
             }
             h1 {
-                font-weight: 800;
-                font-size: 72px;
-                margin-block-start: .33em;
-                margin-block-end: .33em;
+                font-size: 2.25rem; /* 36px */
+                line-height: 2.5rem; /* 40px */
+
+                letter-spacing: -.04em;
+                font-weight: 700;
+                margin: 0;
             }
             h2 {
-                font-weight: 700;
-                font-size: 40px;
-                margin-block-start: .5em;
-                margin-block-end: .5em;
+                letter-spacing: -.02em;
+                font-weight: 500;
+                font-size: 24px;
+                margin: 0;
+            }
+            p {
+                margin: 0;
+            }
+            .github-icon {
+                height: 5rem;
+                widtH: 2rem
+            }
+            .commands code:before {
+                content: "<";
+            }
+            .commands code:after {
+                content: ">";
             }
             .commands code {
-                background: var(--body-bg);
+                font-family: monospace;
+                /* background: var(--body-bg); */
                 color: var(--base04);
-                padding: 0 .2em;
-                border-radius: .25em;
+                padding: 0 1px;
+                /* border-radius: .25em; */
             }
             .commands {
                 width: 100%;
                 user-select: none;
-                gap: 12px;
+                gap: 24px;
             }
            .command {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
                 width: 100%;
-                padding: 12px 16px;
+                padding: 24px 32px;
                 background: var(--pre-bg);
-                border-radius: .375rem;
-                border: 1.5px solid transparent;
+                border-radius: .5rem;
+                /* border: 1.5px solid transparent; */
                 cursor: pointer;
                 transform: scale(1);
                 transition: .5s ease;
             }
             @media (hover: hover) and (pointer: fine) {
-                .command:hover {
-                    transform: scale(1.1);
+                .command:hover, .command.selected {
+                    width: 110%;
                 }
                 .command:hover .command-name:after {
                     color: var(--base05);
@@ -130,17 +165,20 @@
                 }
             }
             .command.selected {
-                border: 1.5px solid var(--base03);
+                /* border: 1.5px solid var(--base03); */
             }
             .command:not(.selected) > :last-child {
                 display: none;
             }
             .command > :last-child {
-                border-top: 1.5px solid var(--base01);
+                /* border-top: 1.5px solid var(--base01); */
                 width: 100%;
-                margin-top: 12px;
-                padding-top: 12px;
-                gap: 8px;
+                /* margin-top: 16px; */
+                padding-top: 8px;
+                gap: 16px;
+            }
+            .command > :last-child > div, .command > :last-child > div > div {
+                line-height: 1.25rem;
             }
            .text-lg {
                 font-size: 1.125rem;
@@ -151,7 +189,7 @@
                 line-height: 1.25rem;
             }
             .text-light {
-                color: var(--link-color);
+                color: var(--base06);
             }
             .text-gray {
                 color: var(--base05);
@@ -174,28 +212,16 @@
                 width: 100%;
             }
             a {
-                color: var(--link-color);
+                text-decoration: none;
+            }
+            a.link {
+                color: #f87171;
                 line-height: inherit;
-                font-weight: 500;
-                text-decoration: underline;
-                text-underline-offset: .25rem;
-                text-decoration-color: var(--link-border-color);
-                transition: .2s ease-in-out;
+                background: #f871712f;
+                border-radius: 2px;
             }
-            a:hover {
-                color: var(--link-color-hover);
-                text-decoration-color: var(--link-border-color-hover);
-            }
-            .link-icon {
-                width: 1em;
-                height: 1em;
-                vertical-align: -.125em;
-                fill: currentColor;
-                color: var(--secondary-color);
-                transition: .2s ease-in-out;
-            }
-            .link-icon:hover {
-                color: var(--link-color);
+            a.link:hover {
+                background: #f8717155;
             }
             @keyframes fadein {
                 0% {
@@ -222,150 +248,141 @@
             .delay-9 { animation-delay: .9s; }
         </style>
     </head>
-    <body class="col align-start">
+    <body class="col align-center jusitfy-center">
         <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
             <symbol id="github" viewBox="0 0 16 16">
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
             </symbol>
         </svg>
         <div class="container">
-            <h1>
-                <div class="row justify-between fade-in">
-                    <span>Sniper Bot</span>
-                    <a href="https://github.com/jwseph/sniper-bot" rel="noreferrer">
-                        <svg class="link-icon" style="margin-right:.25rem;"><use xlink:href="#github"></use></svg>
+            <div class="col" style="gap:24px;">
+                <a href='https://github.com/jwseph/sniper-bot' class="col fade-in">
+                    <h1>Sniper Bot</h1>
+                </a>
+                <p class="fade-in delay-1">Yet another Discord bot</p>
+                <div class="row justify-around wrap fade-in delay-2" style="gap:8px;">
+                    <span>Sniper Bot is in 85 servers.</span>
+                    <a class="link" href="https://discord.com/oauth2/authorize?client_id=899339547568132196&permissions=117768&scope=bot">
+                        Add Sniper Bot to your server!
                     </a>
                 </div>
-            </h1>
-            <p class="fade-in delay-1">A sleek, revolutionary new multipurpose Discord bot featuring various unique utility commands.</p>
-            <p class="fade-in delay-2">For students, by students.</p>
-            <p class="row justify-between wrap fade-in delay-2" style="gap:1em;">
-                <span>Currently serving <strong>81 servers.</strong></span>
-                <a href="https://discord.com/oauth2/authorize?client_id=899339547568132196&permissions=117768&scope=bot">
-                    -> Invite Sniper Bot to your server!
-                </a>
-            </p>
-           <div id="commands" style="height:16px;"></div>
-            <h2 class="fade-in delay-3">Commands <a class="fragment" href="#commands">#</a></h2>
-            <div class="commands col align-start fade-in delay-4">
-                <div class="command col align-start">
-                    <div class="command-name text-lg text-light">pls dox</div>
-                    <div class="text-sm text-gray">Finds someone's school picture, school, and student id</div>
-                    <div class="col align-start">
-                        <div>
-                            <div class="text-sm text-gray">
-                                pls dox <code>name</code><br>
-                                pls dox <code>student_id</code><br>
-                                pls dox <code>image_url</code><br>
-                                pls dox <code>image_file</code><br>
+            </div>
+            <div class="col" style="gap:16px;">
+                <h2 class="fade-in delay-3">All commands</h2>
+                <div class="commands col align-center fade-in delay-4">
+                    <div class="command col align-start">
+                        <div class="command-name text-lg text-light">pls dox</div>
+                        <div class="text-sm text-gray">Finds someone's school picture, school, and student id</div>
+                        <div class="col align-start">
+                            <div>
+                                <div class="text-sm text-gray">
+                                    pls dox <code>name</code><br>
+                                    pls dox <code>student_id</code><br>
+                                    pls dox <code>image_url</code><br>
+                                    pls dox <code>image_file</code><br>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="text-sm text-light">Details</div>
-                            <div class="text-sm text-gray">
-                                Only supports the Mukilteo School District<br>
-                                Student/teacher IDs may not be available for all schools<br>
-                                An alternative command is pls doxx
+                            <div>
+                                <div class="text-sm text-gray">
+                                    Only supports the Mukilteo School District<br>
+                                    Student/teacher IDs may not be available for all schools<br>
+                                    An alternative command is pls doxx
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="command col align-start">
-                    <div class="command-name text-lg text-light">snipe</div>
-                    <div class="text-sm text-gray">Brings back the most recently deleted message</div>
-                    <div class="col align-start">
-                        <div>
-                            <div class="text-sm text-gray">
-                                snipe<br>
-                                pls snipe
+                    <div class="command col align-start">
+                        <div class="command-name text-lg text-light">snipe</div>
+                        <div class="text-sm text-gray">Brings back the most recently deleted message</div>
+                        <div class="col align-start">
+                            <div>
+                                <div class="text-sm text-gray">
+                                    snipe<br>
+                                    pls snipe
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="text-sm text-light">Details</div>
-                            <div class="text-sm text-gray">
-                                Must be used in the same channel<br>
-                                Can be used multiple times to further bring back deleted messages<br>
-                                Sniper Bot can snipe itself if a moderator deletes its snipe response message
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="command col align-start">
-                    <div class="command-name text-lg text-light">kanye</div>
-                    <div class="text-sm text-gray">Provides a random Kanye West quote</div>
-                    <div class="col align-start">
-                        <div>
-                            <div class="text-sm text-gray">
-                                kanye
-                            </div>
-                        </div>
-                        <div>
-                            <div class="text-sm text-light">Details</div>
-                            <div class="text-sm text-gray">
-                                Uses the kanye.rest api to fetch random tweets from Kanye<br>
-                                Activates when a message containing "kanye" or "west" is sent
+                            <div>
+                                <div class="text-sm text-gray">
+                                    Must be used in the same channel<br>
+                                    Can be used multiple times to further bring back deleted messages<br>
+                                    Sniper Bot can snipe itself if a moderator deletes its snipe response message
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="command col align-start">
-                    <div class="command-name text-lg text-light">waifu</div>
-                    <div class="text-sm text-gray">Gets a random drawing of an anime girl (SFW)</div>
-                    <div class="col align-start">
-                        <div>
-                            <div class="text-sm text-gray">
-                                pls w<br>
-                                pls waifu<br>
-                                pls uniform<br>
-                                pls maid<br>
-                                pls oppai
+                    <div class="command col align-start">
+                        <div class="command-name text-lg text-light">kanye</div>
+                        <div class="text-sm text-gray">Provides a random Kanye West quote</div>
+                        <div class="col align-start">
+                            <div>
+                                <div class="text-sm text-gray">
+                                    kanye
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="text-sm text-light">Details</div>
-                            <div class="text-sm text-gray">
-                                Uses the waifu.im api
+                            <div>
+                                <div class="text-sm text-gray">
+                                    Uses the kanye.rest api to fetch random tweets from Kanye<br>
+                                    Activates when a message containing "kanye" or "west" is sent
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="command col align-start">
-                    <div class="command-name text-lg text-light">pls uwuify</div>
-                    <div class="text-sm text-gray">Uwuifies *wuns away* text to make it bettew</div>
-                    <div class="col align-start">
-                        <div>
-                            <div class="text-sm text-gray">
-                                pls uwu <code>text</code><br>
-                                pls uwuify <code>text</code>
+                    <div class="command col align-start">
+                        <div class="command-name text-lg text-light">waifu</div>
+                        <div class="text-sm text-gray">Gets a random drawing of an anime girl (SFW)</div>
+                        <div class="col align-start">
+                            <div>
+                                <div class="text-sm text-gray">
+                                    pls w<br>
+                                    pls waifu<br>
+                                    pls uniform<br>
+                                    pls maid<br>
+                                    pls oppai
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="text-sm text-light">Details</div>
-                            <div class="text-sm text-gray">
-                                Inspiwed by uwuifier.com<br>
-                                Uses seeding >w< fow wandomnyess s-so that UwU if *boops youw nose* something is uwuified muwtipwe ^w^ times, the wesuwt wiww wemain the same
+                            <div>
+                                <div class="text-sm text-gray">
+                                    Uses the waifu.im api
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="command col align-start">
-                    <div class="command-name text-lg text-light">pls remind</div>
-                    <div class="text-sm text-gray">Reminds you after a specified duration of time</div>
-                    <div class="col align-start">
-                        <div>
-                            <div class="text-sm text-gray">
-                                pls remind <code>seconds</code>s <code>message</code><br>
-                                pls remind <code>minutes</code>m <code>message</code><br>
-                                pls remind <code>hours</code>h <code>message</code><br>
-                                pls remind <code>days</code>d <code>message</code><br>
-                                pls remind <code>weeks</code>w <code>message</code><br>
-                                pls remind <code>years</code>y <code>message</code>
+                    <div class="command col align-start">
+                        <div class="command-name text-lg text-light">pls uwuify</div>
+                        <div class="text-sm text-gray">Uwuifies *wuns away* text to make it bettew</div>
+                        <div class="col align-start">
+                            <div>
+                                <div class="text-sm text-gray">
+                                    pls uwu <code>text</code><br>
+                                    pls uwuify <code>text</code>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray">
+                                    Inspiwed by uwuifier.com<br>
+                                    Uses seeding >w< fow wandomnyess s-so that UwU if *boops youw nose* something is uwuified muwtipwe ^w^ times, the wesuwt wiww wemain the same
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <div class="text-sm text-light">Details</div>
-                            <div class="text-sm text-gray">
-                                Not reliable for longer durations as the reminder timers don't persist across Sniper Bot's lifetimes
+                    </div>
+                    <div class="command col align-start">
+                        <div class="command-name text-lg text-light">pls remind</div>
+                        <div class="text-sm text-gray">Reminds you after a specified duration of time</div>
+                        <div class="col align-start">
+                            <div>
+                                <div class="text-sm text-gray">
+                                    pls remind <code>seconds</code>s <code>message</code><br>
+                                    pls remind <code>minutes</code>m <code>message</code><br>
+                                    pls remind <code>hours</code>h <code>message</code><br>
+                                    pls remind <code>days</code>d <code>message</code><br>
+                                    pls remind <code>weeks</code>w <code>message</code><br>
+                                    pls remind <code>years</code>y <code>message</code>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray">
+                                    Unreliable for long durations because the reminder timers don't persist across Sniper Bot's lifetimes
+                                </div>
                             </div>
                         </div>
                     </div>
