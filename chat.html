@@ -499,23 +499,6 @@
       window.signOut = () => signOut(auth);
       window.onIdTokenChanged = (_) => onIdTokenChanged(auth, _);
     </script>
-    <!-- <script>
-      const upload = (file, callback) => {
-        let data = new FormData();
-        data.append('file', file)
-        $.post({
-          url: 'https://api.tempfiles.download/upload/',
-          dataType: 'JSON',
-          cache: false,
-          processData: false,
-          contentType: false,
-          data: data,
-          success: (data, textStatus, xhr) => {
-            callback(data['url']);
-          }
-        });
-      }
-    </script> -->
     <script>
       let client, locationid, options, upload;
       let onpCloudload = () => {
@@ -775,6 +758,13 @@
         })
         .on('click', displayProfilePopup)
       ;
+      const t$broadcastContent = args => {
+        const el = $('<div class="broadcast">');
+        if (args.content) return el.html(args.content);
+        if (args.user) return el.text(' '+args.message).prepend(t$nickname2(args));
+        if (args.user2) return el.text(args.message+' ').append(t$nickname2({user: args.user2}));
+        return el.text(args.message);
+      }
       const t$broadcast = args => {
         let res = (lastUid != null ? $('<li class="broadcastWrapper" style="margin-top:var(--message-padding);">') : $('<li class="broadcastWrapper">'))
           .append(
@@ -782,9 +772,7 @@
               $('<time class="timestamp2">').text(timeString(args.timestamp))
             )
           )
-          .append(
-            args.user ? $(`<div class="broadcast">`).text(' '+args.message).prepend(t$nickname2(args)) : args.user2 ? $(`<div class="broadcast">`).text(args.message+' ').append(t$nickname2({user: args.user2})) : $(`<div class="broadcast">`).text(args.message)
-          )
+          .append(t$broadcastContent(args))
         ;
         lastUid = null;
         incrementNotificationCounter();
@@ -853,7 +841,27 @@
         else if (message == '/help') {
           // Help
           $messageInput.clear();
-          log(t$broadcast({message: 'Commands:    /help    /rename <nickname>    /ping    /reconnect'}));
+          log(t$broadcast({message: 'Commands:    '+[
+            '/about',
+            '/help',
+            '/reconnect',
+            '/rename <nickname>',
+            '/ping',
+          ].join('    ')}));
+        }
+        else if (message == '/about') {
+          // About (credits)
+          $messageInput.clear();
+          log(t$broadcast({content: [
+            '<a target="_blank" href="https://github.com/kamiakhs/kamiak.org/blob/main/chat.html">Page source</a>',
+            '<a target="_blank" href="https://github.com/jwseph/io/blob/main/chat.py">Server source</a>',
+            'Created by <a target="_blank" href="https://github.com/jwseph">Joseph Jackson</a>',
+            'Design inspired by <a target="_blank" href="https://discord.com/">Discord</a>',
+            'Font: <a target="_blank" href="https://www.typography.com/fonts/whitney/overview">Whitney</a> (Discord\'s old font)',
+            'Colors: <a target="_blank" href="https://tailwindcss.com/docs/customizing-colors">Tailwind CSS</a>',
+            'Authentication: <a target="_blank" href="https://firebase.google.com/">Firebase</a>',
+            'File sharing: <a target="_blank" href="https://www.pcloud.com/">pCloud</a>',
+          ].join('\n')}));
         }
         else if (message == '/ping') {
           // Ping
