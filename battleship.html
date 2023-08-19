@@ -24,11 +24,19 @@
             -ms-user-select: none;
                 user-select: none;
       }
+      html {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
       body {
         font-size: 32px;
         font-family: Outfit, Arial, sans-serif;
         font-feature-settings: "lnum";
         unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        padding-bottom: 48px;
       }
       #title {
         position: relative;
@@ -78,6 +86,9 @@
       }
       button.blocked { cursor: auto; }
       button.forced, button.blocked { cursor: auto; }
+      #rematch-button:disabled {
+        visibility: hidden;
+      }
       .ui-draggable { cursor: move; }
       .ui-draggable-disabled { cursor: auto; }
       .ship, .ship-shadow, .port-ship { border-radius: 0.5em; }
@@ -672,7 +683,7 @@
           </tbody>
         </table>
       </div>
-      <button id="rematch-button" style="display:none">Play again</button>
+      <button id="rematch-button" disabled>Play again</button>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -738,7 +749,7 @@
             gameStatus = false;
             blockAimer = true;
             $('#banner').text("You have disconnected.").addClass('lose');
-            $('#rematch-button').css('display', 'block');
+            $('#rematch-button').prop('disabled', false);
           }
         });
 
@@ -748,7 +759,7 @@
             gameStatus = false;
             blockAimer = true;
             $('#banner').text("Opponent has disconnected. You won!").addClass('win');
-            $('#rematch-button').css('display', 'block');
+            $('#rematch-button').prop('disabled', false);
           }
         })
 
@@ -774,7 +785,7 @@
               .end()
             .end()
             .find('#rematch-button')
-              .css('display', 'none')
+              .prop('disabled', true)
             .end()
           ;
         }
@@ -1133,7 +1144,7 @@
                             gameStatus = false;
                             blockAimer = true;
                             $('#banner').text("You have won the game!").addClass('win');
-                            $('#rematch-button').css('display', 'block');
+                            $('#rematch-button').prop('disabled', false);
                           }
                         }
                         break;
@@ -1201,7 +1212,7 @@
                 if (shipsDestroyed === 5) {
                   gameStatus = false;
                   $('#banner').text("You have lost the game. GET GOOD L").addClass('lose');
-                  $('#rematch-button').css('display', 'block');
+                  $('#rematch-button').prop('disabled', false);
 
                   // Display undiscovered ships
                   var firstCell = $('.battlefield-table.opponent .battlefield-cell[data-y="0"][data-x="0"]');
