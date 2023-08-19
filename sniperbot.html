@@ -44,7 +44,7 @@
                 --base03: #525252;
                 --base04: #737373;
                 --base05: #a3a3a3;
-                --base06: #f5f5f4;
+                --base06: #f5f5f5;
                 --body-bg: #171717;
                 --body-color: var(--base05);
                 --heading-color: #dee2e6;
@@ -60,6 +60,19 @@
                 color: var(--body-color);
                 margin: 0;
                 padding: 56px 24px;
+            }
+            ::-webkit-scrollbar {
+                width: 6px;
+            }
+            ::-webkit-scrollbar-track {
+                background: var(--body-bg);
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #262626;
+                border-radius: 9999px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: #404040;
             }
             .container {
                 max-width: 672px;
