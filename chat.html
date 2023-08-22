@@ -968,9 +968,12 @@
           typing = false;
           socket.emit('stop typing');
           $messageInput.focus();
-        } else if (!(e.ctrlKey || e.metaKey || e.altKey) && !$(document.activeElement).is('input.file')) {
-          $messageInput.focus();
+          return;
         }
+        if ($(document.activeElement).is('input.file')) return;
+        if (!e.ctrlKey && !e.metaKey && !e.altKey || e.ctrlKey && e.key.toLowerCase() == 'v') {
+          $messageInput.focus();
+        } else console.log(e)
       }
 
       
